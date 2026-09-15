@@ -1,0 +1,134 @@
+date: 2026-09-15T09:39:17Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 10.21 8.24 8.04
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+kernel: Darwin Kernel Version 25.2.0: Tue Nov 18 21:09:56 PST 2025; root:xnu-12377.61.12~1/RELEASE_ARM64_T6041
+boot args: none set
+mitigation state: not exposed by macOS
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default CLOCK_GHZ=4.49
+---
+file /var/folders/t4/dv716g7154qc59jxlrdxyn_h0000gn/T//syscall-cost.wbGZy7/data  bytes 67108864  written and fsynced in 46 ms, read back and verified in 5 ms
+read offset 33554432  reps 31 (plus 1 warmup, discarded)  clock 4.49 GHz
+size 1 bytes: 65536 calls per rep
+size 64 bytes: 65536 calls per rep
+size 4096 bytes: 65536 calls per rep
+size 65536 bytes: 4096 calls per rep
+size 1048576 bytes: 256 calls per rep
+RESULT clock 4.49 GHz
+RESULT reps 31 runs
+pread 1 B                                min      281.246  median      290.455  max      328.547  cv   3.1%  n 31  ns/call
+RESULT pread_1_bytes 1 bytes
+RESULT pread_1_calls 65536 calls/rep
+RESULT pread_1_min 281.246 ns/call
+RESULT pread_1_median 290.455 ns/call
+RESULT pread_1_cv 3.09 percent
+RESULT pread_1_nsbyte 281.24556 ns/byte
+RESULT pread_1_cycles 1262.8 cycles/call
+pread 64 B                               min      281.916  median      290.424  max      305.824  cv   2.0%  n 31  ns/call
+RESULT pread_64_bytes 64 bytes
+RESULT pread_64_calls 65536 calls/rep
+RESULT pread_64_min 281.916 ns/call
+RESULT pread_64_median 290.424 ns/call
+RESULT pread_64_cv 1.96 percent
+RESULT pread_64_nsbyte 4.40493 ns/byte
+RESULT pread_64_cycles 1265.8 cycles/call
+pread 4096 B                             min      313.670  median      320.944  max      342.719  cv   1.9%  n 31  ns/call
+RESULT pread_4096_bytes 4096 bytes
+RESULT pread_4096_calls 65536 calls/rep
+RESULT pread_4096_min 313.670 ns/call
+RESULT pread_4096_median 320.944 ns/call
+RESULT pread_4096_cv 1.91 percent
+RESULT pread_4096_nsbyte 0.07658 ns/byte
+RESULT pread_4096_cycles 1408.4 cycles/call
+pread 65536 B                            min     1257.192  median     1370.860  max     1527.669  cv   3.4%  n 31  ns/call
+RESULT pread_65536_bytes 65536 bytes
+RESULT pread_65536_calls 4096 calls/rep
+RESULT pread_65536_min 1257.192 ns/call
+RESULT pread_65536_median 1370.860 ns/call
+RESULT pread_65536_cv 3.36 percent
+RESULT pread_65536_nsbyte 0.01918 ns/byte
+RESULT pread_65536_cycles 5644.8 cycles/call
+pread 1048576 B                          min    20490.398  median    21189.293  max    22415.363  cv   1.5%  n 31  ns/call
+RESULT pread_1048576_bytes 1048576 bytes
+RESULT pread_1048576_calls 256 calls/rep
+RESULT pread_1048576_min 20490.398 ns/call
+RESULT pread_1048576_median 21189.293 ns/call
+RESULT pread_1048576_cv 1.53 percent
+RESULT pread_1048576_nsbyte 0.01954 ns/byte
+RESULT pread_1048576_cycles 92001.9 cycles/call
+memcpy 1 B                               min        1.108  median        1.209  max        1.286  cv   5.0%  n 31  ns/call
+RESULT memcpy_1_bytes 1 bytes
+RESULT memcpy_1_calls 65536 calls/rep
+RESULT memcpy_1_min 1.108 ns/call
+RESULT memcpy_1_median 1.209 ns/call
+RESULT memcpy_1_cv 5.05 percent
+RESULT memcpy_1_nsbyte 1.10817 ns/byte
+RESULT memcpy_1_cycles 5.0 cycles/call
+memcpy 64 B                              min        1.330  median        1.429  max        2.118  cv   9.2%  n 31  ns/call
+RESULT memcpy_64_bytes 64 bytes
+RESULT memcpy_64_calls 65536 calls/rep
+RESULT memcpy_64_min 1.330 ns/call
+RESULT memcpy_64_median 1.429 ns/call
+RESULT memcpy_64_cv 9.15 percent
+RESULT memcpy_64_nsbyte 0.02078 ns/byte
+RESULT memcpy_64_cycles 6.0 cycles/call
+memcpy 4096 B                            min       37.453  median       42.519  max       48.382  cv   5.2%  n 31  ns/call
+RESULT memcpy_4096_bytes 4096 bytes
+RESULT memcpy_4096_calls 65536 calls/rep
+RESULT memcpy_4096_min 37.453 ns/call
+RESULT memcpy_4096_median 42.519 ns/call
+RESULT memcpy_4096_cv 5.17 percent
+RESULT memcpy_4096_nsbyte 0.00914 ns/byte
+RESULT memcpy_4096_cycles 168.2 cycles/call
+memcpy 65536 B                           min      519.897  median      546.021  max      599.436  cv   4.2%  n 31  ns/call
+RESULT memcpy_65536_bytes 65536 bytes
+RESULT memcpy_65536_calls 4096 calls/rep
+RESULT memcpy_65536_min 519.897 ns/call
+RESULT memcpy_65536_median 546.021 ns/call
+RESULT memcpy_65536_cv 4.17 percent
+RESULT memcpy_65536_nsbyte 0.00793 ns/byte
+RESULT memcpy_65536_cycles 2334.3 cycles/call
+memcpy 1048576 B                         min    11197.266  median    12204.750  max    12880.859  cv   2.5%  n 31  ns/call
+RESULT memcpy_1048576_bytes 1048576 bytes
+RESULT memcpy_1048576_calls 256 calls/rep
+RESULT memcpy_1048576_min 11197.266 ns/call
+RESULT memcpy_1048576_median 12204.750 ns/call
+RESULT memcpy_1048576_cv 2.53 percent
+RESULT memcpy_1048576_nsbyte 0.01068 ns/byte
+RESULT memcpy_1048576_cycles 50275.7 cycles/call
+getppid                                  min       83.148  median       87.238  max       89.345  cv   1.6%  n 31  ns/call
+RESULT getppid_bytes 0 bytes
+RESULT getppid_calls 65536 calls/rep
+RESULT getppid_min 83.148 ns/call
+RESULT getppid_median 87.238 ns/call
+RESULT getppid_cv 1.65 percent
+RESULT getppid_cycles 373.3 cycles/call
+clock_gettime MONOTONIC_RAW              min       12.201  median       12.686  max       13.100  cv   2.2%  n 31  ns/call
+RESULT clock_gettime_bytes 0 bytes
+RESULT clock_gettime_calls 65536 calls/rep
+RESULT clock_gettime_min 12.201 ns/call
+RESULT clock_gettime_median 12.686 ns/call
+RESULT clock_gettime_cv 2.24 percent
+RESULT clock_gettime_cycles 54.8 cycles/call
+pread: fixed cost 281.3 ns (intercept over 1, 64, 4096 B), slope 0.00790 ns/byte there; copy slope 0.01957 ns/byte between 65536 and 1048576 B
+memcpy: fixed cost 0.9 ns (intercept over 1, 64, 4096 B), slope 0.00892 ns/byte there; copy slope 0.01086 ns/byte between 65536 and 1048576 B
+RESULT pread_fixed 281.3 ns
+RESULT pread_small_slope 0.00790 ns/byte
+RESULT pread_copy_slope 0.01957 ns/byte
+RESULT memcpy_fixed 0.9 ns
+RESULT memcpy_small_slope 0.00892 ns/byte
+RESULT memcpy_copy_slope 0.01086 ns/byte
+RESULT pread_fixed_cycles 1263 cycles
+RESULT clock_checksum 1114345161822424 sum
+checksums: every pread and memcpy pass matched its reference sum and the source bytes; every getppid returned the parent pid

@@ -1,0 +1,257 @@
+date: 2026-09-15T09:38:08Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 7.66 7.58 7.82
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+clock with 2 concurrent copies of clock_estimate: median 4.40 GHz (each copy: 4.40 4.40)
+clock with 4 concurrent copies of clock_estimate: median 3.96 GHz (each copy: 3.95 3.96 3.96 3.97)
+clock with 8 concurrent copies of clock_estimate: median 3.91 GHz (each copy: 3.89 3.90 3.91 3.91 3.91 3.92 3.92 3.92)
+bench: QUICK=0 REPS=default ITERS_LOG2=default CLOCK_GHZ=4.49 CLOCK_GHZ_T1=4.49 CLOCK_GHZ_T2=4.40 CLOCK_GHZ_T4=3.96 CLOCK_GHZ_T8=3.91
+---
+increments per thread 16777216 (1<<24)  reps 11 (plus 1 warmup round, discarded)  online cpus 14  pad128 stride 128 bytes  line reported by the OS 128 bytes  single-core clock 4.49 GHz
+layouts: adjacent (8-byte stride, all counters in one 64-byte span), pad64 (64-byte stride, two per 128-byte line), pad128 (128-byte stride, one per line)
+increments: store (str per increment, count in a register), atomic (relaxed fetch-add), register (one str at the end)
+RESULT iters 16777216 increments
+RESULT reps 11 runs
+RESULT line_compiled 128 bytes
+RESULT line_reported 128 bytes
+RESULT clock 4.49 GHz
+RESULT clock_t1 4.49 GHz
+store_adjacent t1                        min        0.222  median        0.223  max        0.228  cv   0.7%  n 11  ns/increment/thread
+RESULT store_adjacent_t1_median 0.2226 ns
+RESULT store_adjacent_t1_min 0.2222 ns
+RESULT store_adjacent_t1_cv 0.7 percent
+RESULT store_adjacent_t1_cycles 1.000 cycles
+RESULT store_adjacent_t1_checksum 16777216 ok
+store_pad64 t1                           min        0.222  median        0.223  max        0.228  cv   0.7%  n 11  ns/increment/thread
+RESULT store_pad64_t1_median 0.2228 ns
+RESULT store_pad64_t1_min 0.2222 ns
+RESULT store_pad64_t1_cv 0.7 percent
+RESULT store_pad64_t1_cycles 1.000 cycles
+RESULT store_pad64_t1_checksum 16777216 ok
+store_pad128 t1                          min        0.222  median        0.223  max        0.234  cv   1.4%  n 11  ns/increment/thread
+RESULT store_pad128_t1_median 0.2231 ns
+RESULT store_pad128_t1_min 0.2221 ns
+RESULT store_pad128_t1_cv 1.4 percent
+RESULT store_pad128_t1_cycles 1.002 cycles
+RESULT store_pad128_t1_checksum 16777216 ok
+atomic_adjacent t1                       min        1.557  median        1.562  max        1.592  cv   0.6%  n 11  ns/increment/thread
+RESULT atomic_adjacent_t1_median 1.5624 ns
+RESULT atomic_adjacent_t1_min 1.5569 ns
+RESULT atomic_adjacent_t1_cv 0.6 percent
+RESULT atomic_adjacent_t1_cycles 7.015 cycles
+RESULT atomic_adjacent_t1_checksum 16777216 ok
+atomic_pad64 t1                          min        1.555  median        1.560  max        1.564  cv   0.2%  n 11  ns/increment/thread
+RESULT atomic_pad64_t1_median 1.5597 ns
+RESULT atomic_pad64_t1_min 1.5553 ns
+RESULT atomic_pad64_t1_cv 0.2 percent
+RESULT atomic_pad64_t1_cycles 7.003 cycles
+RESULT atomic_pad64_t1_checksum 16777216 ok
+atomic_pad128 t1                         min        1.555  median        1.558  max        1.583  cv   0.5%  n 11  ns/increment/thread
+RESULT atomic_pad128_t1_median 1.5576 ns
+RESULT atomic_pad128_t1_min 1.5546 ns
+RESULT atomic_pad128_t1_cv 0.5 percent
+RESULT atomic_pad128_t1_cycles 6.994 cycles
+RESULT atomic_pad128_t1_checksum 16777216 ok
+register t1                              min        0.222  median        0.223  max        0.226  cv   0.5%  n 11  ns/increment/thread
+RESULT register_t1_median 0.2230 ns
+RESULT register_t1_min 0.2222 ns
+RESULT register_t1_cv 0.5 percent
+RESULT register_t1_cycles 1.001 cycles
+RESULT register_t1_checksum 16777216 ok
+samples store_adjacent t1: 0.2237 0.2233 0.2225 0.2226 0.2236 0.2223 0.2233 0.2226 0.2281 0.2222 0.2224
+cpus store_adjacent t1: [9] [10] [13] [11] [11] [9] [12] [12] [12] [10] [9]
+samples store_pad64 t1: 0.2239 0.2238 0.2225 0.2225 0.2225 0.2231 0.2228 0.2222 0.2275 0.2223 0.2228
+cpus store_pad64 t1: [10] [9] [9] [13] [12] [11] [9] [9] [9] [11] [10]
+samples store_pad128 t1: 0.2233 0.2231 0.2335 0.2233 0.2226 0.2234 0.2236 0.2221 0.2227 0.2231 0.2223
+cpus store_pad128 t1: [9] [10] [10] [9] [9] [9] [10] [10] [10] [12] [11]
+samples atomic_adjacent t1: 1.5600 1.5921 1.5624 1.5633 1.5626 1.5751 1.5597 1.5688 1.5582 1.5569 1.5569
+cpus atomic_adjacent t1: [10] [9] [10] [10] [12] [11] [12] [11] [9] [10] [9]
+samples atomic_pad64 t1: 1.5553 1.5573 1.5598 1.5558 1.5609 1.5590 1.5637 1.5597 1.5605 1.5644 1.5578
+cpus atomic_pad64 t1: [9] [12] [13] [13] [9] [11] [13] [13] [12] [12] [12]
+samples atomic_pad128 t1: 1.5647 1.5652 1.5546 1.5559 1.5572 1.5588 1.5576 1.5567 1.5565 1.5834 1.5606
+cpus atomic_pad128 t1: [10] [11] [12] [11] [10] [13] [10] [9] [9] [13] [11]
+samples register t1: 0.2241 0.2257 0.2245 0.2238 0.2225 0.2226 0.2224 0.2222 0.2235 0.2230 0.2223
+cpus register t1: [9] [10] [13] [12] [13] [10] [11] [10] [13] [11] [9]
+RESULT clock_t2 4.40 GHz
+store_adjacent t2                        min        0.378  median        0.383  max        0.396  cv   1.2%  n 11  ns/increment/thread
+RESULT store_adjacent_t2_median 0.3830 ns
+RESULT store_adjacent_t2_min 0.3784 ns
+RESULT store_adjacent_t2_cv 1.2 percent
+RESULT store_adjacent_t2_cycles 1.685 cycles
+RESULT store_adjacent_t2_checksum 33554432 ok
+store_pad64 t2                           min        0.227  median        0.229  max        0.231  cv   0.5%  n 11  ns/increment/thread
+RESULT store_pad64_t2_median 0.2292 ns
+RESULT store_pad64_t2_min 0.2274 ns
+RESULT store_pad64_t2_cv 0.5 percent
+RESULT store_pad64_t2_cycles 1.008 cycles
+RESULT store_pad64_t2_checksum 33554432 ok
+store_pad128 t2                          min        0.227  median        0.228  max        0.239  cv   1.4%  n 11  ns/increment/thread
+RESULT store_pad128_t2_median 0.2283 ns
+RESULT store_pad128_t2_min 0.2274 ns
+RESULT store_pad128_t2_cv 1.4 percent
+RESULT store_pad128_t2_cycles 1.005 cycles
+RESULT store_pad128_t2_checksum 33554432 ok
+atomic_adjacent t2                       min        5.595  median        7.125  max        7.642  cv  13.7%  n 11  ns/increment/thread
+RESULT atomic_adjacent_t2_median 7.1250 ns
+RESULT atomic_adjacent_t2_min 5.5947 ns
+RESULT atomic_adjacent_t2_cv 13.7 percent
+RESULT atomic_adjacent_t2_cycles 31.350 cycles
+RESULT atomic_adjacent_t2_checksum 33554432 ok
+atomic_pad64 t2                          min        1.589  median        1.594  max        1.610  cv   0.4%  n 11  ns/increment/thread
+RESULT atomic_pad64_t2_median 1.5944 ns
+RESULT atomic_pad64_t2_min 1.5889 ns
+RESULT atomic_pad64_t2_cv 0.4 percent
+RESULT atomic_pad64_t2_cycles 7.015 cycles
+RESULT atomic_pad64_t2_checksum 33554432 ok
+atomic_pad128 t2                         min        1.589  median        1.597  max        1.611  cv   0.4%  n 11  ns/increment/thread
+RESULT atomic_pad128_t2_median 1.5969 ns
+RESULT atomic_pad128_t2_min 1.5889 ns
+RESULT atomic_pad128_t2_cv 0.4 percent
+RESULT atomic_pad128_t2_cycles 7.026 cycles
+RESULT atomic_pad128_t2_checksum 33554432 ok
+register t2                              min        0.227  median        0.228  max        0.236  cv   1.0%  n 11  ns/increment/thread
+RESULT register_t2_median 0.2285 ns
+RESULT register_t2_min 0.2272 ns
+RESULT register_t2_cv 1.0 percent
+RESULT register_t2_cycles 1.005 cycles
+RESULT register_t2_checksum 33554432 ok
+samples store_adjacent t2: 0.3858 0.3829 0.3784 0.3836 0.3811 0.3847 0.3830 0.3956 0.3811 0.3787 0.3833
+cpus store_adjacent t2: [9 10] [4 5] [8 4] [5 8] [7 8] [8 6] [6 4] [4 5] [4 8] [4 6] [7 5]
+samples store_pad64 t2: 0.2300 0.2293 0.2274 0.2279 0.2275 0.2282 0.2292 0.2305 0.2309 0.2280 0.2293
+cpus store_pad64 t2: [9 12] [7 8] [5 4] [6 8] [4 5] [7 4] [6 5] [4 6] [8 7] [5 6] [7 4]
+samples store_pad128 t2: 0.2291 0.2281 0.2283 0.2277 0.2281 0.2274 0.2283 0.2391 0.2279 0.2319 0.2294
+cpus store_pad128 t2: [9 10] [4 7] [5 8] [4 6] [7 4] [7 8] [4 6] [4 7] [8 4] [4 5] [7 6]
+samples atomic_adjacent t2: 5.5947 7.1250 5.5980 7.5944 5.5965 7.3958 7.2910 5.6740 7.6421 7.6117 5.7573
+cpus atomic_adjacent t2: [4* 12] [4* 7] [4 5] [8 6] [8* 7] [8* 7] [6* 5*] [5 4*] [8* 6*] [8* 4*] [5 4]
+samples atomic_pad64 t2: 1.5915 1.5954 1.6105 1.5889 1.5916 1.5928 1.5944 1.5953 1.5922 1.5957 1.6057
+cpus atomic_pad64 t2: [4 6] [8 4] [5* 7] [4 5] [4 6] [6 7] [4 5*] [7 4] [6 4] [5 4] [7 5*]
+samples atomic_pad128 t2: 1.5933 1.5916 1.5907 1.6036 1.5969 1.5889 1.5932 1.5979 1.6030 1.6009 1.6115
+cpus atomic_pad128 t2: [5 6] [8 4] [8 7] [5 7] [8 6] [8 5] [5 4*] [7 5] [4* 8*] [5 4*] [7 5*]
+samples register t2: 0.2278 0.2274 0.2290 0.2291 0.2360 0.2275 0.2285 0.2285 0.2303 0.2275 0.2272
+cpus register t2: [5 6] [8 5] [5 7] [7 4] [8 4] [4 5] [4 6] [4 7] [6 5] [5 6] [8 5]
+RESULT clock_t4 3.96 GHz
+store_adjacent t4                        min        0.682  median        0.684  max        0.686  cv   0.2%  n 11  ns/increment/thread
+RESULT store_adjacent_t4_median 0.6837 ns
+RESULT store_adjacent_t4_min 0.6823 ns
+RESULT store_adjacent_t4_cv 0.2 percent
+RESULT store_adjacent_t4_cycles 2.707 cycles
+RESULT store_adjacent_t4_checksum 67108864 ok
+store_pad64 t4                           min        0.256  median        0.257  max        0.353  cv  10.4%  n 11  ns/increment/thread
+RESULT store_pad64_t4_median 0.2566 ns
+RESULT store_pad64_t4_min 0.2561 ns
+RESULT store_pad64_t4_cv 10.4 percent
+RESULT store_pad64_t4_cycles 1.016 cycles
+RESULT store_pad64_t4_checksum 67108864 ok
+store_pad128 t4                          min        0.256  median        0.257  max        0.262  cv   0.6%  n 11  ns/increment/thread
+RESULT store_pad128_t4_median 0.2572 ns
+RESULT store_pad128_t4_min 0.2563 ns
+RESULT store_pad128_t4_cv 0.6 percent
+RESULT store_pad128_t4_cycles 1.018 cycles
+RESULT store_pad128_t4_checksum 67108864 ok
+atomic_adjacent t4                       min       25.549  median       26.339  max       27.636  cv   2.4%  n 11  ns/increment/thread
+RESULT atomic_adjacent_t4_median 26.3389 ns
+RESULT atomic_adjacent_t4_min 25.5491 ns
+RESULT atomic_adjacent_t4_cv 2.4 percent
+RESULT atomic_adjacent_t4_cycles 104.302 cycles
+RESULT atomic_adjacent_t4_checksum 67108864 ok
+atomic_pad64 t4                          min        1.788  median        1.790  max        1.923  cv   2.1%  n 11  ns/increment/thread
+RESULT atomic_pad64_t4_median 1.7904 ns
+RESULT atomic_pad64_t4_min 1.7883 ns
+RESULT atomic_pad64_t4_cv 2.1 percent
+RESULT atomic_pad64_t4_cycles 7.090 cycles
+RESULT atomic_pad64_t4_checksum 67108864 ok
+atomic_pad128 t4                         min        1.788  median        1.791  max        1.795  cv   0.1%  n 11  ns/increment/thread
+RESULT atomic_pad128_t4_median 1.7910 ns
+RESULT atomic_pad128_t4_min 1.7877 ns
+RESULT atomic_pad128_t4_cv 0.1 percent
+RESULT atomic_pad128_t4_cycles 7.092 cycles
+RESULT atomic_pad128_t4_checksum 67108864 ok
+register t4                              min        0.256  median        0.257  max        0.260  cv   0.5%  n 11  ns/increment/thread
+RESULT register_t4_median 0.2568 ns
+RESULT register_t4_min 0.2560 ns
+RESULT register_t4_cv 0.5 percent
+RESULT register_t4_cycles 1.017 cycles
+RESULT register_t4_checksum 67108864 ok
+samples store_adjacent t4: 0.6835 0.6835 0.6846 0.6858 0.6863 0.6846 0.6851 0.6827 0.6823 0.6835 0.6837
+cpus store_adjacent t4: [5 8 4* 7] [9 10 11 13] [11 12 10 13] [13 10 12* 11] [13 9 10 12] [8 6 4 7*] [8 5* 6 7*] [12* 4 7 8] [13 12 11* 10*] [12 13 9 11] [10 11 9 12]
+samples store_pad64 t4: 0.2564 0.2561 0.2563 0.2747 0.2566 0.2569 0.2569 0.3532 0.2562 0.2584 0.2561
+cpus store_pad64 t4: [4 8 6 7] [9 12 11 13] [12 11 9 13] [5* 6* 9 4*] [13 11 10 12] [6 7 4 5] [8 7 6 4] [6 7 8 9] [12 13 9 11] [13 9 12 10] [11 12 9 13]
+samples store_pad128 t4: 0.2571 0.2572 0.2566 0.2591 0.2622 0.2563 0.2578 0.2589 0.2568 0.2565 0.2585
+cpus store_pad128 t4: [4 5 6 7] [9 10 12 11] [12 11 10 9] [10 12 13 11] [7* 6* 4* 5*] [6 7 8 5] [7 8 5 4] [4 6 7 5] [10 12 9 11] [13 12 11 10] [10 11 12 9]
+samples atomic_adjacent t4: 26.2934 26.3389 26.8071 27.4923 26.4135 27.2699 25.5491 26.1752 25.9328 27.6361 25.9926
+cpus atomic_adjacent t4: [7* 9* 8* 9*] [10* 10* 12* 11*] [12 12* 13* 10*] [10* 12* 13* 11] [6* 8* 7 4*] [5* 7* 6* 5] [7 7* 4* 6] [9* 12* 11* 10*] [9* 12 11* 12*] [9* 11* 13* 10] [4* 5* 4* 8*]
+samples atomic_pad64 t4: 1.7962 1.7986 1.7901 1.7889 1.7903 1.7905 1.9228 1.7904 1.7883 1.7927 1.7903
+cpus atomic_pad64 t4: [13* 10* 11* 12*] [12 11 10* 13] [10 13 12* 12*] [13 11 10 12*] [8 7 4 6*] [7 8 6 5*] [6 7 4* 7*] [10* 13 9 11] [9 12 11* 10*] [11 13 9 10*] [4 6 7 8]
+samples atomic_pad128 t4: 1.7904 1.7910 1.7910 1.7931 1.7915 1.7889 1.7896 1.7913 1.7947 1.7897 1.7877
+cpus atomic_pad128 t4: [9 11 12 13] [11 10 9 12*] [12* 10 13* 10*] [10* 12 9* 13*] [8 6 7 4*] [7 8 6 5*] [6 5* 4* 8] [10 12 9* 13*] [9 11 12* 13] [11 10 13 9*] [7 4* 5 6]
+samples register t4: 0.2568 0.2572 0.2563 0.2586 0.2583 0.2561 0.2596 0.2590 0.2564 0.2560 0.2565
+cpus register t4: [13 10 11 12] [11 12 9 13] [13 12 9 11] [13 9 11 12] [6 8 7 5] [8 5 7 4] [6 7 5 8] [12 13 10 11] [13 9 11 10] [10 11 13 12] [5 8 6 7]
+RESULT clock_t8 3.91 GHz
+store_adjacent t8                        min        0.429  median        0.458  max        0.589  cv  11.3%  n 11  ns/increment/thread
+RESULT store_adjacent_t8_median 0.4575 ns
+RESULT store_adjacent_t8_min 0.4285 ns
+RESULT store_adjacent_t8_cv 11.3 percent
+RESULT store_adjacent_t8_cycles 1.789 cycles
+RESULT store_adjacent_t8_checksum 134217728 ok
+store_pad64 t8                           min        0.257  median        0.485  max        0.491  cv  29.2%  n 11  ns/increment/thread
+RESULT store_pad64_t8_median 0.4849 ns
+RESULT store_pad64_t8_min 0.2570 ns
+RESULT store_pad64_t8_cv 29.2 percent
+RESULT store_pad64_t8_cycles 1.896 cycles
+RESULT store_pad64_t8_checksum 134217728 ok
+store_pad128 t8                          min        0.257  median        0.262  max        0.263  cv   0.8%  n 11  ns/increment/thread
+RESULT store_pad128_t8_median 0.2619 ns
+RESULT store_pad128_t8_min 0.2572 ns
+RESULT store_pad128_t8_cv 0.8 percent
+RESULT store_pad128_t8_cycles 1.024 cycles
+RESULT store_pad128_t8_checksum 134217728 ok
+atomic_adjacent t8                       min      229.171  median      244.958  max      253.355  cv   3.3%  n 11  ns/increment/thread
+RESULT atomic_adjacent_t8_median 244.9584 ns
+RESULT atomic_adjacent_t8_min 229.1708 ns
+RESULT atomic_adjacent_t8_cv 3.3 percent
+RESULT atomic_adjacent_t8_cycles 957.787 cycles
+RESULT atomic_adjacent_t8_checksum 134217728 ok
+atomic_pad64 t8                          min        2.781  median        3.251  max        3.724  cv   7.7%  n 11  ns/increment/thread
+RESULT atomic_pad64_t8_median 3.2512 ns
+RESULT atomic_pad64_t8_min 2.7812 ns
+RESULT atomic_pad64_t8_cv 7.7 percent
+RESULT atomic_pad64_t8_cycles 12.712 cycles
+RESULT atomic_pad64_t8_checksum 134217728 ok
+atomic_pad128 t8                         min        1.805  median        1.811  max        1.820  cv   0.2%  n 11  ns/increment/thread
+RESULT atomic_pad128_t8_median 1.8114 ns
+RESULT atomic_pad128_t8_min 1.8053 ns
+RESULT atomic_pad128_t8_cv 0.2 percent
+RESULT atomic_pad128_t8_cycles 7.082 cycles
+RESULT atomic_pad128_t8_checksum 134217728 ok
+register t8                              min        0.257  median        0.258  max        0.259  cv   0.2%  n 11  ns/increment/thread
+RESULT register_t8_median 0.2577 ns
+RESULT register_t8_min 0.2571 ns
+RESULT register_t8_cv 0.2 percent
+RESULT register_t8_cycles 1.008 cycles
+RESULT register_t8_checksum 134217728 ok
+samples store_adjacent t8: 0.4682 0.5891 0.4413 0.4553 0.4575 0.4601 0.4462 0.5879 0.4583 0.4456 0.4285
+cpus store_adjacent t8: [11 6* 10 13 4 7 8 5] [13 11 12 9 10 5 7 8] [11 9 10 12 8 4 7 5] [7 8 4 6 9 10 13 11] [4 6 7 8 9 10 13 11] [6 7 4 5 9 12 13 10] [13 9 10 12 8 4 5 6] [11 13 10 9 12 6 7 5] [5 7 6 8 9 10 11 12] [5 7 4 8 9 10 11 12] [11 9 10 12 4 7 8 5]
+samples store_pad64 t8: 0.2587 0.4914 0.4904 0.4903 0.2570 0.4854 0.2573 0.4849 0.4868 0.2579 0.2811
+cpus store_pad64 t8: [10 9 12 13 4 6 8 5] [12 13 11 9 10 4 6 8] [11 9 10 12 13 8* 6 7] [7 8 4 5 6 9 12 10] [7 4 5 8 9 12 13 10] [7 6 5 9 11 13 10 12] [9 11 10 12 8 4 5 6] [11 13 10 9 12 6 8 4] [4 5 7 6 8 11 12 13] [5 4 6 8 11 12 10 9] [11 9 10 12 13 4 7 5]
+samples store_pad128 t8: 0.2625 0.2631 0.2616 0.2622 0.2578 0.2621 0.2573 0.2619 0.2632 0.2572 0.2607
+cpus store_pad128 t8: [10 11 9 12 13 4 8 5] [4* 11* 13 7* 10 6 8 5] [11 9 10 12 13 7 6 4] [5 8 4 6 7 13 12 10] [7 4 5 8 9 12 13 10] [8 6 7 4 5 11 13 10] [9 11 13 12 7 8 5 4] [13 10 11 9 12 8 4 5] [4 5 7 6 8 9 10 13] [4 5 7 8 12 13 10 9] [11 13 10 12 4 6 8 5]
+samples atomic_adjacent t8: 247.2248 253.3549 233.2658 251.8254 250.4479 240.1609 233.9606 244.9584 248.6736 229.1708 237.8622
+cpus atomic_adjacent t8: [12* 5* 11* 6* 9* 11* 10* 13*] [5* 9* 4* 10 12* 4* 11* 11*] [10* 6* 4* 5* 8* 7 7* 5*] [5 11* 13* 4* 8* 9 6* 7*] [8* 7* 5* 4* 6* 4* 4* 10] [13* 6 12* 4* 12* 11 10* 9*] [6* 13* 10 12 4* 11* 9* 4] [5* 5* 5* 11* 5* 13* 7* 11*] [8* 12* 4* 9* 7* 5* 10* 6*] [11* 12* 12* 13* 9* 6* 10 5*] [11 10* 9 13* 6 5* 12* 8*]
+samples atomic_pad64 t8: 3.2500 3.2599 3.3653 2.9883 2.7812 2.9857 2.9692 3.7237 3.2512 3.3257 3.3648
+cpus atomic_pad64 t8: [9 11 12 13 10* 13* 6 7] [11* 9* 8* 12 13* 12* 10* 7] [4 5* 8* 6* 7* 4* 8* 7*] [5 6 7 8 8* 7* 12 13] [4 6 4* 8 5* 7* 11 12] [9 11 12 13 12* 11* 6 7] [10 11 12 10* 9* 13* 13* 7] [4 5 6 7 8 6* 10 12] [4 5* 7 8 6* 8* 11 12] [13* 10 11 9* 12* 11* 6 7] [12* 10 12 13 11* 13* 12* 10*]
+samples atomic_pad128 t8: 1.8066 1.8086 1.8129 1.8053 1.8109 1.8132 1.8200 1.8115 1.8108 1.8121 1.8114
+cpus atomic_pad128 t8: [13 11 9 4* 12* 10* 6 7] [9 4* 11 6* 10* 5 13* 12*] [4 7 8 6 5* 9* 11 12] [5 6 9* 8 7* 4* 11 12] [5 6 7 4 8* 10 11 12] [4* 10 13 12 9* 11* 6 7] [6* 9 12 5* 11* 13* 7 8] [5 7 4 8 6* 10 11 12] [5 7 4 6 8* 10 11 12] [9 10 12 13 11* 5 6 7] [13 12 9 10 11* 8* 6 7]
+samples register t8: 0.2576 0.2572 0.2576 0.2571 0.2579 0.2577 0.2589 0.2581 0.2575 0.2584 0.2588
+cpus register t8: [13 11 9 10 4 5 6 7] [9 10 12 13 8 4 7 5] [7 8 5 6 9 12 13 10] [4 5 6 8 9 10 11 12] [7 6 4 5 9 12 13 10] [13 11 10 12 8 4 5 6] [11 10 9 12 8 4 6 5] [5 7 4 8 9 10 11 12] [5 7 4 6 13 9 10 11] [11 9 10 13 4 5 6 7] [13 12 9 10 4 5 6 7]
+checksums: every run summed to threads * increments

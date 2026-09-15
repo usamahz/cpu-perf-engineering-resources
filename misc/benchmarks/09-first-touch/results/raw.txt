@@ -1,0 +1,168 @@
+date: 2026-09-15T09:39:11Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 10.05 8.17 8.01
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+memory before run (vm_stat, pages of 16384 bytes): free 23031  active 293209  inactive 293353  speculative 5237  wired 200560  compressor 712782
+bench: QUICK=0 REPS=default MIB=default CLOCK_GHZ=4.49
+---
+page 16384 bytes  buffer 1073741824 bytes (1024 MiB)  pages 65536  words 134217728  reps 15 (plus 1 warmup, discarded)  clock 4.49 GHz
+RESULT page_bytes 16384 bytes
+RESULT buffer_bytes 1073741824 bytes
+RESULT pages 65536 pages
+RESULT clock 4.49 GHz
+fill checksums: pass 3 expects 11286818978942418944, fresh fill expects 15355502642805604352
+rep  0: mmap 4.7 us  pass1 709 ns/page (65536 faults)  pass2 279 ns/page (0 faults)  pass2r 5 ns/page  pass3 91.6 GB/s (0 faults)  munmap 191 ns/page  fresh fill 18.2 GB/s (65536 faults)  timed pass2 slow pages 25.0% in 261 runs, longest 110 pages
+rep  1: mmap 5.1 us  pass1 674 ns/page (65536 faults)  pass2 305 ns/page (0 faults)  pass2r 8 ns/page  pass3 95.0 GB/s (0 faults)  munmap 185 ns/page  fresh fill 18.0 GB/s (65536 faults)  timed pass2 slow pages 59.9% in 148 runs, longest 28767 pages
+rep  2: mmap 6.2 us  pass1 743 ns/page (65536 faults)  pass2 498 ns/page (0 faults)  pass2r 47 ns/page  pass3 93.8 GB/s (0 faults)  munmap 258 ns/page  fresh fill 17.9 GB/s (65536 faults)  timed pass2 slow pages 25.0% in 262 runs, longest 107 pages
+rep  3: mmap 5.9 us  pass1 688 ns/page (65536 faults)  pass2 198 ns/page (0 faults)  pass2r 4 ns/page  pass3 93.4 GB/s (0 faults)  munmap 187 ns/page  fresh fill 15.5 GB/s (65536 faults)  timed pass2 slow pages 46.5% in 214 runs, longest 12047 pages
+rep  4: mmap 6.4 us  pass1 834 ns/page (65536 faults)  pass2 417 ns/page (0 faults)  pass2r 17 ns/page  pass3 87.1 GB/s (0 faults)  munmap 189 ns/page  fresh fill 15.6 GB/s (65536 faults)  timed pass2 slow pages 51.8% in 209 runs, longest 17034 pages
+rep  5: mmap 4.8 us  pass1 754 ns/page (65536 faults)  pass2 394 ns/page (0 faults)  pass2r 5 ns/page  pass3 79.0 GB/s (0 faults)  munmap 188 ns/page  fresh fill 18.2 GB/s (65536 faults)  timed pass2 slow pages 35.7% in 227 runs, longest 5759 pages
+rep  6: mmap 4.4 us  pass1 674 ns/page (65536 faults)  pass2 335 ns/page (0 faults)  pass2r 4 ns/page  pass3 88.9 GB/s (0 faults)  munmap 185 ns/page  fresh fill 18.3 GB/s (65536 faults)  timed pass2 slow pages 27.6% in 256 runs, longest 1198 pages
+rep  7: mmap 6.0 us  pass1 687 ns/page (65536 faults)  pass2 301 ns/page (0 faults)  pass2r 4 ns/page  pass3 93.5 GB/s (0 faults)  munmap 182 ns/page  fresh fill 18.2 GB/s (65536 faults)  timed pass2 slow pages 33.0% in 240 runs, longest 5775 pages
+rep  8: mmap 4.6 us  pass1 671 ns/page (65536 faults)  pass2 239 ns/page (0 faults)  pass2r 4 ns/page  pass3 88.5 GB/s (0 faults)  munmap 192 ns/page  fresh fill 18.0 GB/s (65536 faults)  timed pass2 slow pages 24.8% in 262 runs, longest 89 pages
+rep  9: mmap 4.4 us  pass1 674 ns/page (65536 faults)  pass2 225 ns/page (0 faults)  pass2r 4 ns/page  pass3 93.7 GB/s (0 faults)  munmap 183 ns/page  fresh fill 18.2 GB/s (65536 faults)  timed pass2 slow pages 24.6% in 261 runs, longest 68 pages
+rep 10: mmap 5.3 us  pass1 678 ns/page (65536 faults)  pass2 204 ns/page (0 faults)  pass2r 4 ns/page  pass3 92.9 GB/s (0 faults)  munmap 177 ns/page  fresh fill 18.2 GB/s (65536 faults)  timed pass2 slow pages 25.3% in 263 runs, longest 251 pages
+rep 11: mmap 3.6 us  pass1 670 ns/page (65536 faults)  pass2 167 ns/page (1 faults)  pass2r 5 ns/page  pass3 87.5 GB/s (0 faults)  munmap 175 ns/page  fresh fill 18.2 GB/s (65536 faults)  timed pass2 slow pages 24.9% in 262 runs, longest 161 pages
+rep 12: mmap 3.4 us  pass1 669 ns/page (65536 faults)  pass2 188 ns/page (0 faults)  pass2r 5 ns/page  pass3 90.8 GB/s (0 faults)  munmap 182 ns/page  fresh fill 18.0 GB/s (65536 faults)  timed pass2 slow pages 24.8% in 261 runs, longest 125 pages
+rep 13: mmap 3.0 us  pass1 714 ns/page (65536 faults)  pass2 169 ns/page (0 faults)  pass2r 5 ns/page  pass3 88.9 GB/s (0 faults)  munmap 176 ns/page  fresh fill 17.9 GB/s (65536 faults)  timed pass2 slow pages 27.2% in 256 runs, longest 1759 pages
+rep 14: mmap 4.0 us  pass1 672 ns/page (65536 faults)  pass2 196 ns/page (0 faults)  pass2r 4 ns/page  pass3 94.6 GB/s (0 faults)  munmap 172 ns/page  fresh fill 18.2 GB/s (65536 faults)  timed pass2 slow pages 25.0% in 261 runs, longest 107 pages
+malloc warmup (the first request for 1073741824 bytes): 65536 faults on first touch, 677 ns/page, address 0xc3c000000; not a result
+RESULT malloc_first_cycle_faults 65536 faults
+malloc cycle  0: malloc 6.1 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  1: malloc 0.4 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  2: malloc 0.3 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  3: malloc 0.4 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  4: malloc 0.3 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  5: malloc 0.3 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  6: malloc 0.4 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  7: malloc 0.3 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  8: malloc 0.4 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle  9: malloc 0.3 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle 10: malloc 0.4 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle 11: malloc 0.4 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle 12: malloc 0.3 us  touch 4 ns/page (0 faults)  touch again 5 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle 13: malloc 0.3 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+malloc cycle 14: malloc 0.3 us  touch 4 ns/page (0 faults)  touch again 4 ns/page  free 0 ns/page  address 0xc3c000000 (same as previous cycle)
+
+Per-page costs are min over reps (latency-like); bandwidths are median (throughput-like); cv over reps in every row.
+mmap call                                min        3.000  median        4.667  max        6.417  cv  21.0%  n 15  us
+RESULT mmap_call_min 3.000 us
+RESULT mmap_call_median 4.667 us
+RESULT mmap_call_max 6.417 us
+RESULT mmap_call_cv 21.00 percent
+pass 1 first touch                       min      668.788  median      677.958  max      834.304  cv   6.3%  n 15  ns/page
+RESULT pass1_min 668.788 ns/page
+RESULT pass1_median 677.958 ns/page
+RESULT pass1_max 834.304 ns/page
+RESULT pass1_cv 6.32 percent
+RESULT pass1_cycles 3003 cycles/page
+pass 2 second touch                      min      167.316  median      239.125  max      497.909  cv  35.3%  n 15  ns/page
+RESULT pass2_min 167.316 ns/page
+RESULT pass2_median 239.125 ns/page
+RESULT pass2_max 497.909 ns/page
+RESULT pass2_cv 35.29 percent
+RESULT pass2_cycles 751 cycles/page
+pass 2 repeated                          min        4.315  median        4.539  max       47.356  cv 128.3%  n 15  ns/page
+RESULT pass2r_min 4.315 ns/page
+RESULT pass2r_median 4.539 ns/page
+RESULT pass2r_max 47.356 ns/page
+RESULT pass2r_cv 128.32 percent
+RESULT pass2r_cycles 19 cycles/page
+pass 3 full write                        min       79.006  median       91.619  max       95.025  cv   4.5%  n 15  GB/s
+RESULT pass3_min 79.006 GB/s
+RESULT pass3_median 91.619 GB/s
+RESULT pass3_max 95.025 GB/s
+RESULT pass3_cv 4.45 percent
+munmap                                   min      172.105  median      184.854  max      258.256  cv  10.4%  n 15  ns/page
+RESULT munmap_min 172.105 ns/page
+RESULT munmap_median 184.854 ns/page
+RESULT munmap_max 258.256 ns/page
+RESULT munmap_cv 10.42 percent
+fresh fill (faults inside)               min       15.513  median       18.154  max       18.293  cv   4.9%  n 15  GB/s
+RESULT fresh_fill_min 15.513 GB/s
+RESULT fresh_fill_median 18.154 GB/s
+RESULT fresh_fill_max 18.293 GB/s
+RESULT fresh_fill_cv 4.91 percent
+pass 1 faults                            min        65536  median        65536  max        65536  n 15  faults
+RESULT pass1_faults_median 65536 faults
+RESULT pass1_faults_max 65536 faults
+pass 2 faults                            min            0  median            0  max            1  n 15  faults
+RESULT pass2_faults_median 0 faults
+RESULT pass2_faults_max 1 faults
+pass 3 faults                            min            0  median            0  max            0  n 15  faults
+RESULT pass3_faults_median 0 faults
+RESULT pass3_faults_max 0 faults
+fresh fill faults                        min        65536  median        65536  max        65536  n 15  faults
+RESULT fresh_fill_faults_median 65536 faults
+RESULT fresh_fill_faults_max 65536 faults
+timed pass 1 per-page median             min      584.000  median      625.000  max      625.000  cv   2.7%  n 15  ns
+RESULT timed_pass1_page_median_min 584.000 ns
+RESULT timed_pass1_page_median_median 625.000 ns
+RESULT timed_pass1_page_median_max 625.000 ns
+RESULT timed_pass1_page_median_cv 2.66 percent
+timed pass 1 pages above 200 ns          median 100.00%  min 100.00%  max 100.00%  n 15
+RESULT timed_pass1_slow_fraction 100.00 percent
+timed pass 2 pages above 200 ns          median  25.31%  min  24.63%  max  59.89%  n 15
+RESULT timed_pass2_slow_fraction 25.31 percent
+RESULT timed_pass2_slow_fraction_min 24.63 percent
+RESULT timed_pass2_slow_fraction_max 59.89 percent
+timed pass 2 mean of slow pages          min      573.622  median      779.843  max     1066.995  cv  16.4%  n 15  ns
+RESULT timed_pass2_slow_mean_min 573.622 ns
+RESULT timed_pass2_slow_mean_median 779.843 ns
+RESULT timed_pass2_slow_mean_max 1066.995 ns
+RESULT timed_pass2_slow_mean_cv 16.35 percent
+timed pass 2 runs of slow pages          min          148  median          261  max          263  n 15  runs
+RESULT timed_pass2_slow_runs_min 148 runs
+RESULT timed_pass2_slow_runs_median 261 runs
+RESULT timed_pass2_slow_runs_max 263 runs
+timed pass 2 longest run of slow pages   min           68  median          251  max        28767  n 15  pages
+RESULT timed_pass2_slow_longest_run_min 68 pages
+RESULT timed_pass2_slow_longest_run_median 251 pages
+RESULT timed_pass2_slow_longest_run_max 28767 pages
+malloc call (after free)                 min        0.333  median        0.334  max        6.083  cv 195.0%  n 15  us
+RESULT malloc_call_min 0.333 us
+RESULT malloc_call_median 0.334 us
+RESULT malloc_call_max 6.083 us
+RESULT malloc_call_cv 194.99 percent
+malloc then first touch                  min        4.227  median        4.232  max        4.449  cv   1.6%  n 15  ns/page
+RESULT malloc_touch_min 4.227 ns/page
+RESULT malloc_touch_median 4.232 ns/page
+RESULT malloc_touch_max 4.449 ns/page
+RESULT malloc_touch_cv 1.59 percent
+RESULT malloc_touch_cycles 19 cycles/page
+malloc then second touch                 min        4.229  median        4.260  max        4.612  cv   2.1%  n 15  ns/page
+RESULT malloc_retouch_min 4.229 ns/page
+RESULT malloc_retouch_median 4.260 ns/page
+RESULT malloc_retouch_max 4.612 ns/page
+RESULT malloc_retouch_cv 2.11 percent
+RESULT malloc_retouch_cycles 19 cycles/page
+free                                     min        0.006  median        0.007  max        0.010  cv  14.3%  n 15  ns/page
+RESULT free_min 0.006 ns/page
+RESULT free_median 0.007 ns/page
+RESULT free_max 0.010 ns/page
+RESULT free_cv 14.26 percent
+malloc then first touch faults           min            0  median            0  max            0  n 15  faults
+RESULT malloc_touch_faults_median 0 faults
+RESULT malloc_touch_faults_max 0 faults
+reps above 20 ns/page: pass 2 15, pass 2 repeated 1, malloc then first touch 0, malloc then second touch 0, of 15
+RESULT slow_rep_threshold 20 ns/page
+RESULT pass2_slow_reps 15 count
+RESULT pass2r_slow_reps 1 count
+RESULT malloc_touch_slow_reps 0 count
+RESULT malloc_retouch_slow_reps 0 count
+RESULT reps 15 count
+malloc returned the address it had just freed in 15 of 15 cycles
+RESULT malloc_same_address_cycles 15 count
+RESULT malloc_cycles 15 count
+checksums: every pass wrote what the check read back

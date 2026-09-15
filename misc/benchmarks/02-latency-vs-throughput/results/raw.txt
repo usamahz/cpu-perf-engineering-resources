@@ -1,0 +1,141 @@
+date: 2026-09-15T09:36:33Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 7.75 7.54 7.83
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default
+---
+array 16384 floats  bytes 65536  values 0..3  exact sum per pass 24428  reference per call 7328400
+passes per call 300  calls per rep 4  reps 31 (plus 1 warmup, discarded)  register-only ops per rep 20000000
+RESULT fsum_checksum 7328400 sum
+cycles: each rep is converted with the clock sampled just before it (min of three 2000000-add dependent integer chains)
+int add, one chain (1 cycle by construction) min        0.222  median        0.223  max        0.240  cv   1.7%  n 31  ns/add
+RESULT asm_int_chain_ns_min 0.2216 ns/add
+RESULT asm_int_chain_ns_median 0.2227 ns/add
+RESULT asm_int_chain_ns_figure_min 0.2216 ns/add
+RESULT asm_int_chain_cv 1.7 percent
+  same, in cycles (per-rep clock)        min        0.990  median        1.005  max        1.085  cv   1.7%  n 31  cycles/add
+  clock before each rep: min 4.466  median 4.513  max 4.514 GHz;  latency: min 0.2216 ns/add;  cycles: median 1.005 = 1.00 add/cycle
+RESULT asm_int_chain_cycles_median 1.005 cycles/add
+RESULT asm_int_chain_per_cycle 0.995 add/cycle
+RESULT asm_int_chain_ghz_median 4.513 GHz
+
+== float array sum, one thread ==
+checksum fsum_acc1        7328400  reference      7328400  ok
+float sum, 1 accumulator (one chain)     min        0.466  median        0.470  max        0.544  cv   4.1%  n 31  ns/elem
+RESULT fsum_acc1_ns_min 0.4659 ns/elem
+RESULT fsum_acc1_ns_median 0.4697 ns/elem
+RESULT fsum_acc1_ns_figure_min 0.4659 ns/elem
+RESULT fsum_acc1_cv 4.1 percent
+  same, in cycles (per-rep clock)        min        1.894  median        2.112  max        2.455  cv   4.4%  n 31  cycles/elem
+  clock before each rep: min 3.852  median 4.513  max 4.514 GHz;  latency: min 0.4659 ns/elem;  cycles: median 2.112 = 0.47 elem/cycle
+RESULT fsum_acc1_cycles_median 2.112 cycles/elem
+RESULT fsum_acc1_per_cycle 0.474 elem/cycle
+RESULT fsum_acc1_ghz_median 4.513 GHz
+checksum fsum_acc2        7328400  reference      7328400  ok
+float sum, 2 accumulators                min        0.243  median        0.248  max        0.253  cv   1.1%  n 31  ns/elem
+RESULT fsum_acc2_ns_min 0.2434 ns/elem
+RESULT fsum_acc2_ns_median 0.2480 ns/elem
+RESULT fsum_acc2_ns_figure_median 0.2480 ns/elem
+RESULT fsum_acc2_cv 1.1 percent
+  same, in cycles (per-rep clock)        min        1.089  median        1.119  max        1.144  cv   1.2%  n 31  cycles/elem
+  clock before each rep: min 4.394  median 4.513  max 4.514 GHz;  throughput: median 0.2480 ns/elem;  cycles: median 1.119 = 0.89 elem/cycle
+RESULT fsum_acc2_cycles_median 1.119 cycles/elem
+RESULT fsum_acc2_per_cycle 0.894 elem/cycle
+RESULT fsum_acc2_ghz_median 4.513 GHz
+checksum fsum_acc4        7328400  reference      7328400  ok
+float sum, 4 accumulators                min        0.139  median        0.141  max        0.171  cv   6.1%  n 31  ns/elem
+RESULT fsum_acc4_ns_min 0.1394 ns/elem
+RESULT fsum_acc4_ns_median 0.1409 ns/elem
+RESULT fsum_acc4_ns_figure_median 0.1409 ns/elem
+RESULT fsum_acc4_cv 6.1 percent
+  same, in cycles (per-rep clock)        min        0.629  median        0.636  max        0.669  cv   1.6%  n 31  cycles/elem
+  clock before each rep: min 3.829  median 4.513  max 4.513 GHz;  throughput: median 0.1409 ns/elem;  cycles: median 0.636 = 1.57 elem/cycle
+RESULT fsum_acc4_cycles_median 0.636 cycles/elem
+RESULT fsum_acc4_per_cycle 1.573 elem/cycle
+RESULT fsum_acc4_ghz_median 4.513 GHz
+checksum fsum_acc8        7328400  reference      7328400  ok
+float sum, 8 accumulators                min        0.081  median        0.082  max        0.099  cv   5.5%  n 31  ns/elem
+RESULT fsum_acc8_ns_min 0.0810 ns/elem
+RESULT fsum_acc8_ns_median 0.0824 ns/elem
+RESULT fsum_acc8_ns_figure_median 0.0824 ns/elem
+RESULT fsum_acc8_cv 5.5 percent
+  same, in cycles (per-rep clock)        min        0.354  median        0.371  max        0.434  cv   3.7%  n 31  cycles/elem
+  clock before each rep: min 3.924  median 4.512  max 4.513 GHz;  throughput: median 0.0824 ns/elem;  cycles: median 0.371 = 2.69 elem/cycle
+RESULT fsum_acc8_cycles_median 0.371 cycles/elem
+RESULT fsum_acc8_per_cycle 2.693 elem/cycle
+RESULT fsum_acc8_ghz_median 4.512 GHz
+checksum fsum_acc16       7328400  reference      7328400  ok
+float sum, 16 accumulators               min        0.055  median        0.061  max        0.064  cv   3.8%  n 31  ns/elem
+RESULT fsum_acc16_ns_min 0.0554 ns/elem
+RESULT fsum_acc16_ns_median 0.0612 ns/elem
+RESULT fsum_acc16_ns_figure_median 0.0612 ns/elem
+RESULT fsum_acc16_cv 3.8 percent
+  same, in cycles (per-rep clock)        min        0.239  median        0.255  max        0.280  cv   3.7%  n 31  cycles/elem
+  clock before each rep: min 3.900  median 4.151  max 4.513 GHz;  throughput: median 0.0612 ns/elem;  cycles: median 0.255 = 3.93 elem/cycle
+RESULT fsum_acc16_cycles_median 0.255 cycles/elem
+RESULT fsum_acc16_per_cycle 3.929 elem/cycle
+RESULT fsum_acc16_ghz_median 4.151 GHz
+
+== register-only chains (inline asm), no loads ==
+int add, 8 independent chains            min        0.036  median        0.038  max        0.044  cv   4.8%  n 31  ns/add
+RESULT asm_int_indep8_ns_min 0.0360 ns/add
+RESULT asm_int_indep8_ns_median 0.0381 ns/add
+RESULT asm_int_indep8_ns_figure_median 0.0381 ns/add
+RESULT asm_int_indep8_cv 4.8 percent
+  same, in cycles (per-rep clock)        min        0.163  median        0.171  max        0.187  cv   3.3%  n 31  cycles/add
+  clock before each rep: min 3.955  median 4.513  max 4.513 GHz;  throughput: median 0.0381 ns/add;  cycles: median 0.171 = 5.83 add/cycle
+RESULT asm_int_indep8_cycles_median 0.171 cycles/add
+RESULT asm_int_indep8_per_cycle 5.831 add/cycle
+RESULT asm_int_indep8_ghz_median 4.513 GHz
+fadd, one chain                          min        0.465  median        0.479  max        0.529  cv   4.0%  n 31  ns/add
+RESULT asm_fadd_chain_ns_min 0.4653 ns/add
+RESULT asm_fadd_chain_ns_median 0.4794 ns/add
+RESULT asm_fadd_chain_ns_figure_min 0.4653 ns/add
+RESULT asm_fadd_chain_cv 4.0 percent
+  same, in cycles (per-rep clock)        min        1.951  median        2.135  max        2.304  cv   4.0%  n 31  cycles/add
+  clock before each rep: min 3.925  median 4.512  max 4.513 GHz;  latency: min 0.4653 ns/add;  cycles: median 2.135 = 0.47 add/cycle
+RESULT asm_fadd_chain_cycles_median 2.135 cycles/add
+RESULT asm_fadd_chain_per_cycle 0.468 add/cycle
+RESULT asm_fadd_chain_ghz_median 4.512 GHz
+fadd, 8 independent chains               min        0.087  median        0.087  max        0.093  cv   1.4%  n 31  ns/add
+RESULT asm_fadd_indep8_ns_min 0.0870 ns/add
+RESULT asm_fadd_indep8_ns_median 0.0871 ns/add
+RESULT asm_fadd_indep8_ns_figure_median 0.0871 ns/add
+RESULT asm_fadd_indep8_cv 1.4 percent
+  same, in cycles (per-rep clock)        min        0.384  median        0.393  max        0.418  cv   1.5%  n 31  cycles/add
+  clock before each rep: min 4.380  median 4.513  max 4.513 GHz;  throughput: median 0.0871 ns/add;  cycles: median 0.393 = 2.54 add/cycle
+RESULT asm_fadd_indep8_cycles_median 0.393 cycles/add
+RESULT asm_fadd_indep8_per_cycle 2.544 add/cycle
+RESULT asm_fadd_indep8_ghz_median 4.513 GHz
+fadd, 16 independent chains              min        0.055  median        0.055  max        0.058  cv   1.2%  n 31  ns/add
+RESULT asm_fadd_indep16_ns_min 0.0554 ns/add
+RESULT asm_fadd_indep16_ns_median 0.0554 ns/add
+RESULT asm_fadd_indep16_ns_figure_median 0.0554 ns/add
+RESULT asm_fadd_indep16_cv 1.2 percent
+  same, in cycles (per-rep clock)        min        0.250  median        0.250  max        0.263  cv   1.2%  n 31  cycles/add
+  clock before each rep: min 4.512  median 4.513  max 4.513 GHz;  throughput: median 0.0554 ns/add;  cycles: median 0.250 = 4.00 add/cycle
+RESULT asm_fadd_indep16_cycles_median 0.250 cycles/add
+RESULT asm_fadd_indep16_per_cycle 3.999 add/cycle
+RESULT asm_fadd_indep16_ghz_median 4.513 GHz
+fmul, one chain                          min        0.689  median        0.693  max        0.737  cv   1.4%  n 31  ns/mul
+RESULT asm_fmul_chain_ns_min 0.6890 ns/mul
+RESULT asm_fmul_chain_ns_median 0.6935 ns/mul
+RESULT asm_fmul_chain_ns_figure_min 0.6890 ns/mul
+RESULT asm_fmul_chain_cv 1.4 percent
+  same, in cycles (per-rep clock)        min        3.011  median        3.126  max        3.244  cv   1.1%  n 31  cycles/mul
+  clock before each rep: min 4.225  median 4.513  max 4.513 GHz;  latency: min 0.6890 ns/mul;  cycles: median 3.126 = 0.32 mul/cycle
+RESULT asm_fmul_chain_cycles_median 3.126 cycles/mul
+RESULT asm_fmul_chain_per_cycle 0.320 mul/cycle
+RESULT asm_fmul_chain_ghz_median 4.513 GHz
+checksums: every call of every kernel matched the reference sum

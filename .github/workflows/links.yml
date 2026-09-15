@@ -1,0 +1,55 @@
+name: Links
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 6 * * 1"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    name: Every README URL is live
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check links
+        id: check
+        run: python3 misc/scripts/check_links.py --report link-report.md README.md CONTRIBUTING.md misc/benchmarks/README.md misc/benchmarks/*/README.md
+      - name: Show report
+        if: always()
+        run: |
+          cat link-report.md 2>/dev/null || true
+          if [ -f link-report.md ]; then cat link-report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Open or update the dead-links issue
+        if: failure() && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh label create dead-links --color B60205 --description "Reported by the link checker" --force
+          body="$(printf 'Run: %s/%s/actions/runs/%s\nCommit: %s\n\n' "$GITHUB_SERVER_URL" "$GH_REPO" "$GITHUB_RUN_ID" "$GITHUB_SHA"; cat link-report.md)"
+          existing="$(gh issue list --label dead-links --state open --json number --jq '.[0].number')"
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --body "$body"
+            gh issue comment "$existing" --body "Still failing as of $(date -u +%Y-%m-%d). Report updated in the issue body."
+          else
+            gh issue create --title "Dead links found by the link checker" --label dead-links --body "$body"
+          fi
+      - name: Close the dead-links issue when clean
+        if: success() && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          existing="$(gh issue list --label dead-links --state open --json number --jq '.[0].number' 2>/dev/null || true)"
+          if [ -n "$existing" ]; then
+            gh issue close "$existing" --comment "All links are live again as of $(date -u +%Y-%m-%d)."
+          fi

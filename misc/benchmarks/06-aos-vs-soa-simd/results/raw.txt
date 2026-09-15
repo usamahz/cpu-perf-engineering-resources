@@ -1,0 +1,162 @@
+date: 2026-09-15T09:38:00Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 7.02 7.46 7.78
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.50 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default CLOCK_GHZ=4.50
+---
+records 4194304  record bytes 64  aos bytes 268435456  soa field bytes 16777216  soa fields 16  reps 31 (plus 1 warmup, discarded)  evict sweep 134217728 bytes  clock 4.50 GHz
+reference (double, from the struct copy): sum3 2096667.738  dot37 1048326.786  tolerance 1e-02 relative
+RESULT records 4194304 count
+RESULT aos_bytes 268435456 bytes
+RESULT soa_field_bytes 16777216 bytes
+RESULT evict_bytes 134217728 bytes
+RESULT reps 31 count
+RESULT sum3_reference 2096667.738 sum
+RESULT dot37_reference 1048326.786 sum
+RESULT tolerance 1e-02 relative
+RESULT clock 4.50 GHz
+cycles: each pass is converted with the clock sampled just before it (min of three dependent integer add chains of 2000000 adds), then the median of the conversions is taken
+sum3 aos_scalar                          min        0.650  median        0.669  max        0.918  cv   6.6%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        2.933  median        3.017  max        4.142  cv   6.6%  n 31  cycles/rec
+  clock before each pass: min 4.417  median 4.513  max 4.513 GHz
+RESULT sum3_aos_scalar_bytes 64 B/rec
+RESULT sum3_aos_scalar_median 0.6685 ns/rec
+RESULT sum3_aos_scalar_min 0.6501 ns/rec
+RESULT sum3_aos_scalar_cv 6.61 percent
+RESULT sum3_aos_scalar_gbps 95.73 GB/s
+RESULT sum3_aos_scalar_cycles 3.017 cycles/rec
+RESULT sum3_aos_scalar_ghz 4.513 GHz
+RESULT sum3_aos_scalar_relerr 5.53e-05 relative
+sum3 aos_o2                              min        0.603  median        0.625  max        0.647  cv   1.7%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        2.719  median        2.819  max        2.918  cv   1.7%  n 31  cycles/rec
+  clock before each pass: min 4.511  median 4.512  max 4.513 GHz
+RESULT sum3_aos_o2_bytes 64 B/rec
+RESULT sum3_aos_o2_median 0.6247 ns/rec
+RESULT sum3_aos_o2_min 0.6025 ns/rec
+RESULT sum3_aos_o2_cv 1.69 percent
+RESULT sum3_aos_o2_gbps 102.44 GB/s
+RESULT sum3_aos_o2_cycles 2.819 cycles/rec
+RESULT sum3_aos_o2_ghz 4.512 GHz
+RESULT sum3_aos_o2_relerr 5.91e-07 relative
+sum3 soa_scalar                          min        0.554  median        0.555  max        0.592  cv   1.3%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        2.475  median        2.505  max        2.670  cv   1.3%  n 31  cycles/rec
+  clock before each pass: min 4.465  median 4.512  max 4.513 GHz
+RESULT sum3_soa_scalar_bytes 4 B/rec
+RESULT sum3_soa_scalar_median 0.5552 ns/rec
+RESULT sum3_soa_scalar_min 0.5543 ns/rec
+RESULT sum3_soa_scalar_cv 1.26 percent
+RESULT sum3_soa_scalar_gbps 7.21 GB/s
+RESULT sum3_soa_scalar_cycles 2.505 cycles/rec
+RESULT sum3_soa_scalar_ghz 4.512 GHz
+RESULT sum3_soa_scalar_relerr 5.53e-05 relative
+sum3 soa_strict                          min        0.474  median        0.474  max        0.522  cv   1.9%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        2.118  median        2.138  max        2.356  cv   1.9%  n 31  cycles/rec
+  clock before each pass: min 4.416  median 4.513  max 4.514 GHz
+RESULT sum3_soa_strict_bytes 4 B/rec
+RESULT sum3_soa_strict_median 0.4737 ns/rec
+RESULT sum3_soa_strict_min 0.4735 ns/rec
+RESULT sum3_soa_strict_cv 1.86 percent
+RESULT sum3_soa_strict_gbps 8.44 GB/s
+RESULT sum3_soa_strict_cycles 2.138 cycles/rec
+RESULT sum3_soa_strict_ghz 4.513 GHz
+RESULT sum3_soa_strict_relerr 5.53e-05 relative
+sum3 soa_o2                              min        0.042  median        0.044  max        0.047  cv   2.1%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        0.190  median        0.198  max        0.209  cv   1.8%  n 31  cycles/rec
+  clock before each pass: min 4.416  median 4.513  max 4.513 GHz
+RESULT sum3_soa_o2_bytes 4 B/rec
+RESULT sum3_soa_o2_median 0.0439 ns/rec
+RESULT sum3_soa_o2_min 0.0422 ns/rec
+RESULT sum3_soa_o2_cv 2.06 percent
+RESULT sum3_soa_o2_gbps 91.10 GB/s
+RESULT sum3_soa_o2_cycles 0.198 cycles/rec
+RESULT sum3_soa_o2_ghz 4.513 GHz
+RESULT sum3_soa_o2_relerr 5.91e-07 relative
+sum3 soa_neon                            min        0.045  median        0.046  max        0.054  cv   4.4%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        0.201  median        0.206  max        0.242  cv   4.3%  n 31  cycles/rec
+  clock before each pass: min 4.417  median 4.513  max 4.514 GHz
+RESULT sum3_soa_neon_bytes 4 B/rec
+RESULT sum3_soa_neon_median 0.0456 ns/rec
+RESULT sum3_soa_neon_min 0.0445 ns/rec
+RESULT sum3_soa_neon_cv 4.44 percent
+RESULT sum3_soa_neon_gbps 87.72 GB/s
+RESULT sum3_soa_neon_cycles 0.206 cycles/rec
+RESULT sum3_soa_neon_ghz 4.513 GHz
+RESULT sum3_soa_neon_relerr 5.91e-07 relative
+dot37 aos_scalar                         min        0.778  median        0.787  max        1.162  cv   8.3%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        3.200  median        3.547  max        5.243  cv   8.6%  n 31  cycles/rec
+  clock before each pass: min 3.924  median 4.512  max 4.514 GHz
+RESULT dot37_aos_scalar_bytes 64 B/rec
+RESULT dot37_aos_scalar_median 0.7871 ns/rec
+RESULT dot37_aos_scalar_min 0.7776 ns/rec
+RESULT dot37_aos_scalar_cv 8.34 percent
+RESULT dot37_aos_scalar_gbps 81.31 GB/s
+RESULT dot37_aos_scalar_cycles 3.547 cycles/rec
+RESULT dot37_aos_scalar_ghz 4.512 GHz
+RESULT dot37_aos_scalar_relerr 1.90e-03 relative
+dot37 aos_o2                             min        0.639  median        0.658  max        0.752  cv   3.1%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        2.883  median        2.969  max        3.392  cv   3.1%  n 31  cycles/rec
+  clock before each pass: min 4.415  median 4.513  max 4.513 GHz
+RESULT dot37_aos_o2_bytes 64 B/rec
+RESULT dot37_aos_o2_median 0.6583 ns/rec
+RESULT dot37_aos_o2_min 0.6388 ns/rec
+RESULT dot37_aos_o2_cv 3.10 percent
+RESULT dot37_aos_o2_gbps 97.23 GB/s
+RESULT dot37_aos_o2_cycles 2.969 cycles/rec
+RESULT dot37_aos_o2_ghz 4.513 GHz
+RESULT dot37_aos_o2_relerr 1.49e-04 relative
+dot37 soa_scalar                         min        0.745  median        0.765  max        0.893  cv   3.8%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        3.362  median        3.449  max        3.758  cv   2.4%  n 31  cycles/rec
+  clock before each pass: min 3.924  median 4.512  max 4.513 GHz
+RESULT dot37_soa_scalar_bytes 8 B/rec
+RESULT dot37_soa_scalar_median 0.7647 ns/rec
+RESULT dot37_soa_scalar_min 0.7452 ns/rec
+RESULT dot37_soa_scalar_cv 3.79 percent
+RESULT dot37_soa_scalar_gbps 10.46 GB/s
+RESULT dot37_soa_scalar_cycles 3.449 cycles/rec
+RESULT dot37_soa_scalar_ghz 4.512 GHz
+RESULT dot37_soa_scalar_relerr 1.90e-03 relative
+dot37 soa_strict                         min        0.482  median        0.483  max        0.576  cv   3.4%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        2.136  median        2.178  max        2.221  cv   0.7%  n 31  cycles/rec
+  clock before each pass: min 3.808  median 4.513  max 4.513 GHz
+RESULT dot37_soa_strict_bytes 8 B/rec
+RESULT dot37_soa_strict_median 0.4827 ns/rec
+RESULT dot37_soa_strict_min 0.4825 ns/rec
+RESULT dot37_soa_strict_cv 3.39 percent
+RESULT dot37_soa_strict_gbps 16.57 GB/s
+RESULT dot37_soa_strict_cycles 2.178 cycles/rec
+RESULT dot37_soa_strict_ghz 4.513 GHz
+RESULT dot37_soa_strict_relerr 1.90e-03 relative
+dot37 soa_o2                             min        0.061  median        0.062  max        0.070  cv   2.6%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        0.277  median        0.279  max        0.317  cv   2.5%  n 31  cycles/rec
+  clock before each pass: min 4.417  median 4.513  max 4.513 GHz
+RESULT dot37_soa_o2_bytes 8 B/rec
+RESULT dot37_soa_o2_median 0.0619 ns/rec
+RESULT dot37_soa_o2_min 0.0613 ns/rec
+RESULT dot37_soa_o2_cv 2.55 percent
+RESULT dot37_soa_o2_gbps 129.28 GB/s
+RESULT dot37_soa_o2_cycles 0.279 cycles/rec
+RESULT dot37_soa_o2_ghz 4.513 GHz
+RESULT dot37_soa_o2_relerr 9.57e-06 relative
+dot37 soa_neon                           min        0.062  median        0.062  max        0.070  cv   2.7%  n 31  ns/rec
+  same, in cycles (per-pass clock)       min        0.279  median        0.280  max        0.300  cv   1.9%  n 31  cycles/rec
+  clock before each pass: min 4.289  median 4.512  max 4.513 GHz
+RESULT dot37_soa_neon_bytes 8 B/rec
+RESULT dot37_soa_neon_median 0.0621 ns/rec
+RESULT dot37_soa_neon_min 0.0617 ns/rec
+RESULT dot37_soa_neon_cv 2.72 percent
+RESULT dot37_soa_neon_gbps 128.87 GB/s
+RESULT dot37_soa_neon_cycles 0.280 cycles/rec
+RESULT dot37_soa_neon_ghz 4.512 GHz
+RESULT dot37_soa_neon_relerr 9.57e-06 relative
+checksums: every variant matched the double reference within 1e-02 relative

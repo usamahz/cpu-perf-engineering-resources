@@ -1,0 +1,2 @@
+# QUICK=1 ./run.sh smoke output; the committed artefacts are results/raw.txt and results/summary.md
+results/quick-*

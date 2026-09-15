@@ -1,0 +1,86 @@
+date: 2026-09-15T09:36:31Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 7.75 7.54 7.83
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default CLOCK_GHZ=4.49
+---
+elements 4194304  bytes per array 16777216  reps 31 (plus 1 warmup, discarded)  clock 4.49 GHz
+threshold 128: condition true for fraction 0.4995  reference sum 401130148
+RESULT t128_cond_true 0.4995 fraction
+RESULT t128_checksum 401130148 sum
+threshold 243: condition true for fraction 0.0505  reference sum 52694301
+RESULT t243_cond_true 0.0505 fraction
+RESULT t243_checksum 52694301 sum
+RESULT clock 4.49 GHz
+t128 unsorted branchy                    min        2.363  median        2.386  max        2.425  cv   0.7%  n 31  ns/elem
+RESULT t128_unsorted_branchy_median 2.3860 ns/elem
+RESULT t128_unsorted_branchy_min 2.3634 ns/elem
+RESULT t128_unsorted_branchy_cv 0.72 percent
+RESULT t128_unsorted_branchy_cycles 10.713 cycles/elem
+t128 unsorted branchless                 min        0.226  median        0.226  max        0.266  cv   4.1%  n 31  ns/elem
+RESULT t128_unsorted_branchless_median 0.2264 ns/elem
+RESULT t128_unsorted_branchless_min 0.2258 ns/elem
+RESULT t128_unsorted_branchless_cv 4.09 percent
+RESULT t128_unsorted_branchless_cycles 1.016 cycles/elem
+t128 unsorted vector                     min        0.056  median        0.056  max        0.068  cv   5.0%  n 31  ns/elem
+RESULT t128_unsorted_vector_median 0.0557 ns/elem
+RESULT t128_unsorted_vector_min 0.0556 ns/elem
+RESULT t128_unsorted_vector_cv 4.96 percent
+RESULT t128_unsorted_vector_cycles 0.250 cycles/elem
+t128 sorted branchy                      min        0.224  median        0.225  max        0.235  cv   1.1%  n 31  ns/elem
+RESULT t128_sorted_branchy_median 0.2246 ns/elem
+RESULT t128_sorted_branchy_min 0.2237 ns/elem
+RESULT t128_sorted_branchy_cv 1.14 percent
+RESULT t128_sorted_branchy_cycles 1.008 cycles/elem
+t128 sorted branchless                   min        0.226  median        0.226  max        0.232  cv   0.8%  n 31  ns/elem
+RESULT t128_sorted_branchless_median 0.2263 ns/elem
+RESULT t128_sorted_branchless_min 0.2257 ns/elem
+RESULT t128_sorted_branchless_cv 0.78 percent
+RESULT t128_sorted_branchless_cycles 1.016 cycles/elem
+t128 sorted vector                       min        0.056  median        0.056  max        0.059  cv   1.2%  n 31  ns/elem
+RESULT t128_sorted_vector_median 0.0557 ns/elem
+RESULT t128_sorted_vector_min 0.0556 ns/elem
+RESULT t128_sorted_vector_cv 1.22 percent
+RESULT t128_sorted_vector_cycles 0.250 cycles/elem
+t243 unsorted branchy                    min        0.507  median        0.508  max        0.536  cv   1.1%  n 31  ns/elem
+RESULT t243_unsorted_branchy_median 0.5080 ns/elem
+RESULT t243_unsorted_branchy_min 0.5070 ns/elem
+RESULT t243_unsorted_branchy_cv 1.08 percent
+RESULT t243_unsorted_branchy_cycles 2.281 cycles/elem
+t243 unsorted branchless                 min        0.226  median        0.227  max        0.235  cv   1.0%  n 31  ns/elem
+RESULT t243_unsorted_branchless_median 0.2266 ns/elem
+RESULT t243_unsorted_branchless_min 0.2257 ns/elem
+RESULT t243_unsorted_branchless_cv 1.01 percent
+RESULT t243_unsorted_branchless_cycles 1.018 cycles/elem
+t243 unsorted vector                     min        0.056  median        0.056  max        0.064  cv   2.7%  n 31  ns/elem
+RESULT t243_unsorted_vector_median 0.0557 ns/elem
+RESULT t243_unsorted_vector_min 0.0556 ns/elem
+RESULT t243_unsorted_vector_cv 2.73 percent
+RESULT t243_unsorted_vector_cycles 0.250 cycles/elem
+t243 sorted branchy                      min        0.223  median        0.223  max        0.230  cv   0.9%  n 31  ns/elem
+RESULT t243_sorted_branchy_median 0.2234 ns/elem
+RESULT t243_sorted_branchy_min 0.2229 ns/elem
+RESULT t243_sorted_branchy_cv 0.87 percent
+RESULT t243_sorted_branchy_cycles 1.003 cycles/elem
+t243 sorted branchless                   min        0.226  median        0.227  max        0.234  cv   1.0%  n 31  ns/elem
+RESULT t243_sorted_branchless_median 0.2266 ns/elem
+RESULT t243_sorted_branchless_min 0.2259 ns/elem
+RESULT t243_sorted_branchless_cv 0.98 percent
+RESULT t243_sorted_branchless_cycles 1.017 cycles/elem
+t243 sorted vector                       min        0.056  median        0.056  max        0.066  cv   3.3%  n 31  ns/elem
+RESULT t243_sorted_vector_median 0.0557 ns/elem
+RESULT t243_sorted_vector_min 0.0556 ns/elem
+RESULT t243_sorted_vector_cv 3.34 percent
+RESULT t243_sorted_vector_cycles 0.250 cycles/elem
+checksums: every variant matched its reference sum

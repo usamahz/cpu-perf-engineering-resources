@@ -1,0 +1,509 @@
+date: 2026-09-15T09:38:04Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 7.02 7.46 7.78
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.50 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default CLOCK_GHZ=4.50
+--- bench_O2
+build: O2 = -std=c11 -Wall -Wextra -O2
+clock estimate 4.50 GHz  reps 31  quick 0  probe 0
+RESULT clock 4.50 GHz
+size: n 4194304 floats, 16777216 bytes per array, 50331648 bytes for the three arrays, 1 calls per sample, reps 31 (plus 1 warmup, discarded)
+checksum: out of place 0xf2b41bddb9818632, in place after 1 calls 0xf2b41bddb9818632
+RESULT O2_n4194304_checksum 0xf2b41bddb9818632 hash
+O2 n4194304 plain                        min        0.089  median        0.095  max        0.112  cv   3.7%  n 31  ns/elem
+RESULT O2_n4194304_plain_median 0.0947 ns/elem
+RESULT O2_n4194304_plain_min 0.0885 ns/elem
+RESULT O2_n4194304_plain_cv 3.70 percent
+O2 n4194304 restrict                     min        0.088  median        0.096  max        0.110  cv   3.6%  n 31  ns/elem
+RESULT O2_n4194304_restrict_median 0.0956 ns/elem
+RESULT O2_n4194304_restrict_min 0.0879 ns/elem
+RESULT O2_n4194304_restrict_cv 3.63 percent
+O2 n4194304 pragma                       min        0.092  median        0.096  max        0.111  cv   4.1%  n 31  ns/elem
+RESULT O2_n4194304_pragma_median 0.0957 ns/elem
+RESULT O2_n4194304_pragma_min 0.0918 ns/elem
+RESULT O2_n4194304_pragma_cv 4.07 percent
+O2 n4194304 stride                       min        0.088  median        0.095  max        0.099  cv   2.5%  n 31  ns/elem
+RESULT O2_n4194304_stride_median 0.0948 ns/elem
+RESULT O2_n4194304_stride_min 0.0879 ns/elem
+RESULT O2_n4194304_stride_cv 2.54 percent
+O2 n4194304 last                         min        0.089  median        0.096  max        0.106  cv   3.0%  n 31  ns/elem
+RESULT O2_n4194304_last_median 0.0958 ns/elem
+RESULT O2_n4194304_last_min 0.0887 ns/elem
+RESULT O2_n4194304_last_cv 3.04 percent
+O2 n4194304 scalar                       min        0.234  median        0.249  max        0.285  cv   3.0%  n 31  ns/elem
+RESULT O2_n4194304_scalar_median 0.2487 ns/elem
+RESULT O2_n4194304_scalar_min 0.2339 ns/elem
+RESULT O2_n4194304_scalar_cv 3.04 percent
+O2 n4194304 plain in place               min        0.246  median        0.250  max        0.262  cv   1.3%  n 31  ns/elem
+RESULT O2_n4194304_plain_inplace_median 0.2504 ns/elem
+RESULT O2_n4194304_plain_inplace_min 0.2464 ns/elem
+RESULT O2_n4194304_plain_inplace_cv 1.26 percent
+O2 n4194304 pragma in place              min        0.078  median        0.080  max        0.083  cv   1.7%  n 31  ns/elem
+RESULT O2_n4194304_pragma_inplace_median 0.0798 ns/elem
+RESULT O2_n4194304_pragma_inplace_min 0.0777 ns/elem
+RESULT O2_n4194304_pragma_inplace_cv 1.67 percent
+O2 n4194304 restrict / plain             min        0.938  median        1.005  max        1.115  cv   3.3%  n 31  ratio, paired per round
+RESULT O2_n4194304_restrict_vsplain 1.005 ratio
+RESULT O2_n4194304_restrict_vsplaincv 3.26 percent
+O2 n4194304 pragma / plain               min        0.962  median        1.002  max        1.168  cv   3.8%  n 31  ratio, paired per round
+RESULT O2_n4194304_pragma_vsplain 1.002 ratio
+RESULT O2_n4194304_pragma_vsplaincv 3.76 percent
+O2 n4194304 stride / plain               min        0.884  median        0.996  max        1.073  cv   3.4%  n 31  ratio, paired per round
+RESULT O2_n4194304_stride_vsplain 0.996 ratio
+RESULT O2_n4194304_stride_vsplaincv 3.40 percent
+O2 n4194304 last / plain                 min        0.941  median        1.010  max        1.092  cv   2.7%  n 31  ratio, paired per round
+RESULT O2_n4194304_last_vsplain 1.010 ratio
+RESULT O2_n4194304_last_vsplaincv 2.72 percent
+O2 n4194304 scalar / plain               min        2.466  median        2.616  max        2.802  cv   2.6%  n 31  ratio, paired per round
+RESULT O2_n4194304_scalar_vsplain 2.616 ratio
+RESULT O2_n4194304_scalar_vsplaincv 2.55 percent
+O2 n4194304 plain in place / plain       min        2.228  median        2.641  max        2.836  cv   3.4%  n 31  ratio, paired per round
+RESULT O2_n4194304_plain_inplace_vsplain 2.641 ratio
+RESULT O2_n4194304_plain_inplace_vsplaincv 3.37 percent
+O2 n4194304 plain in place / pragma in place min        3.033  median        3.128  max        3.294  cv   1.7%  n 31  ratio, paired per round
+RESULT O2_n4194304_pragma_inplace_vspragmainplace 3.128 ratio
+RESULT O2_n4194304_pragma_inplace_vspragmainplacecv 1.66 percent
+size: n 8192 floats, 32768 bytes per array, 98304 bytes for the three arrays, 32 calls per sample, reps 31 (plus 1 warmup, discarded)
+checksum: out of place 0x5abbee151d89e35f, in place after 32 calls 0xc8959109664e8886
+RESULT O2_n8192_checksum 0x5abbee151d89e35f hash
+O2 n8192 plain                           min        0.042  median        0.047  max        0.052  cv   5.2%  n 31  ns/elem
+RESULT O2_n8192_plain_median 0.0471 ns/elem
+RESULT O2_n8192_plain_min 0.0420 ns/elem
+RESULT O2_n8192_plain_cv 5.21 percent
+O2 n8192 restrict                        min        0.042  median        0.047  max        0.059  cv   7.3%  n 31  ns/elem
+RESULT O2_n8192_restrict_median 0.0469 ns/elem
+RESULT O2_n8192_restrict_min 0.0421 ns/elem
+RESULT O2_n8192_restrict_cv 7.34 percent
+O2 n8192 pragma                          min        0.042  median        0.047  max        0.055  cv   6.0%  n 31  ns/elem
+RESULT O2_n8192_pragma_median 0.0471 ns/elem
+RESULT O2_n8192_pragma_min 0.0421 ns/elem
+RESULT O2_n8192_pragma_cv 6.02 percent
+O2 n8192 stride                          min        0.042  median        0.047  max        0.058  cv   6.7%  n 31  ns/elem
+RESULT O2_n8192_stride_median 0.0472 ns/elem
+RESULT O2_n8192_stride_min 0.0421 ns/elem
+RESULT O2_n8192_stride_cv 6.74 percent
+O2 n8192 last                            min        0.042  median        0.047  max        0.057  cv   6.7%  n 31  ns/elem
+RESULT O2_n8192_last_median 0.0471 ns/elem
+RESULT O2_n8192_last_min 0.0423 ns/elem
+RESULT O2_n8192_last_cv 6.70 percent
+O2 n8192 scalar                          min        0.223  median        0.249  max        0.284  cv   5.5%  n 31  ns/elem
+RESULT O2_n8192_scalar_median 0.2487 ns/elem
+RESULT O2_n8192_scalar_min 0.2230 ns/elem
+RESULT O2_n8192_scalar_cv 5.53 percent
+O2 n8192 plain in place                  min        0.223  median        0.249  max        0.281  cv   4.8%  n 31  ns/elem
+RESULT O2_n8192_plain_inplace_median 0.2487 ns/elem
+RESULT O2_n8192_plain_inplace_min 0.2230 ns/elem
+RESULT O2_n8192_plain_inplace_cv 4.76 percent
+O2 n8192 pragma in place                 min        0.042  median        0.047  max        0.051  cv   5.1%  n 31  ns/elem
+RESULT O2_n8192_pragma_inplace_median 0.0474 ns/elem
+RESULT O2_n8192_pragma_inplace_min 0.0423 ns/elem
+RESULT O2_n8192_pragma_inplace_cv 5.12 percent
+O2 n8192 restrict / plain                min        0.855  median        1.000  max        1.243  cv   8.5%  n 31  ratio, paired per round
+RESULT O2_n8192_restrict_vsplain 1.000 ratio
+RESULT O2_n8192_restrict_vsplaincv 8.53 percent
+O2 n8192 pragma / plain                  min        0.855  median        1.000  max        1.169  cv   7.4%  n 31  ratio, paired per round
+RESULT O2_n8192_pragma_vsplain 1.000 ratio
+RESULT O2_n8192_pragma_vsplaincv 7.40 percent
+O2 n8192 stride / plain                  min        0.829  median        1.003  max        1.331  cv   8.3%  n 31  ratio, paired per round
+RESULT O2_n8192_stride_vsplain 1.003 ratio
+RESULT O2_n8192_stride_vsplaincv 8.34 percent
+O2 n8192 last / plain                    min        0.861  median        1.000  max        1.207  cv   7.6%  n 31  ratio, paired per round
+RESULT O2_n8192_last_vsplain 1.000 ratio
+RESULT O2_n8192_last_vsplaincv 7.56 percent
+O2 n8192 scalar / plain                  min        4.886  median        5.291  max        6.598  cv   7.0%  n 31  ratio, paired per round
+RESULT O2_n8192_scalar_vsplain 5.291 ratio
+RESULT O2_n8192_scalar_vsplaincv 7.05 percent
+O2 n8192 plain in place / plain          min        4.712  median        5.294  max        5.913  cv   5.5%  n 31  ratio, paired per round
+RESULT O2_n8192_plain_inplace_vsplain 5.294 ratio
+RESULT O2_n8192_plain_inplace_vsplaincv 5.48 percent
+O2 n8192 plain in place / pragma in place min        4.690  median        5.269  max        6.476  cv   6.6%  n 31  ratio, paired per round
+RESULT O2_n8192_pragma_inplace_vspragmainplace 5.269 ratio
+RESULT O2_n8192_pragma_inplace_vspragmainplacecv 6.60 percent
+outputs: every variant matched the reference bit for bit
+--- bench_O2nu
+build: O2nu = -std=c11 -Wall -Wextra -O2 -fno-unroll-loops
+clock estimate 4.50 GHz  reps 31  quick 0  probe 0
+RESULT clock 4.50 GHz
+size: n 4194304 floats, 16777216 bytes per array, 50331648 bytes for the three arrays, 1 calls per sample, reps 31 (plus 1 warmup, discarded)
+checksum: out of place 0xf2b41bddb9818632, in place after 1 calls 0xf2b41bddb9818632
+RESULT O2nu_n4194304_checksum 0xf2b41bddb9818632 hash
+O2nu n4194304 plain                      min        0.088  median        0.096  max        0.102  cv   2.3%  n 31  ns/elem
+RESULT O2nu_n4194304_plain_median 0.0962 ns/elem
+RESULT O2nu_n4194304_plain_min 0.0884 ns/elem
+RESULT O2nu_n4194304_plain_cv 2.28 percent
+O2nu n4194304 restrict                   min        0.088  median        0.096  max        0.100  cv   2.1%  n 31  ns/elem
+RESULT O2nu_n4194304_restrict_median 0.0965 ns/elem
+RESULT O2nu_n4194304_restrict_min 0.0876 ns/elem
+RESULT O2nu_n4194304_restrict_cv 2.10 percent
+O2nu n4194304 pragma                     min        0.087  median        0.096  max        0.099  cv   2.0%  n 31  ns/elem
+RESULT O2nu_n4194304_pragma_median 0.0963 ns/elem
+RESULT O2nu_n4194304_pragma_min 0.0874 ns/elem
+RESULT O2nu_n4194304_pragma_cv 2.02 percent
+O2nu n4194304 stride                     min        0.088  median        0.096  max        0.100  cv   2.1%  n 31  ns/elem
+RESULT O2nu_n4194304_stride_median 0.0962 ns/elem
+RESULT O2nu_n4194304_stride_min 0.0880 ns/elem
+RESULT O2nu_n4194304_stride_cv 2.14 percent
+O2nu n4194304 last                       min        0.095  median        0.096  max        0.100  cv   1.4%  n 31  ns/elem
+RESULT O2nu_n4194304_last_median 0.0961 ns/elem
+RESULT O2nu_n4194304_last_min 0.0947 ns/elem
+RESULT O2nu_n4194304_last_cv 1.38 percent
+O2nu n4194304 scalar                     min        0.226  median        0.248  max        0.253  cv   1.8%  n 31  ns/elem
+RESULT O2nu_n4194304_scalar_median 0.2482 ns/elem
+RESULT O2nu_n4194304_scalar_min 0.2258 ns/elem
+RESULT O2nu_n4194304_scalar_cv 1.76 percent
+O2nu n4194304 plain in place             min        0.229  median        0.250  max        0.254  cv   2.0%  n 31  ns/elem
+RESULT O2nu_n4194304_plain_inplace_median 0.2505 ns/elem
+RESULT O2nu_n4194304_plain_inplace_min 0.2287 ns/elem
+RESULT O2nu_n4194304_plain_inplace_cv 2.00 percent
+O2nu n4194304 pragma in place            min        0.078  median        0.080  max        0.083  cv   1.3%  n 31  ns/elem
+RESULT O2nu_n4194304_pragma_inplace_median 0.0804 ns/elem
+RESULT O2nu_n4194304_pragma_inplace_min 0.0784 ns/elem
+RESULT O2nu_n4194304_pragma_inplace_cv 1.29 percent
+O2nu n4194304 restrict / plain           min        0.902  median        0.999  max        1.097  cv   3.1%  n 31  ratio, paired per round
+RESULT O2nu_n4194304_restrict_vsplain 0.999 ratio
+RESULT O2nu_n4194304_restrict_vsplaincv 3.13 percent
+O2nu n4194304 pragma / plain             min        0.900  median        0.999  max        1.093  cv   2.9%  n 31  ratio, paired per round
+RESULT O2nu_n4194304_pragma_vsplain 0.999 ratio
+RESULT O2nu_n4194304_pragma_vsplaincv 2.91 percent
+O2nu n4194304 stride / plain             min        0.957  median        0.995  max        1.042  cv   2.0%  n 31  ratio, paired per round
+RESULT O2nu_n4194304_stride_vsplain 0.995 ratio
+RESULT O2nu_n4194304_stride_vsplaincv 1.99 percent
+O2nu n4194304 last / plain               min        0.964  median        0.997  max        1.079  cv   2.3%  n 31  ratio, paired per round
+RESULT O2nu_n4194304_last_vsplain 0.997 ratio
+RESULT O2nu_n4194304_last_vsplaincv 2.29 percent
+O2nu n4194304 scalar / plain             min        2.366  median        2.573  max        2.819  cv   2.8%  n 31  ratio, paired per round
+RESULT O2nu_n4194304_scalar_vsplain 2.573 ratio
+RESULT O2nu_n4194304_scalar_vsplaincv 2.85 percent
+O2nu n4194304 plain in place / plain     min        2.343  median        2.591  max        2.749  cv   2.9%  n 31  ratio, paired per round
+RESULT O2nu_n4194304_plain_inplace_vsplain 2.591 ratio
+RESULT O2nu_n4194304_plain_inplace_vsplaincv 2.91 percent
+O2nu n4194304 plain in place / pragma in place min        2.834  median        3.105  max        3.160  cv   2.0%  n 31  ratio, paired per round
+RESULT O2nu_n4194304_pragma_inplace_vspragmainplace 3.105 ratio
+RESULT O2nu_n4194304_pragma_inplace_vspragmainplacecv 2.03 percent
+size: n 8192 floats, 32768 bytes per array, 98304 bytes for the three arrays, 32 calls per sample, reps 31 (plus 1 warmup, discarded)
+checksum: out of place 0x5abbee151d89e35f, in place after 32 calls 0xc8959109664e8886
+RESULT O2nu_n8192_checksum 0x5abbee151d89e35f hash
+O2nu n8192 plain                         min        0.056  median        0.063  max        0.064  cv   3.5%  n 31  ns/elem
+RESULT O2nu_n8192_plain_median 0.0631 ns/elem
+RESULT O2nu_n8192_plain_min 0.0564 ns/elem
+RESULT O2nu_n8192_plain_cv 3.55 percent
+O2nu n8192 restrict                      min        0.056  median        0.063  max        0.064  cv   4.1%  n 31  ns/elem
+RESULT O2nu_n8192_restrict_median 0.0629 ns/elem
+RESULT O2nu_n8192_restrict_min 0.0564 ns/elem
+RESULT O2nu_n8192_restrict_cv 4.11 percent
+O2nu n8192 pragma                        min        0.057  median        0.063  max        0.064  cv   4.3%  n 31  ns/elem
+RESULT O2nu_n8192_pragma_median 0.0633 ns/elem
+RESULT O2nu_n8192_pragma_min 0.0567 ns/elem
+RESULT O2nu_n8192_pragma_cv 4.27 percent
+O2nu n8192 stride                        min        0.056  median        0.063  max        0.079  cv   6.4%  n 31  ns/elem
+RESULT O2nu_n8192_stride_median 0.0629 ns/elem
+RESULT O2nu_n8192_stride_min 0.0564 ns/elem
+RESULT O2nu_n8192_stride_cv 6.40 percent
+O2nu n8192 last                          min        0.057  median        0.063  max        0.064  cv   3.1%  n 31  ns/elem
+RESULT O2nu_n8192_last_median 0.0634 ns/elem
+RESULT O2nu_n8192_last_min 0.0569 ns/elem
+RESULT O2nu_n8192_last_cv 3.11 percent
+O2nu n8192 scalar                        min        0.223  median        0.248  max        0.256  cv   2.9%  n 31  ns/elem
+RESULT O2nu_n8192_scalar_median 0.2484 ns/elem
+RESULT O2nu_n8192_scalar_min 0.2230 ns/elem
+RESULT O2nu_n8192_scalar_cv 2.93 percent
+O2nu n8192 plain in place                min        0.223  median        0.249  max        0.253  cv   4.1%  n 31  ns/elem
+RESULT O2nu_n8192_plain_inplace_median 0.2486 ns/elem
+RESULT O2nu_n8192_plain_inplace_min 0.2230 ns/elem
+RESULT O2nu_n8192_plain_inplace_cv 4.05 percent
+O2nu n8192 pragma in place               min        0.057  median        0.064  max        0.081  cv   6.7%  n 31  ns/elem
+RESULT O2nu_n8192_pragma_inplace_median 0.0636 ns/elem
+RESULT O2nu_n8192_pragma_inplace_min 0.0569 ns/elem
+RESULT O2nu_n8192_pragma_inplace_cv 6.70 percent
+O2nu n8192 restrict / plain              min        0.894  median        0.998  max        1.118  cv   4.7%  n 31  ratio, paired per round
+RESULT O2nu_n8192_restrict_vsplain 0.998 ratio
+RESULT O2nu_n8192_restrict_vsplaincv 4.66 percent
+O2nu n8192 pragma / plain                min        0.899  median        1.000  max        1.124  cv   5.6%  n 31  ratio, paired per round
+RESULT O2nu_n8192_pragma_vsplain 1.000 ratio
+RESULT O2nu_n8192_pragma_vsplaincv 5.58 percent
+O2nu n8192 stride / plain                min        0.892  median        1.000  max        1.270  cv   7.5%  n 31  ratio, paired per round
+RESULT O2nu_n8192_stride_vsplain 1.000 ratio
+RESULT O2nu_n8192_stride_vsplaincv 7.50 percent
+O2nu n8192 last / plain                  min        0.902  median        1.005  max        1.124  cv   4.1%  n 31  ratio, paired per round
+RESULT O2nu_n8192_last_vsplain 1.005 ratio
+RESULT O2nu_n8192_last_vsplaincv 4.06 percent
+O2nu n8192 scalar / plain                min        3.507  median        3.934  max        4.400  cv   5.0%  n 31  ratio, paired per round
+RESULT O2nu_n8192_scalar_vsplain 3.934 ratio
+RESULT O2nu_n8192_scalar_vsplaincv 5.04 percent
+O2nu n8192 plain in place / plain        min        3.519  median        3.935  max        4.219  cv   4.4%  n 31  ratio, paired per round
+RESULT O2nu_n8192_plain_inplace_vsplain 3.935 ratio
+RESULT O2nu_n8192_plain_inplace_vsplaincv 4.41 percent
+O2nu n8192 plain in place / pragma in place min        3.073  median        3.905  max        4.369  cv   6.7%  n 31  ratio, paired per round
+RESULT O2nu_n8192_pragma_inplace_vspragmainplace 3.905 ratio
+RESULT O2nu_n8192_pragma_inplace_vspragmainplacecv 6.74 percent
+outputs: every variant matched the reference bit for bit
+--- bench_O3
+build: O3 = -std=c11 -Wall -Wextra -O3
+clock estimate 4.50 GHz  reps 31  quick 0  probe 0
+RESULT clock 4.50 GHz
+size: n 4194304 floats, 16777216 bytes per array, 50331648 bytes for the three arrays, 1 calls per sample, reps 31 (plus 1 warmup, discarded)
+checksum: out of place 0xf2b41bddb9818632, in place after 1 calls 0xf2b41bddb9818632
+RESULT O3_n4194304_checksum 0xf2b41bddb9818632 hash
+O3 n4194304 plain                        min        0.089  median        0.096  max        0.101  cv   2.3%  n 31  ns/elem
+RESULT O3_n4194304_plain_median 0.0958 ns/elem
+RESULT O3_n4194304_plain_min 0.0894 ns/elem
+RESULT O3_n4194304_plain_cv 2.28 percent
+O3 n4194304 restrict                     min        0.091  median        0.096  max        0.114  cv   3.9%  n 31  ns/elem
+RESULT O3_n4194304_restrict_median 0.0961 ns/elem
+RESULT O3_n4194304_restrict_min 0.0905 ns/elem
+RESULT O3_n4194304_restrict_cv 3.91 percent
+O3 n4194304 pragma                       min        0.092  median        0.096  max        0.110  cv   3.0%  n 31  ns/elem
+RESULT O3_n4194304_pragma_median 0.0958 ns/elem
+RESULT O3_n4194304_pragma_min 0.0918 ns/elem
+RESULT O3_n4194304_pragma_cv 2.98 percent
+O3 n4194304 stride                       min        0.088  median        0.096  max        0.108  cv   3.3%  n 31  ns/elem
+RESULT O3_n4194304_stride_median 0.0958 ns/elem
+RESULT O3_n4194304_stride_min 0.0883 ns/elem
+RESULT O3_n4194304_stride_cv 3.32 percent
+O3 n4194304 last                         min        0.088  median        0.096  max        0.099  cv   2.2%  n 31  ns/elem
+RESULT O3_n4194304_last_median 0.0958 ns/elem
+RESULT O3_n4194304_last_min 0.0880 ns/elem
+RESULT O3_n4194304_last_cv 2.21 percent
+O3 n4194304 scalar                       min        0.226  median        0.249  max        0.260  cv   2.4%  n 31  ns/elem
+RESULT O3_n4194304_scalar_median 0.2487 ns/elem
+RESULT O3_n4194304_scalar_min 0.2261 ns/elem
+RESULT O3_n4194304_scalar_cv 2.40 percent
+O3 n4194304 plain in place               min        0.236  median        0.251  max        0.253  cv   1.1%  n 31  ns/elem
+RESULT O3_n4194304_plain_inplace_median 0.2512 ns/elem
+RESULT O3_n4194304_plain_inplace_min 0.2360 ns/elem
+RESULT O3_n4194304_plain_inplace_cv 1.15 percent
+O3 n4194304 pragma in place              min        0.073  median        0.080  max        0.082  cv   2.1%  n 31  ns/elem
+RESULT O3_n4194304_pragma_inplace_median 0.0798 ns/elem
+RESULT O3_n4194304_pragma_inplace_min 0.0734 ns/elem
+RESULT O3_n4194304_pragma_inplace_cv 2.08 percent
+O3 n4194304 restrict / plain             min        0.953  median        0.995  max        1.193  cv   4.6%  n 31  ratio, paired per round
+RESULT O3_n4194304_restrict_vsplain 0.995 ratio
+RESULT O3_n4194304_restrict_vsplaincv 4.65 percent
+O3 n4194304 pragma / plain               min        0.949  median        0.998  max        1.170  cv   3.9%  n 31  ratio, paired per round
+RESULT O3_n4194304_pragma_vsplain 0.998 ratio
+RESULT O3_n4194304_pragma_vsplaincv 3.86 percent
+O3 n4194304 stride / plain               min        0.926  median        1.000  max        1.129  cv   3.7%  n 31  ratio, paired per round
+RESULT O3_n4194304_stride_vsplain 1.000 ratio
+RESULT O3_n4194304_stride_vsplaincv 3.67 percent
+O3 n4194304 last / plain                 min        0.923  median        1.009  max        1.048  cv   2.7%  n 31  ratio, paired per round
+RESULT O3_n4194304_last_vsplain 1.009 ratio
+RESULT O3_n4194304_last_vsplaincv 2.67 percent
+O3 n4194304 scalar / plain               min        2.231  median        2.606  max        2.769  cv   3.7%  n 31  ratio, paired per round
+RESULT O3_n4194304_scalar_vsplain 2.606 ratio
+RESULT O3_n4194304_scalar_vsplaincv 3.73 percent
+O3 n4194304 plain in place / plain       min        2.473  median        2.626  max        2.826  cv   2.3%  n 31  ratio, paired per round
+RESULT O3_n4194304_plain_inplace_vsplain 2.626 ratio
+RESULT O3_n4194304_plain_inplace_vsplaincv 2.34 percent
+O3 n4194304 plain in place / pragma in place min        3.035  median        3.142  max        3.396  cv   2.1%  n 31  ratio, paired per round
+RESULT O3_n4194304_pragma_inplace_vspragmainplace 3.142 ratio
+RESULT O3_n4194304_pragma_inplace_vspragmainplacecv 2.11 percent
+size: n 8192 floats, 32768 bytes per array, 98304 bytes for the three arrays, 32 calls per sample, reps 31 (plus 1 warmup, discarded)
+checksum: out of place 0x5abbee151d89e35f, in place after 32 calls 0xc8959109664e8886
+RESULT O3_n8192_checksum 0x5abbee151d89e35f hash
+O3 n8192 plain                           min        0.042  median        0.047  max        0.068  cv   8.6%  n 31  ns/elem
+RESULT O3_n8192_plain_median 0.0470 ns/elem
+RESULT O3_n8192_plain_min 0.0421 ns/elem
+RESULT O3_n8192_plain_cv 8.57 percent
+O3 n8192 restrict                        min        0.042  median        0.047  max        0.061  cv   6.4%  n 31  ns/elem
+RESULT O3_n8192_restrict_median 0.0470 ns/elem
+RESULT O3_n8192_restrict_min 0.0420 ns/elem
+RESULT O3_n8192_restrict_cv 6.38 percent
+O3 n8192 pragma                          min        0.042  median        0.047  max        0.048  cv   4.9%  n 31  ns/elem
+RESULT O3_n8192_pragma_median 0.0470 ns/elem
+RESULT O3_n8192_pragma_min 0.0420 ns/elem
+RESULT O3_n8192_pragma_cv 4.89 percent
+O3 n8192 stride                          min        0.042  median        0.047  max        0.048  cv   4.7%  n 31  ns/elem
+RESULT O3_n8192_stride_median 0.0470 ns/elem
+RESULT O3_n8192_stride_min 0.0421 ns/elem
+RESULT O3_n8192_stride_cv 4.74 percent
+O3 n8192 last                            min        0.042  median        0.047  max        0.054  cv   4.9%  n 31  ns/elem
+RESULT O3_n8192_last_median 0.0470 ns/elem
+RESULT O3_n8192_last_min 0.0421 ns/elem
+RESULT O3_n8192_last_cv 4.85 percent
+O3 n8192 scalar                          min        0.224  median        0.248  max        0.250  cv   2.8%  n 31  ns/elem
+RESULT O3_n8192_scalar_median 0.2483 ns/elem
+RESULT O3_n8192_scalar_min 0.2240 ns/elem
+RESULT O3_n8192_scalar_cv 2.84 percent
+O3 n8192 plain in place                  min        0.223  median        0.249  max        0.265  cv   3.0%  n 31  ns/elem
+RESULT O3_n8192_plain_inplace_median 0.2487 ns/elem
+RESULT O3_n8192_plain_inplace_min 0.2227 ns/elem
+RESULT O3_n8192_plain_inplace_cv 3.03 percent
+O3 n8192 pragma in place                 min        0.042  median        0.047  max        0.066  cv   9.9%  n 31  ns/elem
+RESULT O3_n8192_pragma_inplace_median 0.0472 ns/elem
+RESULT O3_n8192_pragma_inplace_min 0.0421 ns/elem
+RESULT O3_n8192_pragma_inplace_cv 9.90 percent
+O3 n8192 restrict / plain                min        0.699  median        1.000  max        1.262  cv   7.3%  n 31  ratio, paired per round
+RESULT O3_n8192_restrict_vsplain 1.000 ratio
+RESULT O3_n8192_restrict_vsplaincv 7.25 percent
+O3 n8192 pragma / plain                  min        0.692  median        1.000  max        1.017  cv   6.9%  n 31  ratio, paired per round
+RESULT O3_n8192_pragma_vsplain 1.000 ratio
+RESULT O3_n8192_pragma_vsplaincv 6.85 percent
+O3 n8192 stride / plain                  min        0.701  median        1.000  max        1.117  cv   7.9%  n 31  ratio, paired per round
+RESULT O3_n8192_stride_vsplain 1.000 ratio
+RESULT O3_n8192_stride_vsplaincv 7.88 percent
+O3 n8192 last / plain                    min        0.792  median        1.000  max        1.117  cv   5.9%  n 31  ratio, paired per round
+RESULT O3_n8192_last_vsplain 1.000 ratio
+RESULT O3_n8192_last_vsplaincv 5.92 percent
+O3 n8192 scalar / plain                  min        3.678  median        5.274  max        5.872  cv   6.9%  n 31  ratio, paired per round
+RESULT O3_n8192_scalar_vsplain 5.274 ratio
+RESULT O3_n8192_scalar_vsplaincv 6.91 percent
+O3 n8192 plain in place / plain          min        3.654  median        5.284  max        5.905  cv   7.3%  n 31  ratio, paired per round
+RESULT O3_n8192_plain_inplace_vsplain 5.284 ratio
+RESULT O3_n8192_plain_inplace_vsplaincv 7.30 percent
+O3 n8192 plain in place / pragma in place min        3.671  median        5.284  max        5.884  cv   8.4%  n 31  ratio, paired per round
+RESULT O3_n8192_pragma_inplace_vspragmainplace 5.284 ratio
+RESULT O3_n8192_pragma_inplace_vspragmainplacecv 8.42 percent
+outputs: every variant matched the reference bit for bit
+--- bench_O2 PROBE=1
+build: O2probe = -std=c11 -Wall -Wextra -O2 PROBE=1
+clock estimate 4.50 GHz  reps 31  quick 0  probe 1
+RESULT clock 4.50 GHz
+cycles: each pass is converted with the clock sampled just before it (min of three dependent integer add chains of 32000 adds), then the median of the conversions is taken
+size: n 4194304 floats, 16777216 bytes per array, 50331648 bytes for the three arrays, 1 calls per sample, reps 31 (plus 1 warmup, discarded)
+checksum: out of place 0xf2b41bddb9818632, in place after 1 calls 0xf2b41bddb9818632
+RESULT O2probe_n4194304_checksum 0xf2b41bddb9818632 hash
+O2probe n4194304 plain                   min        0.089  median        0.096  max        0.105  cv   3.0%  n 31  ns/elem
+RESULT O2probe_n4194304_plain_median 0.0962 ns/elem
+RESULT O2probe_n4194304_plain_min 0.0889 ns/elem
+RESULT O2probe_n4194304_plain_cv 3.03 percent
+RESULT O2probe_n4194304_plain_cycles 0.394 cycles/elem
+O2probe n4194304 restrict                min        0.095  median        0.096  max        0.100  cv   1.3%  n 31  ns/elem
+RESULT O2probe_n4194304_restrict_median 0.0960 ns/elem
+RESULT O2probe_n4194304_restrict_min 0.0950 ns/elem
+RESULT O2probe_n4194304_restrict_cv 1.26 percent
+RESULT O2probe_n4194304_restrict_cycles 0.394 cycles/elem
+O2probe n4194304 pragma                  min        0.093  median        0.096  max        0.108  cv   2.7%  n 31  ns/elem
+RESULT O2probe_n4194304_pragma_median 0.0965 ns/elem
+RESULT O2probe_n4194304_pragma_min 0.0930 ns/elem
+RESULT O2probe_n4194304_pragma_cv 2.67 percent
+RESULT O2probe_n4194304_pragma_cycles 0.393 cycles/elem
+O2probe n4194304 stride                  min        0.088  median        0.096  max        0.099  cv   2.7%  n 31  ns/elem
+RESULT O2probe_n4194304_stride_median 0.0960 ns/elem
+RESULT O2probe_n4194304_stride_min 0.0882 ns/elem
+RESULT O2probe_n4194304_stride_cv 2.74 percent
+RESULT O2probe_n4194304_stride_cycles 0.397 cycles/elem
+O2probe n4194304 last                    min        0.093  median        0.097  max        0.101  cv   1.4%  n 31  ns/elem
+RESULT O2probe_n4194304_last_median 0.0969 ns/elem
+RESULT O2probe_n4194304_last_min 0.0933 ns/elem
+RESULT O2probe_n4194304_last_cv 1.40 percent
+RESULT O2probe_n4194304_last_cycles 0.397 cycles/elem
+O2probe n4194304 scalar                  min        0.238  median        0.250  max        0.255  cv   1.1%  n 31  ns/elem
+RESULT O2probe_n4194304_scalar_median 0.2502 ns/elem
+RESULT O2probe_n4194304_scalar_min 0.2378 ns/elem
+RESULT O2probe_n4194304_scalar_cv 1.14 percent
+RESULT O2probe_n4194304_scalar_cycles 1.022 cycles/elem
+O2probe n4194304 plain in place          min        0.247  median        0.252  max        0.255  cv   0.7%  n 31  ns/elem
+RESULT O2probe_n4194304_plain_inplace_median 0.2523 ns/elem
+RESULT O2probe_n4194304_plain_inplace_min 0.2470 ns/elem
+RESULT O2probe_n4194304_plain_inplace_cv 0.74 percent
+RESULT O2probe_n4194304_plain_inplace_cycles 1.038 cycles/elem
+O2probe n4194304 pragma in place         min        0.078  median        0.080  max        0.083  cv   1.6%  n 31  ns/elem
+RESULT O2probe_n4194304_pragma_inplace_median 0.0801 ns/elem
+RESULT O2probe_n4194304_pragma_inplace_min 0.0783 ns/elem
+RESULT O2probe_n4194304_pragma_inplace_cv 1.55 percent
+RESULT O2probe_n4194304_pragma_inplace_cycles 0.328 cycles/elem
+O2probe n4194304 restrict / plain        min        0.902  median        1.001  max        1.078  cv   3.1%  n 31  ratio, paired per round
+RESULT O2probe_n4194304_restrict_vsplain 1.001 ratio
+RESULT O2probe_n4194304_restrict_vsplaincv 3.15 percent
+O2probe n4194304 pragma / plain          min        0.952  median        1.006  max        1.115  cv   3.2%  n 31  ratio, paired per round
+RESULT O2probe_n4194304_pragma_vsplain 1.006 ratio
+RESULT O2probe_n4194304_pragma_vsplaincv 3.20 percent
+O2probe n4194304 stride / plain          min        0.910  median        1.001  max        1.079  cv   2.9%  n 31  ratio, paired per round
+RESULT O2probe_n4194304_stride_vsplain 1.001 ratio
+RESULT O2probe_n4194304_stride_vsplaincv 2.94 percent
+O2probe n4194304 last / plain            min        0.924  median        1.008  max        1.090  cv   3.2%  n 31  ratio, paired per round
+RESULT O2probe_n4194304_last_vsplain 1.008 ratio
+RESULT O2probe_n4194304_last_vsplaincv 3.22 percent
+O2probe n4194304 scalar / plain          min        2.406  median        2.604  max        2.823  cv   2.7%  n 31  ratio, paired per round
+RESULT O2probe_n4194304_scalar_vsplain 2.604 ratio
+RESULT O2probe_n4194304_scalar_vsplaincv 2.74 percent
+O2probe n4194304 plain in place / plain  min        2.420  median        2.618  max        2.853  cv   2.8%  n 31  ratio, paired per round
+RESULT O2probe_n4194304_plain_inplace_vsplain 2.618 ratio
+RESULT O2probe_n4194304_plain_inplace_vsplaincv 2.82 percent
+O2probe n4194304 plain in place / pragma in place min        3.025  median        3.141  max        3.213  cv   1.6%  n 31  ratio, paired per round
+RESULT O2probe_n4194304_pragma_inplace_vspragmainplace 3.141 ratio
+RESULT O2probe_n4194304_pragma_inplace_vspragmainplacecv 1.61 percent
+O2probe n4194304 clock before each timed pass: min 3.879  median 4.107  max 4.599 GHz  (248 probes)
+RESULT O2probe_n4194304_clock_median 4.107 GHz
+RESULT O2probe_n4194304_clock_min 3.879 GHz
+RESULT O2probe_n4194304_clock_max 4.599 GHz
+size: n 8192 floats, 32768 bytes per array, 98304 bytes for the three arrays, 32 calls per sample, reps 31 (plus 1 warmup, discarded)
+checksum: out of place 0x5abbee151d89e35f, in place after 32 calls 0xc8959109664e8886
+RESULT O2probe_n8192_checksum 0x5abbee151d89e35f hash
+O2probe n8192 plain                      min        0.042  median        0.042  max        0.043  cv   0.6%  n 31  ns/elem
+RESULT O2probe_n8192_plain_median 0.0420 ns/elem
+RESULT O2probe_n8192_plain_min 0.0418 ns/elem
+RESULT O2probe_n8192_plain_cv 0.63 percent
+RESULT O2probe_n8192_plain_cycles 0.191 cycles/elem
+O2probe n8192 restrict                   min        0.042  median        0.042  max        0.043  cv   0.5%  n 31  ns/elem
+RESULT O2probe_n8192_restrict_median 0.0421 ns/elem
+RESULT O2probe_n8192_restrict_min 0.0420 ns/elem
+RESULT O2probe_n8192_restrict_cv 0.46 percent
+RESULT O2probe_n8192_restrict_cycles 0.191 cycles/elem
+O2probe n8192 pragma                     min        0.042  median        0.042  max        0.047  cv   3.3%  n 31  ns/elem
+RESULT O2probe_n8192_pragma_median 0.0421 ns/elem
+RESULT O2probe_n8192_pragma_min 0.0418 ns/elem
+RESULT O2probe_n8192_pragma_cv 3.35 percent
+RESULT O2probe_n8192_pragma_cycles 0.191 cycles/elem
+O2probe n8192 stride                     min        0.041  median        0.042  max        0.053  cv   5.0%  n 31  ns/elem
+RESULT O2probe_n8192_stride_median 0.0421 ns/elem
+RESULT O2probe_n8192_stride_min 0.0412 ns/elem
+RESULT O2probe_n8192_stride_cv 5.00 percent
+RESULT O2probe_n8192_stride_cycles 0.191 cycles/elem
+O2probe n8192 last                       min        0.042  median        0.042  max        0.047  cv   2.0%  n 31  ns/elem
+RESULT O2probe_n8192_last_median 0.0421 ns/elem
+RESULT O2probe_n8192_last_min 0.0420 ns/elem
+RESULT O2probe_n8192_last_cv 2.03 percent
+RESULT O2probe_n8192_last_cycles 0.191 cycles/elem
+O2probe n8192 scalar                     min        0.222  median        0.223  max        0.223  cv   0.1%  n 31  ns/elem
+RESULT O2probe_n8192_scalar_median 0.2227 ns/elem
+RESULT O2probe_n8192_scalar_min 0.2224 ns/elem
+RESULT O2probe_n8192_scalar_cv 0.09 percent
+RESULT O2probe_n8192_scalar_cycles 1.007 cycles/elem
+O2probe n8192 plain in place             min        0.223  median        0.223  max        0.233  cv   1.2%  n 31  ns/elem
+RESULT O2probe_n8192_plain_inplace_median 0.2228 ns/elem
+RESULT O2probe_n8192_plain_inplace_min 0.2225 ns/elem
+RESULT O2probe_n8192_plain_inplace_cv 1.18 percent
+RESULT O2probe_n8192_plain_inplace_cycles 1.008 cycles/elem
+O2probe n8192 pragma in place            min        0.042  median        0.042  max        0.047  cv   2.8%  n 31  ns/elem
+RESULT O2probe_n8192_pragma_inplace_median 0.0423 ns/elem
+RESULT O2probe_n8192_pragma_inplace_min 0.0420 ns/elem
+RESULT O2probe_n8192_pragma_inplace_cv 2.77 percent
+RESULT O2probe_n8192_pragma_inplace_cycles 0.191 cycles/elem
+O2probe n8192 restrict / plain           min        0.974  median        1.000  max        1.023  cv   0.8%  n 31  ratio, paired per round
+RESULT O2probe_n8192_restrict_vsplain 1.000 ratio
+RESULT O2probe_n8192_restrict_vsplaincv 0.76 percent
+O2probe n8192 pragma / plain             min        0.978  median        1.004  max        1.122  cv   3.4%  n 31  ratio, paired per round
+RESULT O2probe_n8192_pragma_vsplain 1.004 ratio
+RESULT O2probe_n8192_pragma_vsplaincv 3.40 percent
+O2probe n8192 stride / plain             min        0.977  median        1.000  max        1.269  cv   5.1%  n 31  ratio, paired per round
+RESULT O2probe_n8192_stride_vsplain 1.000 ratio
+RESULT O2probe_n8192_stride_vsplaincv 5.06 percent
+O2probe n8192 last / plain               min        0.978  median        1.000  max        1.117  cv   2.2%  n 31  ratio, paired per round
+RESULT O2probe_n8192_last_vsplain 1.000 ratio
+RESULT O2probe_n8192_last_vsplaincv 2.16 percent
+O2probe n8192 scalar / plain             min        5.170  median        5.299  max        5.335  cv   0.6%  n 31  ratio, paired per round
+RESULT O2probe_n8192_scalar_vsplain 5.299 ratio
+RESULT O2probe_n8192_scalar_vsplaincv 0.63 percent
+O2probe n8192 plain in place / plain     min        5.173  median        5.307  max        5.561  cv   1.4%  n 31  ratio, paired per round
+RESULT O2probe_n8192_plain_inplace_vsplain 5.307 ratio
+RESULT O2probe_n8192_plain_inplace_vsplaincv 1.40 percent
+O2probe n8192 plain in place / pragma in place min        4.759  median        5.282  max        5.540  cv   2.7%  n 31  ratio, paired per round
+RESULT O2probe_n8192_pragma_inplace_vspragmainplace 5.282 ratio
+RESULT O2probe_n8192_pragma_inplace_vspragmainplacecv 2.69 percent
+O2probe n8192 clock before each timed pass: min 4.063  median 4.544  max 4.599 GHz  (248 probes)
+RESULT O2probe_n8192_clock_median 4.544 GHz
+RESULT O2probe_n8192_clock_min 4.063 GHz
+RESULT O2probe_n8192_clock_max 4.599 GHz
+outputs: every variant matched the reference bit for bit

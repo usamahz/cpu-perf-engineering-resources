@@ -1,0 +1,194 @@
+date: 2026-09-15T09:39:38Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 10.50 8.47 8.13
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+uptime: 10:39  up 15 days, 20:55, 1 user, load averages: 10.50 8.47 8.13
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+taskpolicy -c background: estimated clock: 1.04 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default
+---
+adds per clock sample: 50000000
+adds per clock bracket: 5000000 (one before and one after every FMA and stream sample)
+fma array bytes: 16384
+fma passes per sample: 2048
+fma flops per sample: 268435456
+stream array bytes: 67108864
+reps: 15 (plus 1 warmup per kernel, discarded, after a 200 ms settling spin)
+efficiency core cpu ids: 0-3 (hw.perflevel1.logicalcpu)
+stream reference sum: 36034921960712949
+RESULT stream_checksum 36034921960712949 sum
+fma reference (sum of 64 lanes): 83960288.0
+RESULT fma_checksum 83960288.0 sum
+main_default: thread qos user-interactive, cpu ids seen 9,13, thread cpu share of wall 100.0% (median)
+RESULT main_default_qos user-interactive class
+RESULT main_default_cpus 9,13 ids
+RESULT main_default_ecore_samples 0.0 percent
+RESULT main_default_cpu_share 100.0 percent
+main_default clock, wall time            min        0.222  median        0.222  max        0.225  cv   0.4%  n 15  ns/add
+RESULT main_default_clock_ghz 4.511 GHz
+RESULT main_default_clock_median_ghz 4.502 GHz
+RESULT main_default_clock_cv 0.40 percent
+main_default fma, wall time              min      135.699  median      144.139  max      144.349  cv   1.5%  n 15  GFLOP/s
+RESULT main_default_fma_gflops 144.14 GFLOP/s
+RESULT main_default_fma_cv 1.53 percent
+main_default stream, wall time           min       50.489  median       82.233  max       86.849  cv  14.9%  n 15  GB/s
+RESULT main_default_stream_gbps 82.23 GB/s
+RESULT main_default_stream_cv 14.91 percent
+main_default fma per cycle, wall time    min        3.838  median        3.999  max        4.034  cv   1.2%  n 15  FMA/cycle
+RESULT main_default_fma_per_cycle 3.999 FMA/cycle
+RESULT main_default_fma_per_cycle_cv 1.17 percent
+main_default bytes per cycle, wall time  min       11.190  median       18.227  max       19.291  cv  15.0%  n 15  B/cycle
+RESULT main_default_stream_bytes_per_cycle 18.23 B/cycle
+RESULT main_default_stream_bytes_per_cycle_cv 15.03 percent
+main_default clock, thread cpu time      min        0.222  median        0.222  max        0.225  cv   0.4%  n 15  ns/add
+RESULT main_default_clock_cpu_ghz 4.511 GHz
+RESULT main_default_clock_cpu_median_ghz 4.502 GHz
+RESULT main_default_clock_cpu_cv 0.40 percent
+main_default fma, thread cpu time        min      135.688  median      144.133  max      144.343  cv   1.5%  n 15  GFLOP/s
+RESULT main_default_fma_cpu_gflops 144.13 GFLOP/s
+RESULT main_default_fma_cpu_cv 1.53 percent
+main_default stream, thread cpu time     min       50.478  median       82.195  max       86.480  cv  14.9%  n 15  GB/s
+RESULT main_default_stream_cpu_gbps 82.20 GB/s
+RESULT main_default_stream_cpu_cv 14.88 percent
+main_default fma per cycle, thread cpu time min        3.844  median        3.999  max        4.034  cv   1.1%  n 15  FMA/cycle
+RESULT main_default_fma_cpu_per_cycle 3.999 FMA/cycle
+RESULT main_default_fma_cpu_per_cycle_cv 1.14 percent
+main_default bytes per cycle, thread cpu time min       11.189  median       18.220  max       19.211  cv  15.0%  n 15  B/cycle
+RESULT main_default_stream_cpu_bytes_per_cycle 18.22 B/cycle
+RESULT main_default_stream_cpu_bytes_per_cycle_cv 14.98 percent
+thread_default: thread qos default, cpu ids seen 10,12,13, thread cpu share of wall 100.0% (median)
+RESULT thread_default_qos default class
+RESULT thread_default_cpus 10,12,13 ids
+RESULT thread_default_ecore_samples 0.0 percent
+RESULT thread_default_cpu_share 100.0 percent
+thread_default clock, wall time          min        0.222  median        0.223  max        0.230  cv   1.1%  n 15  ns/add
+RESULT thread_default_clock_ghz 4.503 GHz
+RESULT thread_default_clock_median_ghz 4.489 GHz
+RESULT thread_default_clock_cv 1.05 percent
+thread_default fma, wall time            min      142.130  median      143.965  max      144.362  cv   0.5%  n 15  GFLOP/s
+RESULT thread_default_fma_gflops 143.97 GFLOP/s
+RESULT thread_default_fma_cv 0.49 percent
+thread_default stream, wall time         min       79.935  median       85.553  max       89.878  cv   2.9%  n 15  GB/s
+RESULT thread_default_stream_gbps 85.55 GB/s
+RESULT thread_default_stream_cv 2.95 percent
+thread_default fma per cycle, wall time  min        3.947  median        4.015  max        4.043  cv   0.8%  n 15  FMA/cycle
+RESULT thread_default_fma_per_cycle 4.015 FMA/cycle
+RESULT thread_default_fma_per_cycle_cv 0.75 percent
+thread_default bytes per cycle, wall time min       17.732  median       19.137  max       20.115  cv   2.9%  n 15  B/cycle
+RESULT thread_default_stream_bytes_per_cycle 19.14 B/cycle
+RESULT thread_default_stream_bytes_per_cycle_cv 2.85 percent
+thread_default clock, thread cpu time    min        0.222  median        0.223  max        0.230  cv   1.0%  n 15  ns/add
+RESULT thread_default_clock_cpu_ghz 4.507 GHz
+RESULT thread_default_clock_cpu_median_ghz 4.489 GHz
+RESULT thread_default_clock_cpu_cv 1.00 percent
+thread_default fma, thread cpu time      min      142.117  median      143.953  max      144.353  cv   0.5%  n 15  GFLOP/s
+RESULT thread_default_fma_cpu_gflops 143.95 GFLOP/s
+RESULT thread_default_fma_cpu_cv 0.49 percent
+thread_default stream, thread cpu time   min       79.907  median       85.534  max       89.838  cv   2.9%  n 15  GB/s
+RESULT thread_default_stream_cpu_gbps 85.53 GB/s
+RESULT thread_default_stream_cpu_cv 2.88 percent
+thread_default fma per cycle, thread cpu time min        3.947  median        4.015  max        4.043  cv   0.8%  n 15  FMA/cycle
+RESULT thread_default_fma_cpu_per_cycle 4.015 FMA/cycle
+RESULT thread_default_fma_cpu_per_cycle_cv 0.75 percent
+thread_default bytes per cycle, thread cpu time min       17.729  median       19.127  max       20.108  cv   2.7%  n 15  B/cycle
+RESULT thread_default_stream_cpu_bytes_per_cycle 19.13 B/cycle
+RESULT thread_default_stream_cpu_bytes_per_cycle_cv 2.73 percent
+thread_background: thread qos background (QOS_CLASS_BACKGROUND requested), cpu ids seen 11,12, thread cpu share of wall 100.0% (median)
+RESULT thread_background_qos background class
+RESULT thread_background_cpus 11,12 ids
+RESULT thread_background_ecore_samples 0.0 percent
+RESULT thread_background_cpu_share 100.0 percent
+thread_background clock, wall time       min        0.222  median        0.222  max        0.225  cv   0.4%  n 15  ns/add
+RESULT thread_background_clock_ghz 4.509 GHz
+RESULT thread_background_clock_median_ghz 4.497 GHz
+RESULT thread_background_clock_cv 0.41 percent
+thread_background fma, wall time         min      139.825  median      143.904  max      144.362  cv   1.0%  n 15  GFLOP/s
+RESULT thread_background_fma_gflops 143.90 GFLOP/s
+RESULT thread_background_fma_cv 1.04 percent
+thread_background stream, wall time      min       82.515  median       84.114  max       86.975  cv   1.8%  n 15  GB/s
+RESULT thread_background_stream_gbps 84.11 GB/s
+RESULT thread_background_stream_cv 1.75 percent
+thread_background fma per cycle, wall time min        3.922  median        4.000  max        4.076  cv   0.8%  n 15  FMA/cycle
+RESULT thread_background_fma_per_cycle 4.000 FMA/cycle
+RESULT thread_background_fma_per_cycle_cv 0.85 percent
+thread_background bytes per cycle, wall time min       18.328  median       18.722  max       19.707  cv   2.1%  n 15  B/cycle
+RESULT thread_background_stream_bytes_per_cycle 18.72 B/cycle
+RESULT thread_background_stream_bytes_per_cycle_cv 2.13 percent
+thread_background clock, thread cpu time min        0.222  median        0.222  max        0.225  cv   0.4%  n 15  ns/add
+RESULT thread_background_clock_cpu_ghz 4.509 GHz
+RESULT thread_background_clock_cpu_median_ghz 4.497 GHz
+RESULT thread_background_clock_cpu_cv 0.41 percent
+thread_background fma, thread cpu time   min      139.816  median      143.888  max      144.356  cv   1.0%  n 15  GFLOP/s
+RESULT thread_background_fma_cpu_gflops 143.89 GFLOP/s
+RESULT thread_background_fma_cpu_cv 1.04 percent
+thread_background stream, thread cpu time min       82.490  median       84.053  max       86.952  cv   1.8%  n 15  GB/s
+RESULT thread_background_stream_cpu_gbps 84.05 GB/s
+RESULT thread_background_stream_cpu_cv 1.76 percent
+thread_background fma per cycle, thread cpu time min        3.922  median        4.000  max        4.076  cv   0.8%  n 15  FMA/cycle
+RESULT thread_background_fma_cpu_per_cycle 4.000 FMA/cycle
+RESULT thread_background_fma_cpu_per_cycle_cv 0.85 percent
+thread_background bytes per cycle, thread cpu time min       18.324  median       18.718  max       19.699  cv   2.1%  n 15  B/cycle
+RESULT thread_background_stream_cpu_bytes_per_cycle 18.72 B/cycle
+RESULT thread_background_stream_cpu_bytes_per_cycle_cv 2.13 percent
+checksums: every sample matched its reference
+--- MAIN_ONLY=1 MAIN_TAG=process_background taskpolicy -c background ./bench
+adds per clock sample: 50000000
+adds per clock bracket: 5000000 (one before and one after every FMA and stream sample)
+fma array bytes: 16384
+fma passes per sample: 2048
+fma flops per sample: 268435456
+stream array bytes: 67108864
+reps: 15 (plus 1 warmup per kernel, discarded, after a 200 ms settling spin)
+efficiency core cpu ids: 0-3 (hw.perflevel1.logicalcpu)
+stream reference sum: 36034921960712949
+RESULT stream_checksum 36034921960712949 sum
+fma reference (sum of 64 lanes): 83960288.0
+RESULT fma_checksum 83960288.0 sum
+process_background: thread qos background, cpu ids seen 0,1,2,3, thread cpu share of wall 75.8% (median)
+RESULT process_background_qos background class
+RESULT process_background_cpus 0,1,2,3 ids
+RESULT process_background_ecore_samples 100.0 percent
+RESULT process_background_cpu_share 75.8 percent
+process_background clock, wall time      min        0.718  median        1.358  max        2.072  cv  23.2%  n 15  ns/add
+RESULT process_background_clock_ghz 1.393 GHz
+RESULT process_background_clock_median_ghz 0.736 GHz
+RESULT process_background_clock_cv 23.19 percent
+process_background fma, wall time        min        5.419  median       12.003  max       19.022  cv  26.2%  n 15  GFLOP/s
+RESULT process_background_fma_gflops 12.00 GFLOP/s
+RESULT process_background_fma_cv 26.15 percent
+process_background stream, wall time     min        2.518  median        8.372  max       12.777  cv  27.8%  n 15  GB/s
+RESULT process_background_stream_gbps 8.37 GB/s
+RESULT process_background_stream_cv 27.84 percent
+process_background fma per cycle, wall time min        0.604  median        1.869  max        3.070  cv  29.3%  n 15  FMA/cycle
+RESULT process_background_fma_per_cycle 1.869 FMA/cycle
+RESULT process_background_fma_per_cycle_cv 29.33 percent
+process_background bytes per cycle, wall time min        8.328  median       11.302  max       21.134  cv  29.4%  n 15  B/cycle
+RESULT process_background_stream_bytes_per_cycle 11.30 B/cycle
+RESULT process_background_stream_bytes_per_cycle_cv 29.40 percent
+process_background clock, thread cpu time min        0.656  median        0.896  max        1.029  cv   9.8%  n 15  ns/add
+RESULT process_background_clock_cpu_ghz 1.525 GHz
+RESULT process_background_clock_cpu_median_ghz 1.116 GHz
+RESULT process_background_clock_cpu_cv 9.81 percent
+process_background fma, thread cpu time  min       15.596  median       15.997  max       25.580  cv  17.5%  n 15  GFLOP/s
+RESULT process_background_fma_cpu_gflops 16.00 GFLOP/s
+RESULT process_background_fma_cpu_cv 17.46 percent
+process_background stream, thread cpu time min        9.834  median       10.933  max       12.860  cv   8.2%  n 15  GB/s
+RESULT process_background_stream_cpu_gbps 10.93 GB/s
+RESULT process_background_stream_cpu_cv 8.18 percent
+process_background fma per cycle, thread cpu time min        1.605  median        1.974  max        2.993  cv  17.6%  n 15  FMA/cycle
+RESULT process_background_fma_cpu_per_cycle 1.974 FMA/cycle
+RESULT process_background_fma_cpu_per_cycle_cv 17.56 percent
+process_background bytes per cycle, thread cpu time min        7.887  median       10.625  max       12.937  cv  13.4%  n 15  B/cycle
+RESULT process_background_stream_cpu_bytes_per_cycle 10.63 B/cycle
+RESULT process_background_stream_cpu_bytes_per_cycle_cv 13.36 percent
+checksums: every sample matched its reference

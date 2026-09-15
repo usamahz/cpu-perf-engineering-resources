@@ -1,0 +1,505 @@
+date: 2026-09-15T09:37:41Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 7.21 7.55 7.82
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+load average before the run (1, 5, 15 min): 7.21 7.55 7.82
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=30 RUNS=30 SETTLE_MS=default
+---
+== ./bench fresh: first execution of the binary build.sh just wrote, discarded as the warmup of the binary itself
+fresh process: cold first-touch pass 1874917 ns, warm pass 508292 ns
+DISCARDED p3_cold 1874917 ns
+DISCARDED p2_fresh 508292 ns
+---
+== ./bench: the in-process parts, one process
+floats 1048576  bytes 4194304  page 16384 B  pages 256  reps 30 (plus 1 warmup, discarded)  runs 30  settle 100 ms  one thread, default QoS
+PARAM floats 1048576
+PARAM bytes 4194304
+PARAM page_bytes 16384
+PARAM pages 256
+PARAM reps 30
+PARAM runs 30
+PARAM settle_ms 100
+clock tick 41 ns (smallest non-zero step of now_ns())
+RESULT clock_tick_ns 41 ns
+p1 (a) result discarded                  min        0.000  median        0.000  max       42.000  cv 181.3%  n 30  ns/pass
+p1 (b) result passed to SINK()           min   495667.000  median   497500.000  max   520750.000  cv   1.4%  n 30  ns/pass
+p1 (c) result stored for the checksum    min   496291.000  median   498479.000  max   533208.000  cv   1.9%  n 30  ns/pass
+RESULT p1_discarded_min_ns 0.00 ns
+RESULT p1_discarded_median_ns 0.00 ns
+RESULT p1_discarded_max_ns 42.00 ns
+RESULT p1_discarded_cv_pct 181.28 percent
+RESULT p1_sink_min_ns 495667.00 ns
+RESULT p1_sink_median_ns 497500.00 ns
+RESULT p1_sink_max_ns 520750.00 ns
+RESULT p1_sink_cv_pct 1.38 percent
+RESULT p1_checksum_min_ns 496291.00 ns
+RESULT p1_checksum_median_ns 498479.00 ns
+RESULT p1_checksum_max_ns 533208.00 ns
+RESULT p1_checksum_cv_pct 1.93 percent
+checksum 27525120.0 over 30 passes, expected 27525120.0 (917504.0 per pass): ok
+RESULT p1_checksum_value 27525120.0 sum
+p2 in-process, consecutive passes        min   495625.000  median   498374.500  max   514500.000  cv   1.0%  n 30  ns/pass
+RESULT p2_inproc_min_ns 495625.00 ns
+RESULT p2_inproc_median_ns 498374.50 ns
+RESULT p2_inproc_max_ns 514500.00 ns
+RESULT p2_inproc_cv_pct 0.99 percent
+SAMPLE p2_inproc 497542 ns
+SAMPLE p2_inproc 502125 ns
+SAMPLE p2_inproc 502000 ns
+SAMPLE p2_inproc 514500 ns
+SAMPLE p2_inproc 497666 ns
+SAMPLE p2_inproc 500209 ns
+SAMPLE p2_inproc 512208 ns
+SAMPLE p2_inproc 500208 ns
+SAMPLE p2_inproc 497375 ns
+SAMPLE p2_inproc 509583 ns
+SAMPLE p2_inproc 495625 ns
+SAMPLE p2_inproc 499083 ns
+SAMPLE p2_inproc 497542 ns
+SAMPLE p2_inproc 497375 ns
+SAMPLE p2_inproc 497333 ns
+SAMPLE p2_inproc 497417 ns
+SAMPLE p2_inproc 497458 ns
+SAMPLE p2_inproc 499958 ns
+SAMPLE p2_inproc 500208 ns
+SAMPLE p2_inproc 497417 ns
+SAMPLE p2_inproc 507667 ns
+SAMPLE p2_inproc 500083 ns
+SAMPLE p2_inproc 511250 ns
+SAMPLE p2_inproc 500208 ns
+SAMPLE p2_inproc 497375 ns
+SAMPLE p2_inproc 497500 ns
+SAMPLE p2_inproc 497625 ns
+SAMPLE p2_inproc 500042 ns
+SAMPLE p2_inproc 497458 ns
+SAMPLE p2_inproc 497417 ns
+p3 cold, first pass over untouched pages (single shot)  679708 ns/pass
+RESULT p3_cold_single_ns 679708 ns
+---
+== ./bench fresh, 30 processes, one cold pass and one warm pass each
+fresh process: cold first-touch pass 689167 ns, warm pass 497458 ns
+SAMPLE p3_cold 689167 ns
+SAMPLE p2_fresh 497458 ns
+fresh process: cold first-touch pass 682625 ns, warm pass 500208 ns
+SAMPLE p3_cold 682625 ns
+SAMPLE p2_fresh 500208 ns
+fresh process: cold first-touch pass 654333 ns, warm pass 497375 ns
+SAMPLE p3_cold 654333 ns
+SAMPLE p2_fresh 497375 ns
+fresh process: cold first-touch pass 658291 ns, warm pass 497625 ns
+SAMPLE p3_cold 658291 ns
+SAMPLE p2_fresh 497625 ns
+fresh process: cold first-touch pass 659000 ns, warm pass 497458 ns
+SAMPLE p3_cold 659000 ns
+SAMPLE p2_fresh 497458 ns
+fresh process: cold first-touch pass 679750 ns, warm pass 497459 ns
+SAMPLE p3_cold 679750 ns
+SAMPLE p2_fresh 497459 ns
+fresh process: cold first-touch pass 696583 ns, warm pass 495625 ns
+SAMPLE p3_cold 696583 ns
+SAMPLE p2_fresh 495625 ns
+fresh process: cold first-touch pass 678208 ns, warm pass 536125 ns
+SAMPLE p3_cold 678208 ns
+SAMPLE p2_fresh 536125 ns
+fresh process: cold first-touch pass 656875 ns, warm pass 497500 ns
+SAMPLE p3_cold 656875 ns
+SAMPLE p2_fresh 497500 ns
+fresh process: cold first-touch pass 658083 ns, warm pass 497458 ns
+SAMPLE p3_cold 658083 ns
+SAMPLE p2_fresh 497458 ns
+fresh process: cold first-touch pass 666750 ns, warm pass 497500 ns
+SAMPLE p3_cold 666750 ns
+SAMPLE p2_fresh 497500 ns
+fresh process: cold first-touch pass 703708 ns, warm pass 497458 ns
+SAMPLE p3_cold 703708 ns
+SAMPLE p2_fresh 497458 ns
+fresh process: cold first-touch pass 727708 ns, warm pass 519791 ns
+SAMPLE p3_cold 727708 ns
+SAMPLE p2_fresh 519791 ns
+fresh process: cold first-touch pass 687542 ns, warm pass 513250 ns
+SAMPLE p3_cold 687542 ns
+SAMPLE p2_fresh 513250 ns
+fresh process: cold first-touch pass 675958 ns, warm pass 497542 ns
+SAMPLE p3_cold 675958 ns
+SAMPLE p2_fresh 497542 ns
+fresh process: cold first-touch pass 663083 ns, warm pass 497500 ns
+SAMPLE p3_cold 663083 ns
+SAMPLE p2_fresh 497500 ns
+fresh process: cold first-touch pass 680750 ns, warm pass 502000 ns
+SAMPLE p3_cold 680750 ns
+SAMPLE p2_fresh 502000 ns
+fresh process: cold first-touch pass 668958 ns, warm pass 497500 ns
+SAMPLE p3_cold 668958 ns
+SAMPLE p2_fresh 497500 ns
+fresh process: cold first-touch pass 708625 ns, warm pass 495666 ns
+SAMPLE p3_cold 708625 ns
+SAMPLE p2_fresh 495666 ns
+fresh process: cold first-touch pass 674417 ns, warm pass 497584 ns
+SAMPLE p3_cold 674417 ns
+SAMPLE p2_fresh 497584 ns
+fresh process: cold first-touch pass 653083 ns, warm pass 497500 ns
+SAMPLE p3_cold 653083 ns
+SAMPLE p2_fresh 497500 ns
+fresh process: cold first-touch pass 655625 ns, warm pass 497541 ns
+SAMPLE p3_cold 655625 ns
+SAMPLE p2_fresh 497541 ns
+fresh process: cold first-touch pass 665708 ns, warm pass 497500 ns
+SAMPLE p3_cold 665708 ns
+SAMPLE p2_fresh 497500 ns
+fresh process: cold first-touch pass 664000 ns, warm pass 497583 ns
+SAMPLE p3_cold 664000 ns
+SAMPLE p2_fresh 497583 ns
+fresh process: cold first-touch pass 650000 ns, warm pass 497459 ns
+SAMPLE p3_cold 650000 ns
+SAMPLE p2_fresh 497459 ns
+fresh process: cold first-touch pass 676583 ns, warm pass 497416 ns
+SAMPLE p3_cold 676583 ns
+SAMPLE p2_fresh 497416 ns
+fresh process: cold first-touch pass 682250 ns, warm pass 500042 ns
+SAMPLE p3_cold 682250 ns
+SAMPLE p2_fresh 500042 ns
+fresh process: cold first-touch pass 653667 ns, warm pass 497459 ns
+SAMPLE p3_cold 653667 ns
+SAMPLE p2_fresh 497459 ns
+fresh process: cold first-touch pass 646334 ns, warm pass 495542 ns
+SAMPLE p3_cold 646334 ns
+SAMPLE p2_fresh 495542 ns
+fresh process: cold first-touch pass 729208 ns, warm pass 495667 ns
+SAMPLE p3_cold 729208 ns
+SAMPLE p2_fresh 495667 ns
+load average after the run (1, 5, 15 min): 6.79 7.46 7.78
+---
+== aggregates computed by run.sh from the SAMPLE lines: the 30 fresh processes, and the pairs of single passes in both warm series
+p2_fresh                                 min   495542.000  median   497500.000  max   536125.000  cv   1.7%  n 30  ns/pass
+RESULT p2_fresh_min_ns 495542.00 ns
+RESULT p2_fresh_median_ns 497500.00 ns
+RESULT p2_fresh_max_ns 536125.00 ns
+RESULT p2_fresh_cv_pct 1.66 percent
+RESULT p2_fresh_n 30 runs
+p3_cold                                  min   646334.000  median   671687.500  max   729208.000  cv   3.1%  n 30  ns/pass
+RESULT p3_cold_min_ns 646334.00 ns
+RESULT p3_cold_median_ns 671687.50 ns
+RESULT p3_cold_max_ns 729208.00 ns
+RESULT p3_cold_cv_pct 3.14 percent
+RESULT p3_cold_n 30 runs
+p2_inproc pairs of single passes         pairs 435  over 2%: 104 (23.9%)  over 5%: 0 (0.0%)  over 10%: 0 (0.0%)
+RESULT p2_inproc_pairs 435 pairs
+RESULT p2_inproc_pairs_over_2pct 23.9 percent
+RESULT p2_inproc_pairs_over_5pct 0.0 percent
+RESULT p2_inproc_pairs_over_10pct 0.0 percent
+p2_fresh pairs of single passes          pairs 435  over 2%: 83 (19.1%)  over 5%: 27 (6.2%)  over 10%: 0 (0.0%)
+RESULT p2_fresh_pairs 435 pairs
+RESULT p2_fresh_pairs_over_2pct 19.1 percent
+RESULT p2_fresh_pairs_over_5pct 6.2 percent
+RESULT p2_fresh_pairs_over_10pct 0.0 percent
+---
+== bench_O2.s: the three timing functions as emitted by cc -std=c11 -O2 -S
+_time_sink:                             ; @time_sink
+	.cfi_startproc
+; %bb.0:
+	sub	sp, sp, #80
+	stp	x22, x21, [sp, #32]             ; 16-byte Folded Spill
+	stp	x20, x19, [sp, #48]             ; 16-byte Folded Spill
+	stp	x29, x30, [sp, #64]             ; 16-byte Folded Spill
+	add	x29, sp, #64
+	.cfi_def_cfa w29, 16
+	.cfi_offset w30, -8
+	.cfi_offset w29, -16
+	.cfi_offset w19, -24
+	.cfi_offset w20, -32
+	.cfi_offset w21, -40
+	.cfi_offset w22, -48
+	mov	x20, x1
+	mov	x19, x0
+	add	x1, sp, #16
+	mov	w0, #4                          ; =0x4
+	bl	_clock_gettime
+	ldp	x22, x21, [sp, #16]
+	cbz	x20, LBB1_3
+; %bb.1:
+	cmp	x20, #4
+	b.hs	LBB1_4
+; %bb.2:
+	mov	x8, #0                          ; =0x0
+	movi	d0, #0000000000000000
+	b	LBB1_13
+LBB1_3:
+	movi	d0, #0000000000000000
+	b	LBB1_15
+LBB1_4:
+	cmp	x20, #16
+	b.hs	LBB1_6
+; %bb.5:
+	mov	x8, #0                          ; =0x0
+	movi	d0, #0000000000000000
+	b	LBB1_10
+LBB1_6:
+	and	x8, x20, #0xfffffffffffffff0
+	add	x9, x19, #32
+	movi	d0, #0000000000000000
+	mov	x10, x8
+LBB1_7:                                 ; =>This Inner Loop Header: Depth=1
+	ldp	q1, q2, [x9, #-32]
+	mov	s3, v1[3]
+	mov	s4, v1[2]
+	mov	s5, v1[1]
+	mov	s6, v2[3]
+	mov	s7, v2[2]
+	mov	s16, v2[1]
+	ldp	q17, q18, [x9], #64
+	mov	s19, v17[3]
+	mov	s20, v17[2]
+	mov	s21, v17[1]
+	mov	s22, v18[3]
+	mov	s23, v18[2]
+	mov	s24, v18[1]
+	fadd	s0, s0, s1
+	fadd	s0, s0, s5
+	fadd	s0, s0, s4
+	fadd	s0, s0, s3
+	fadd	s0, s0, s2
+	fadd	s0, s0, s16
+	fadd	s0, s0, s7
+	fadd	s0, s0, s6
+	fadd	s0, s0, s17
+	fadd	s0, s0, s21
+	fadd	s0, s0, s20
+	fadd	s0, s0, s19
+	fadd	s0, s0, s18
+	fadd	s0, s0, s24
+	fadd	s0, s0, s23
+	fadd	s0, s0, s22
+	subs	x10, x10, #16
+	b.ne	LBB1_7
+; %bb.8:
+	cmp	x8, x20
+	b.eq	LBB1_15
+; %bb.9:
+	tst	x20, #0xc
+	b.eq	LBB1_13
+LBB1_10:
+	mov	x10, x8
+	and	x8, x20, #0xfffffffffffffffc
+	add	x9, x19, x10, lsl #2
+	sub	x10, x10, x8
+LBB1_11:                                ; =>This Inner Loop Header: Depth=1
+	ldr	q1, [x9], #16
+	mov	s2, v1[3]
+	mov	s3, v1[2]
+	mov	s4, v1[1]
+	fadd	s0, s0, s1
+	fadd	s0, s0, s4
+	fadd	s0, s0, s3
+	fadd	s0, s0, s2
+	adds	x10, x10, #4
+	b.ne	LBB1_11
+; %bb.12:
+	cmp	x8, x20
+	b.eq	LBB1_15
+LBB1_13:
+	sub	x9, x20, x8
+	add	x8, x19, x8, lsl #2
+LBB1_14:                                ; =>This Inner Loop Header: Depth=1
+	ldr	s1, [x8], #4
+	fadd	s0, s0, s1
+	subs	x9, x9, #1
+	b.ne	LBB1_14
+LBB1_15:
+	str	s0, [sp, #12]
+	add	x8, sp, #12
+	; InlineAsm Start
+	; InlineAsm End
+	add	x1, sp, #16
+	mov	w0, #4                          ; =0x4
+	bl	_clock_gettime
+	ldp	x8, x9, [sp, #16]
+	sub	x8, x8, x22
+	mov	w10, #51712                     ; =0xca00
+	movk	w10, #15258, lsl #16
+	sub	x9, x9, x21
+	madd	x8, x8, x10, x9
+	ucvtf	d0, x8
+	ldp	x29, x30, [sp, #64]             ; 16-byte Folded Reload
+	ldp	x20, x19, [sp, #48]             ; 16-byte Folded Reload
+	ldp	x22, x21, [sp, #32]             ; 16-byte Folded Reload
+	add	sp, sp, #80
+	ret
+	.cfi_endproc
+
+_time_discarded:                        ; @time_discarded
+	.cfi_startproc
+; %bb.0:
+	sub	sp, sp, #48
+	stp	x20, x19, [sp, #16]             ; 16-byte Folded Spill
+	stp	x29, x30, [sp, #32]             ; 16-byte Folded Spill
+	add	x29, sp, #32
+	.cfi_def_cfa w29, 16
+	.cfi_offset w30, -8
+	.cfi_offset w29, -16
+	.cfi_offset w19, -24
+	.cfi_offset w20, -32
+	mov	x1, sp
+	mov	w0, #4                          ; =0x4
+	bl	_clock_gettime
+	ldp	x19, x20, [sp]
+	mov	x1, sp
+	mov	w0, #4                          ; =0x4
+	bl	_clock_gettime
+	ldp	x8, x9, [sp]
+	sub	x8, x8, x19
+	mov	w10, #51712                     ; =0xca00
+	movk	w10, #15258, lsl #16
+	sub	x9, x9, x20
+	madd	x8, x8, x10, x9
+	ucvtf	d0, x8
+	ldp	x29, x30, [sp, #32]             ; 16-byte Folded Reload
+	ldp	x20, x19, [sp, #16]             ; 16-byte Folded Reload
+	add	sp, sp, #48
+	ret
+	.cfi_endproc
+
+_time_checksum:                         ; @time_checksum
+	.cfi_startproc
+; %bb.0:
+	sub	sp, sp, #80
+	stp	x24, x23, [sp, #16]             ; 16-byte Folded Spill
+	stp	x22, x21, [sp, #32]             ; 16-byte Folded Spill
+	stp	x20, x19, [sp, #48]             ; 16-byte Folded Spill
+	stp	x29, x30, [sp, #64]             ; 16-byte Folded Spill
+	add	x29, sp, #64
+	.cfi_def_cfa w29, 16
+	.cfi_offset w30, -8
+	.cfi_offset w29, -16
+	.cfi_offset w19, -24
+	.cfi_offset w20, -32
+	.cfi_offset w21, -40
+	.cfi_offset w22, -48
+	.cfi_offset w23, -56
+	.cfi_offset w24, -64
+	mov	x19, x2
+	mov	x21, x1
+	mov	x20, x0
+	mov	x1, sp
+	mov	w0, #4                          ; =0x4
+	bl	_clock_gettime
+	ldp	x23, x22, [sp]
+	cbz	x21, LBB3_3
+; %bb.1:
+	cmp	x21, #4
+	b.hs	LBB3_4
+; %bb.2:
+	mov	x8, #0                          ; =0x0
+	movi	d0, #0000000000000000
+	b	LBB3_13
+LBB3_3:
+	movi	d0, #0000000000000000
+	b	LBB3_15
+LBB3_4:
+	cmp	x21, #16
+	b.hs	LBB3_6
+; %bb.5:
+	mov	x8, #0                          ; =0x0
+	movi	d0, #0000000000000000
+	b	LBB3_10
+LBB3_6:
+	and	x8, x21, #0xfffffffffffffff0
+	add	x9, x20, #32
+	movi	d0, #0000000000000000
+	mov	x10, x8
+LBB3_7:                                 ; =>This Inner Loop Header: Depth=1
+	ldp	q1, q2, [x9, #-32]
+	mov	s3, v1[3]
+	mov	s4, v1[2]
+	mov	s5, v1[1]
+	mov	s6, v2[3]
+	mov	s7, v2[2]
+	mov	s16, v2[1]
+	ldp	q17, q18, [x9], #64
+	mov	s19, v17[3]
+	mov	s20, v17[2]
+	mov	s21, v17[1]
+	mov	s22, v18[3]
+	mov	s23, v18[2]
+	mov	s24, v18[1]
+	fadd	s0, s0, s1
+	fadd	s0, s0, s5
+	fadd	s0, s0, s4
+	fadd	s0, s0, s3
+	fadd	s0, s0, s2
+	fadd	s0, s0, s16
+	fadd	s0, s0, s7
+	fadd	s0, s0, s6
+	fadd	s0, s0, s17
+	fadd	s0, s0, s21
+	fadd	s0, s0, s20
+	fadd	s0, s0, s19
+	fadd	s0, s0, s18
+	fadd	s0, s0, s24
+	fadd	s0, s0, s23
+	fadd	s0, s0, s22
+	subs	x10, x10, #16
+	b.ne	LBB3_7
+; %bb.8:
+	cmp	x8, x21
+	b.eq	LBB3_15
+; %bb.9:
+	tst	x21, #0xc
+	b.eq	LBB3_13
+LBB3_10:
+	mov	x10, x8
+	and	x8, x21, #0xfffffffffffffffc
+	add	x9, x20, x10, lsl #2
+	sub	x10, x10, x8
+LBB3_11:                                ; =>This Inner Loop Header: Depth=1
+	ldr	q1, [x9], #16
+	mov	s2, v1[3]
+	mov	s3, v1[2]
+	mov	s4, v1[1]
+	fadd	s0, s0, s1
+	fadd	s0, s0, s4
+	fadd	s0, s0, s3
+	fadd	s0, s0, s2
+	adds	x10, x10, #4
+	b.ne	LBB3_11
+; %bb.12:
+	cmp	x8, x21
+	b.eq	LBB3_15
+LBB3_13:
+	sub	x9, x21, x8
+	add	x8, x20, x8, lsl #2
+LBB3_14:                                ; =>This Inner Loop Header: Depth=1
+	ldr	s1, [x8], #4
+	fadd	s0, s0, s1
+	subs	x9, x9, #1
+	b.ne	LBB3_14
+LBB3_15:
+	str	s0, [x19]
+	mov	x1, sp
+	mov	w0, #4                          ; =0x4
+	bl	_clock_gettime
+	ldp	x8, x9, [sp]
+	sub	x8, x8, x23
+	mov	w10, #51712                     ; =0xca00
+	movk	w10, #15258, lsl #16
+	sub	x9, x9, x22
+	madd	x8, x8, x10, x9
+	ucvtf	d0, x8
+	ldp	x29, x30, [sp, #64]             ; 16-byte Folded Reload
+	ldp	x20, x19, [sp, #48]             ; 16-byte Folded Reload
+	ldp	x22, x21, [sp, #32]             ; 16-byte Folded Reload
+	ldp	x24, x23, [sp, #16]             ; 16-byte Folded Reload
+	add	sp, sp, #80
+	ret
+	.cfi_endproc
+

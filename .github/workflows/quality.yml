@@ -1,0 +1,38 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  format:
+    name: Entry format and anchors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Lint README entries
+        run: python3 misc/scripts/check_format.py README.md
+      - name: Compile the scripts
+        run: python3 -m py_compile misc/scripts/check_links.py misc/scripts/check_format.py misc/benchmarks/common/refresh_readme.py
+
+  benchmarks-compile:
+    name: Benchmarks compile (Linux x86-64)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile every benchmark
+        run: misc/benchmarks/compile_all.sh
+
+  benchmarks-smoke:
+    name: Benchmarks smoke run (macOS arm64)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run every benchmark with QUICK=1
+        run: QUICK=1 misc/benchmarks/run_all.sh

@@ -1,0 +1,477 @@
+date: 2026-09-15T09:37:46Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 6.79 7.46 7.78
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default THREADS=default CLOCK_GHZ=4.49
+---
+06-roofline: kernel arrays 268435456 B each (x and y), bandwidth array 536870912 B, L1 slices 16384 B of x and of y per thread x 1024 passes (fma_stream: 65536 B of x x 256 passes), FMA roof 8388608 iterations x 20 chains (and x 16), threads 1 and 10, reps 21 timed passes after at least 100 ms of discarded warm-up passes, clock 4.49 GHz, neon 1
+RESULT threads 10 threads
+RESULT kernel_bytes 268435456 B
+RESULT bandwidth_bytes 536870912 B
+RESULT l1_slice_bytes 16384 B
+RESULT l1_passes 1024 passes
+RESULT fma_stream_l1_slice_bytes 65536 B
+RESULT fma_stream_l1_passes 256 passes
+RESULT reps 21 passes
+RESULT warmup_ms 100 ms
+RESULT clock 4.49 GHz
+RESULT saxpy_ai 0.1667 flop/B
+RESULT stencil_ai 1.6250 flop/B
+RESULT fma_stream_ai 10.0000 flop/B
+RESULT poly_ai 16.0000 flop/B
+RESULT poly_intrin_ai 16.0000 flop/B
+warm-up: 32 untimed FMA passes over 302 ms before the first roof
+fma_peak 1 thread (before the kernels)   min      139.376  median      143.729  max      144.359  cv   0.8%  n 21  GFLOP/s
+RESULT fma_peak_1t_before 143.729 GFLOP/s
+RESULT fma_peak_1t_before_min 139.376 GFLOP/s
+RESULT fma_peak_1t_before_max 144.359 GFLOP/s
+RESULT fma_peak_1t_before_cv 0.79 percent
+RESULT fma_peak_1t_before_warmups 10 passes
+checksum fma_peak_1t_before 125611852 reference 125611852 relative error 0.0e+00
+fma_16acc 1 thread (before the kernels)  min      127.711  median      128.796  max      129.422  cv   0.3%  n 21  GFLOP/s
+RESULT fma_16acc_1t_before 128.796 GFLOP/s
+RESULT fma_16acc_1t_before_min 127.711 GFLOP/s
+RESULT fma_16acc_1t_before_max 129.422 GFLOP/s
+RESULT fma_16acc_1t_before_cv 0.33 percent
+RESULT fma_16acc_1t_before_warmups 11 passes
+checksum fma_16acc_1t_before 100489480 reference 100489480 relative error 0.0e+00
+read_bw 1 thread (before the kernels)    min       89.580  median       91.041  max       92.090  cv   0.8%  n 21  GB/s
+RESULT read_bw_1t_before 91.041 GB/s
+RESULT read_bw_1t_before_min 89.580 GB/s
+RESULT read_bw_1t_before_max 92.090 GB/s
+RESULT read_bw_1t_before_cv 0.75 percent
+RESULT read_bw_1t_before_warmups 16 passes
+checksum read_bw_1t_before 58720256 reference 58720256 relative error 0.0e+00
+copy_bw 1 thread (before the kernels)    min      119.318  median      123.292  max      125.455  cv   1.4%  n 21  GB/s
+RESULT copy_bw_1t_before 123.292 GB/s
+RESULT copy_bw_1t_before_min 119.318 GB/s
+RESULT copy_bw_1t_before_max 125.455 GB/s
+RESULT copy_bw_1t_before_cv 1.36 percent
+RESULT copy_bw_1t_before_warmups 22 passes
+checksum copy_bw_1t_before 29360128 reference 29360128 relative error 0.0e+00
+triad_bw 1 thread (before the kernels)   min      122.378  median      125.131  max      130.898  cv   1.4%  n 21  GB/s
+RESULT triad_bw_1t_before 125.131 GB/s
+RESULT triad_bw_1t_before_min 122.378 GB/s
+RESULT triad_bw_1t_before_max 130.898 GB/s
+RESULT triad_bw_1t_before_cv 1.37 percent
+RESULT triad_bw_1t_before_warmups 13 passes
+checksum triad_bw_1t_before 44040192 reference 44040192 relative error 0.0e+00
+write_bw 1 thread (before the kernels)   min      131.847  median      141.019  max      141.754  cv   2.2%  n 21  GB/s
+RESULT write_bw_1t_before 141.019 GB/s
+RESULT write_bw_1t_before_min 131.847 GB/s
+RESULT write_bw_1t_before_max 141.754 GB/s
+RESULT write_bw_1t_before_cv 2.16 percent
+RESULT write_bw_1t_before_warmups 52 passes
+checksum write_bw_1t_before 25165824 reference 25165824 relative error 0.0e+00
+saxpy 1 thread                           min       23.568  median       24.313  max       25.131  cv   1.2%  n 21  GFLOP/s
+RESULT saxpy_1t 24.313 GFLOP/s
+RESULT saxpy_1t_min 23.568 GFLOP/s
+RESULT saxpy_1t_max 25.131 GFLOP/s
+RESULT saxpy_1t_cv 1.20 percent
+RESULT saxpy_1t_warmups 18 passes
+checksum saxpy_1t 601882624 reference 601882624 relative error 0.0e+00
+saxpy from L1 1 thread                   min       42.189  median       43.417  max       45.746  cv   2.7%  n 21  GFLOP/s
+RESULT saxpy_l1_1t 43.417 GFLOP/s
+RESULT saxpy_l1_1t_min 42.189 GFLOP/s
+RESULT saxpy_l1_1t_max 45.746 GFLOP/s
+RESULT saxpy_l1_1t_cv 2.69 percent
+RESULT saxpy_l1_1t_warmups 529 passes
+checksum saxpy_l1_1t 504628992 reference 504628992 relative error 0.0e+00
+stencil 1 thread                         min       78.805  median       80.478  max       84.622  cv   1.5%  n 21  GFLOP/s
+RESULT stencil_1t 80.478 GFLOP/s
+RESULT stencil_1t_min 78.805 GFLOP/s
+RESULT stencil_1t_max 84.622 GFLOP/s
+RESULT stencil_1t_cv 1.51 percent
+RESULT stencil_1t_warmups 9 passes
+checksum stencil_1t 29360128 reference 29360128 relative error 0.0e+00
+stencil from L1 1 thread                 min       84.475  median       90.367  max       90.743  cv   1.8%  n 21  GFLOP/s
+RESULT stencil_l1_1t 90.367 GFLOP/s
+RESULT stencil_l1_1t_min 84.475 GFLOP/s
+RESULT stencil_l1_1t_max 90.743 GFLOP/s
+RESULT stencil_l1_1t_cv 1.76 percent
+RESULT stencil_l1_1t_warmups 166 passes
+checksum stencil_l1_1t 1792 reference 1792 relative error 0.0e+00
+fma_stream 1 thread                      min      126.987  median      138.373  max      140.316  cv   2.3%  n 21  GFLOP/s
+RESULT fma_stream_1t 138.373 GFLOP/s
+RESULT fma_stream_1t_min 126.987 GFLOP/s
+RESULT fma_stream_1t_max 140.316 GFLOP/s
+RESULT fma_stream_1t_cv 2.33 percent
+RESULT fma_stream_1t_warmups 5 passes
+checksum fma_stream_1t 146908160 reference 146908160 relative error 0.0e+00
+fma_stream from L1 1 thread              min      126.517  median      140.739  max      142.150  cv   2.3%  n 21  GFLOP/s
+RESULT fma_stream_l1_1t 140.739 GFLOP/s
+RESULT fma_stream_l1_1t_min 126.517 GFLOP/s
+RESULT fma_stream_l1_1t_max 142.150 GFLOP/s
+RESULT fma_stream_l1_1t_cv 2.33 percent
+RESULT fma_stream_l1_1t_warmups 83 passes
+checksum fma_stream_l1_1t 9181760 reference 9181760 relative error 0.0e+00
+poly 1 thread                            min      102.943  median      104.701  max      106.093  cv   0.8%  n 21  GFLOP/s
+RESULT poly_1t 104.701 GFLOP/s
+RESULT poly_1t_min 102.943 GFLOP/s
+RESULT poly_1t_max 106.093 GFLOP/s
+RESULT poly_1t_cv 0.80 percent
+RESULT poly_1t_warmups 2 passes
+checksum poly_1t 97730546.67 reference 97730546.42 relative error 2.5e-09
+poly from L1 1 thread                    min      102.782  median      103.894  max      104.748  cv   0.6%  n 21  GFLOP/s
+RESULT poly_l1_1t 103.894 GFLOP/s
+RESULT poly_l1_1t_min 102.782 GFLOP/s
+RESULT poly_l1_1t_max 104.748 GFLOP/s
+RESULT poly_l1_1t_cv 0.58 percent
+RESULT poly_l1_1t_warmups 38 passes
+checksum poly_l1_1t 6108159.167 reference 6108159.151 relative error 2.5e-09
+poly_intrin 1 thread                     min       78.421  median       79.572  max       80.638  cv   0.8%  n 21  GFLOP/s
+RESULT poly_intrin_1t 79.572 GFLOP/s
+RESULT poly_intrin_1t_min 78.421 GFLOP/s
+RESULT poly_intrin_1t_max 80.638 GFLOP/s
+RESULT poly_intrin_1t_cv 0.77 percent
+RESULT poly_intrin_1t_warmups 1 passes
+checksum poly_intrin_1t 97730546.67 reference 97730546.42 relative error 2.5e-09
+poly_intrin from L1 1 thread             min       77.991  median       80.495  max       83.990  cv   2.1%  n 21  GFLOP/s
+RESULT poly_intrin_l1_1t 80.495 GFLOP/s
+RESULT poly_intrin_l1_1t_min 77.991 GFLOP/s
+RESULT poly_intrin_l1_1t_max 83.990 GFLOP/s
+RESULT poly_intrin_l1_1t_cv 2.13 percent
+RESULT poly_intrin_l1_1t_warmups 29 passes
+checksum poly_intrin_l1_1t 6108159.167 reference 6108159.151 relative error 2.5e-09
+fma_peak 1 thread (after the kernels)    min      140.710  median      142.096  max      143.944  cv   0.6%  n 21  GFLOP/s
+RESULT fma_peak_1t_after 142.096 GFLOP/s
+RESULT fma_peak_1t_after_min 140.710 GFLOP/s
+RESULT fma_peak_1t_after_max 143.944 GFLOP/s
+RESULT fma_peak_1t_after_cv 0.64 percent
+RESULT fma_peak_1t_after_warmups 10 passes
+checksum fma_peak_1t_after 125611852 reference 125611852 relative error 0.0e+00
+fma_16acc 1 thread (after the kernels)   min      124.240  median      128.323  max      129.450  cv   1.0%  n 21  GFLOP/s
+RESULT fma_16acc_1t_after 128.323 GFLOP/s
+RESULT fma_16acc_1t_after_min 124.240 GFLOP/s
+RESULT fma_16acc_1t_after_max 129.450 GFLOP/s
+RESULT fma_16acc_1t_after_cv 0.99 percent
+RESULT fma_16acc_1t_after_warmups 11 passes
+checksum fma_16acc_1t_after 100489480 reference 100489480 relative error 0.0e+00
+read_bw 1 thread (after the kernels)     min       90.542  median       92.714  max       94.429  cv   1.1%  n 21  GB/s
+RESULT read_bw_1t_after 92.714 GB/s
+RESULT read_bw_1t_after_min 90.542 GB/s
+RESULT read_bw_1t_after_max 94.429 GB/s
+RESULT read_bw_1t_after_cv 1.10 percent
+RESULT read_bw_1t_after_warmups 17 passes
+checksum read_bw_1t_after 58720256 reference 58720256 relative error 0.0e+00
+copy_bw 1 thread (after the kernels)     min      121.789  median      123.130  max      126.383  cv   1.1%  n 21  GB/s
+RESULT copy_bw_1t_after 123.130 GB/s
+RESULT copy_bw_1t_after_min 121.789 GB/s
+RESULT copy_bw_1t_after_max 126.383 GB/s
+RESULT copy_bw_1t_after_cv 1.07 percent
+RESULT copy_bw_1t_after_warmups 22 passes
+checksum copy_bw_1t_after 29360128 reference 29360128 relative error 0.0e+00
+triad_bw 1 thread (after the kernels)    min      121.743  median      125.005  max      131.411  cv   1.9%  n 21  GB/s
+RESULT triad_bw_1t_after 125.005 GB/s
+RESULT triad_bw_1t_after_min 121.743 GB/s
+RESULT triad_bw_1t_after_max 131.411 GB/s
+RESULT triad_bw_1t_after_cv 1.92 percent
+RESULT triad_bw_1t_after_warmups 14 passes
+checksum triad_bw_1t_after 44040192 reference 44040192 relative error 0.0e+00
+write_bw 1 thread (after the kernels)    min      136.931  median      139.746  max      141.527  cv   0.8%  n 21  GB/s
+RESULT write_bw_1t_after 139.746 GB/s
+RESULT write_bw_1t_after_min 136.931 GB/s
+RESULT write_bw_1t_after_max 141.527 GB/s
+RESULT write_bw_1t_after_cv 0.82 percent
+RESULT write_bw_1t_after_warmups 52 passes
+checksum write_bw_1t_after 25165824 reference 25165824 relative error 0.0e+00
+roof fma_peak 1 thread: 143.7 GFLOP/s before the kernels, 142.1 after, using the first measurement
+RESULT fma_peak_1t 143.729 GFLOP/s
+RESULT fma_peak_1t_min 139.376 GFLOP/s
+RESULT fma_peak_1t_max 144.359 GFLOP/s
+RESULT fma_peak_1t_cv 0.79 percent
+RESULT fma_peak_1t_other 142.096 GFLOP/s
+RESULT fma_peak_1t_kept before measurement
+roof fma_16acc 1 thread: 128.8 GFLOP/s before the kernels, 128.3 after, using the first measurement
+RESULT fma_16acc_1t 128.796 GFLOP/s
+RESULT fma_16acc_1t_min 127.711 GFLOP/s
+RESULT fma_16acc_1t_max 129.422 GFLOP/s
+RESULT fma_16acc_1t_cv 0.33 percent
+RESULT fma_16acc_1t_other 128.323 GFLOP/s
+RESULT fma_16acc_1t_kept before measurement
+roof read_bw 1 thread: 91.0 GB/s before the kernels, 92.7 after, using the second measurement
+RESULT read_bw_1t 92.714 GB/s
+RESULT read_bw_1t_min 90.542 GB/s
+RESULT read_bw_1t_max 94.429 GB/s
+RESULT read_bw_1t_cv 1.10 percent
+RESULT read_bw_1t_other 91.041 GB/s
+RESULT read_bw_1t_kept after measurement
+roof copy_bw 1 thread: 123.3 GB/s before the kernels, 123.1 after, using the first measurement
+RESULT copy_bw_1t 123.292 GB/s
+RESULT copy_bw_1t_min 119.318 GB/s
+RESULT copy_bw_1t_max 125.455 GB/s
+RESULT copy_bw_1t_cv 1.36 percent
+RESULT copy_bw_1t_other 123.130 GB/s
+RESULT copy_bw_1t_kept before measurement
+roof triad_bw 1 thread: 125.1 GB/s before the kernels, 125.0 after, using the first measurement
+RESULT triad_bw_1t 125.131 GB/s
+RESULT triad_bw_1t_min 122.378 GB/s
+RESULT triad_bw_1t_max 130.898 GB/s
+RESULT triad_bw_1t_cv 1.37 percent
+RESULT triad_bw_1t_other 125.005 GB/s
+RESULT triad_bw_1t_kept before measurement
+roof write_bw 1 thread: 141.0 GB/s before the kernels, 139.7 after, using the first measurement
+RESULT write_bw_1t 141.019 GB/s
+RESULT write_bw_1t_min 131.847 GB/s
+RESULT write_bw_1t_max 141.754 GB/s
+RESULT write_bw_1t_cv 2.16 percent
+RESULT write_bw_1t_other 139.746 GB/s
+RESULT write_bw_1t_kept before measurement
+ridge point 1 thread: 1.55 flop/B against the read roof, 1.17 against the copy roof, 1.15 against the triad roof
+RESULT ridge_read_1t 1.550 flop/B
+RESULT ridge_copy_1t 1.166 flop/B
+RESULT ridge_triad_1t 1.149 flop/B
+RESULT fma_per_cycle_1t 4.00 fmla/cycle/core
+roofline saxpy 1 thread: intensity 0.167 flop/B, memory line 20.9 GFLOP/s from the triad roof, compute roof 143.7 GFLOP/s, prediction 20.9 GFLOP/s (memory), measured 24.3 from DRAM and 43.4 from L1
+RESULT saxpy_1t_pred 20.855 GFLOP/s
+RESULT saxpy_1t_roof memory roof
+RESULT saxpy_1t_bwroof triad bandwidth
+roofline stencil 1 thread: intensity 1.625 flop/B, memory line 200.3 GFLOP/s from the copy roof, compute roof 143.7 GFLOP/s, prediction 143.7 GFLOP/s (compute), measured 80.5 from DRAM and 90.4 from L1
+RESULT stencil_1t_pred 143.729 GFLOP/s
+RESULT stencil_1t_roof compute roof
+RESULT stencil_1t_bwroof copy bandwidth
+roofline fma_stream 1 thread: intensity 10.000 flop/B, memory line 927.1 GFLOP/s from the read roof, compute roof 143.7 GFLOP/s, prediction 143.7 GFLOP/s (compute), measured 138.4 from DRAM and 140.7 from L1
+RESULT fma_stream_1t_pred 143.729 GFLOP/s
+RESULT fma_stream_1t_roof compute roof
+RESULT fma_stream_1t_bwroof read bandwidth
+roofline poly 1 thread: intensity 16.000 flop/B, memory line 1483.4 GFLOP/s from the read roof, compute roof 143.7 GFLOP/s, prediction 143.7 GFLOP/s (compute), measured 104.7 from DRAM and 103.9 from L1
+RESULT poly_1t_pred 143.729 GFLOP/s
+RESULT poly_1t_roof compute roof
+RESULT poly_1t_bwroof read bandwidth
+roofline poly_intrin 1 thread: intensity 16.000 flop/B, memory line 1483.4 GFLOP/s from the read roof, compute roof 143.7 GFLOP/s, prediction 143.7 GFLOP/s (compute), measured 79.6 from DRAM and 80.5 from L1
+RESULT poly_intrin_1t_pred 143.729 GFLOP/s
+RESULT poly_intrin_1t_roof compute roof
+RESULT poly_intrin_1t_bwroof read bandwidth
+fma_peak 10 threads (before the kernels) min     1156.219  median     1231.087  max     1232.104  cv   1.3%  n 21  GFLOP/s
+RESULT fma_peak_10t_before 1231.087 GFLOP/s
+RESULT fma_peak_10t_before_min 1156.219 GFLOP/s
+RESULT fma_peak_10t_before_max 1232.104 GFLOP/s
+RESULT fma_peak_10t_before_cv 1.31 percent
+RESULT fma_peak_10t_before_warmups 9 passes
+checksum fma_peak_10t_before 1256118520 reference 1256118520 relative error 0.0e+00
+fma_16acc 10 threads (before the kernels) min     1087.848  median     1102.244  max     1104.228  cv   0.3%  n 21  GFLOP/s
+RESULT fma_16acc_10t_before 1102.244 GFLOP/s
+RESULT fma_16acc_10t_before_min 1087.848 GFLOP/s
+RESULT fma_16acc_10t_before_max 1104.228 GFLOP/s
+RESULT fma_16acc_10t_before_cv 0.32 percent
+RESULT fma_16acc_10t_before_warmups 10 passes
+checksum fma_16acc_10t_before 1004894800 reference 1004894800 relative error 0.0e+00
+read_bw 10 threads (before the kernels)  min      238.915  median      246.078  max      248.297  cv   1.2%  n 21  GB/s
+RESULT read_bw_10t_before 246.078 GB/s
+RESULT read_bw_10t_before_min 238.915 GB/s
+RESULT read_bw_10t_before_max 248.297 GB/s
+RESULT read_bw_10t_before_cv 1.16 percent
+RESULT read_bw_10t_before_warmups 44 passes
+checksum read_bw_10t_before 58720256 reference 58720256 relative error 0.0e+00
+copy_bw 10 threads (before the kernels)  min      233.105  median      238.433  max      239.079  cv   0.9%  n 21  GB/s
+RESULT copy_bw_10t_before 238.433 GB/s
+RESULT copy_bw_10t_before_min 233.105 GB/s
+RESULT copy_bw_10t_before_max 239.079 GB/s
+RESULT copy_bw_10t_before_cv 0.89 percent
+RESULT copy_bw_10t_before_warmups 43 passes
+checksum copy_bw_10t_before 29360128 reference 29360128 relative error 0.0e+00
+triad_bw 10 threads (before the kernels) min      222.153  median      227.563  max      229.399  cv   0.9%  n 21  GB/s
+RESULT triad_bw_10t_before 227.563 GB/s
+RESULT triad_bw_10t_before_min 222.153 GB/s
+RESULT triad_bw_10t_before_max 229.399 GB/s
+RESULT triad_bw_10t_before_cv 0.87 percent
+RESULT triad_bw_10t_before_warmups 28 passes
+checksum triad_bw_10t_before 44040192 reference 44040192 relative error 0.0e+00
+write_bw 10 threads (before the kernels) min      231.285  median      253.350  max      256.518  cv   2.3%  n 21  GB/s
+RESULT write_bw_10t_before 253.350 GB/s
+RESULT write_bw_10t_before_min 231.285 GB/s
+RESULT write_bw_10t_before_max 256.518 GB/s
+RESULT write_bw_10t_before_cv 2.35 percent
+RESULT write_bw_10t_before_warmups 87 passes
+checksum write_bw_10t_before 25165824 reference 25165824 relative error 0.0e+00
+saxpy 10 threads                         min       38.034  median       39.134  max       39.279  cv   1.0%  n 21  GFLOP/s
+RESULT saxpy_10t 39.134 GFLOP/s
+RESULT saxpy_10t_min 38.034 GFLOP/s
+RESULT saxpy_10t_max 39.279 GFLOP/s
+RESULT saxpy_10t_cv 1.01 percent
+RESULT saxpy_10t_warmups 28 passes
+checksum saxpy_10t 748683264 reference 748683264 relative error 0.0e+00
+saxpy from L1 10 threads                 min      357.786  median      368.257  max      375.750  cv   1.2%  n 21  GFLOP/s
+RESULT saxpy_l1_10t 368.257 GFLOP/s
+RESULT saxpy_l1_10t_min 357.786 GFLOP/s
+RESULT saxpy_l1_10t_max 375.750 GFLOP/s
+RESULT saxpy_l1_10t_cv 1.24 percent
+RESULT saxpy_l1_10t_warmups 442 passes
+checksum saxpy_l1_10t 4248061440 reference 4248061440 relative error 0.0e+00
+stencil 10 threads                       min      375.300  median      381.815  max      388.863  cv   1.0%  n 21  GFLOP/s
+RESULT stencil_10t 381.815 GFLOP/s
+RESULT stencil_10t_min 375.300 GFLOP/s
+RESULT stencil_10t_max 388.863 GFLOP/s
+RESULT stencil_10t_cv 1.03 percent
+RESULT stencil_10t_warmups 43 passes
+checksum stencil_10t 29360128 reference 29360128 relative error 0.0e+00
+stencil from L1 10 threads               min      746.197  median      762.489  max      765.932  cv   0.7%  n 21  GFLOP/s
+RESULT stencil_l1_10t 762.489 GFLOP/s
+RESULT stencil_l1_10t_min 746.197 GFLOP/s
+RESULT stencil_l1_10t_max 765.932 GFLOP/s
+RESULT stencil_l1_10t_cv 0.66 percent
+RESULT stencil_l1_10t_warmups 131 passes
+checksum stencil_l1_10t 17920 reference 17920 relative error 0.0e+00
+fma_stream 10 threads                    min     1115.692  median     1134.534  max     1157.798  cv   1.3%  n 21  GFLOP/s
+RESULT fma_stream_10t 1134.534 GFLOP/s
+RESULT fma_stream_10t_min 1115.692 GFLOP/s
+RESULT fma_stream_10t_max 1157.798 GFLOP/s
+RESULT fma_stream_10t_cv 1.30 percent
+RESULT fma_stream_10t_warmups 41 passes
+checksum fma_stream_10t 146908160 reference 146908160 relative error 0.0e+00
+fma_stream from L1 10 threads            min     1207.935  median     1210.623  max     1212.446  cv   0.1%  n 21  GFLOP/s
+RESULT fma_stream_l1_10t 1210.623 GFLOP/s
+RESULT fma_stream_l1_10t_min 1207.935 GFLOP/s
+RESULT fma_stream_l1_10t_max 1212.446 GFLOP/s
+RESULT fma_stream_l1_10t_cv 0.10 percent
+RESULT fma_stream_l1_10t_warmups 72 passes
+checksum fma_stream_l1_10t 91817600 reference 91817600 relative error 0.0e+00
+poly 10 threads                          min      892.600  median      918.472  max      919.693  cv   0.6%  n 21  GFLOP/s
+RESULT poly_10t 918.472 GFLOP/s
+RESULT poly_10t_min 892.600 GFLOP/s
+RESULT poly_10t_max 919.693 GFLOP/s
+RESULT poly_10t_cv 0.61 percent
+RESULT poly_10t_warmups 21 passes
+checksum poly_10t 97730546.67 reference 97730546.42 relative error 2.5e-09
+poly from L1 10 threads                  min      390.130  median      920.245  max      920.929  cv  18.6%  n 21  GFLOP/s
+RESULT poly_l1_10t 920.245 GFLOP/s
+RESULT poly_l1_10t_min 390.130 GFLOP/s
+RESULT poly_l1_10t_max 920.929 GFLOP/s
+RESULT poly_l1_10t_cv 18.61 percent
+RESULT poly_l1_10t_warmups 34 passes
+checksum poly_l1_10t 61081591.67 reference 61081591.51 relative error 2.5e-09
+poly_intrin 10 threads                   min      535.758  median      700.742  max      714.865  cv   7.1%  n 21  GFLOP/s
+RESULT poly_intrin_10t 700.742 GFLOP/s
+RESULT poly_intrin_10t_min 535.758 GFLOP/s
+RESULT poly_intrin_10t_max 714.865 GFLOP/s
+RESULT poly_intrin_10t_cv 7.09 percent
+RESULT poly_intrin_10t_warmups 15 passes
+checksum poly_intrin_10t 97730546.67 reference 97730546.42 relative error 2.5e-09
+poly_intrin from L1 10 threads           min      692.848  median      710.499  max      712.290  cv   0.5%  n 21  GFLOP/s
+RESULT poly_intrin_l1_10t 710.499 GFLOP/s
+RESULT poly_intrin_l1_10t_min 692.848 GFLOP/s
+RESULT poly_intrin_l1_10t_max 712.290 GFLOP/s
+RESULT poly_intrin_l1_10t_cv 0.55 percent
+RESULT poly_intrin_l1_10t_warmups 26 passes
+checksum poly_intrin_l1_10t 61081591.67 reference 61081591.51 relative error 2.5e-09
+fma_peak 10 threads (after the kernels)  min      756.901  median     1229.499  max     1231.986  cv  11.1%  n 21  GFLOP/s
+RESULT fma_peak_10t_after 1229.499 GFLOP/s
+RESULT fma_peak_10t_after_min 756.901 GFLOP/s
+RESULT fma_peak_10t_after_max 1231.986 GFLOP/s
+RESULT fma_peak_10t_after_cv 11.10 percent
+RESULT fma_peak_10t_after_warmups 8 passes
+checksum fma_peak_10t_after 1256118520 reference 1256118520 relative error 0.0e+00
+fma_16acc 10 threads (after the kernels) min     1088.229  median     1101.335  max     1103.046  cv   0.3%  n 21  GFLOP/s
+RESULT fma_16acc_10t_after 1101.335 GFLOP/s
+RESULT fma_16acc_10t_after_min 1088.229 GFLOP/s
+RESULT fma_16acc_10t_after_max 1103.046 GFLOP/s
+RESULT fma_16acc_10t_after_cv 0.30 percent
+RESULT fma_16acc_10t_after_warmups 10 passes
+checksum fma_16acc_10t_after 1004894800 reference 1004894800 relative error 0.0e+00
+read_bw 10 threads (after the kernels)   min      239.110  median      246.299  max      248.006  cv   1.1%  n 21  GB/s
+RESULT read_bw_10t_after 246.299 GB/s
+RESULT read_bw_10t_after_min 239.110 GB/s
+RESULT read_bw_10t_after_max 248.006 GB/s
+RESULT read_bw_10t_after_cv 1.10 percent
+RESULT read_bw_10t_after_warmups 45 passes
+checksum read_bw_10t_after 58720256 reference 58720256 relative error 0.0e+00
+copy_bw 10 threads (after the kernels)   min      230.846  median      235.096  max      239.456  cv   1.1%  n 21  GB/s
+RESULT copy_bw_10t_after 235.096 GB/s
+RESULT copy_bw_10t_after_min 230.846 GB/s
+RESULT copy_bw_10t_after_max 239.456 GB/s
+RESULT copy_bw_10t_after_cv 1.11 percent
+RESULT copy_bw_10t_after_warmups 43 passes
+checksum copy_bw_10t_after 29360128 reference 29360128 relative error 0.0e+00
+triad_bw 10 threads (after the kernels)  min      172.456  median      224.317  max      228.924  cv   6.6%  n 21  GB/s
+RESULT triad_bw_10t_after 224.317 GB/s
+RESULT triad_bw_10t_after_min 172.456 GB/s
+RESULT triad_bw_10t_after_max 228.924 GB/s
+RESULT triad_bw_10t_after_cv 6.59 percent
+RESULT triad_bw_10t_after_warmups 28 passes
+checksum triad_bw_10t_after 44040192 reference 44040192 relative error 0.0e+00
+write_bw 10 threads (after the kernels)  min      193.426  median      199.383  max      206.013  cv   2.0%  n 21  GB/s
+RESULT write_bw_10t_after 199.383 GB/s
+RESULT write_bw_10t_after_min 193.426 GB/s
+RESULT write_bw_10t_after_max 206.013 GB/s
+RESULT write_bw_10t_after_cv 1.97 percent
+RESULT write_bw_10t_after_warmups 81 passes
+checksum write_bw_10t_after 25165824 reference 25165824 relative error 0.0e+00
+roof fma_peak 10 threads: 1231.1 GFLOP/s before the kernels, 1229.5 after, using the first measurement
+RESULT fma_peak_10t 1231.087 GFLOP/s
+RESULT fma_peak_10t_min 1156.219 GFLOP/s
+RESULT fma_peak_10t_max 1232.104 GFLOP/s
+RESULT fma_peak_10t_cv 1.31 percent
+RESULT fma_peak_10t_other 1229.499 GFLOP/s
+RESULT fma_peak_10t_kept before measurement
+roof fma_16acc 10 threads: 1102.2 GFLOP/s before the kernels, 1101.3 after, using the first measurement
+RESULT fma_16acc_10t 1102.244 GFLOP/s
+RESULT fma_16acc_10t_min 1087.848 GFLOP/s
+RESULT fma_16acc_10t_max 1104.228 GFLOP/s
+RESULT fma_16acc_10t_cv 0.32 percent
+RESULT fma_16acc_10t_other 1101.335 GFLOP/s
+RESULT fma_16acc_10t_kept before measurement
+roof read_bw 10 threads: 246.1 GB/s before the kernels, 246.3 after, using the second measurement
+RESULT read_bw_10t 246.299 GB/s
+RESULT read_bw_10t_min 239.110 GB/s
+RESULT read_bw_10t_max 248.006 GB/s
+RESULT read_bw_10t_cv 1.10 percent
+RESULT read_bw_10t_other 246.078 GB/s
+RESULT read_bw_10t_kept after measurement
+roof copy_bw 10 threads: 238.4 GB/s before the kernels, 235.1 after, using the first measurement
+RESULT copy_bw_10t 238.433 GB/s
+RESULT copy_bw_10t_min 233.105 GB/s
+RESULT copy_bw_10t_max 239.079 GB/s
+RESULT copy_bw_10t_cv 0.89 percent
+RESULT copy_bw_10t_other 235.096 GB/s
+RESULT copy_bw_10t_kept before measurement
+roof triad_bw 10 threads: 227.6 GB/s before the kernels, 224.3 after, using the first measurement
+RESULT triad_bw_10t 227.563 GB/s
+RESULT triad_bw_10t_min 222.153 GB/s
+RESULT triad_bw_10t_max 229.399 GB/s
+RESULT triad_bw_10t_cv 0.87 percent
+RESULT triad_bw_10t_other 224.317 GB/s
+RESULT triad_bw_10t_kept before measurement
+roof write_bw 10 threads: 253.4 GB/s before the kernels, 199.4 after, using the first measurement
+RESULT write_bw_10t 253.350 GB/s
+RESULT write_bw_10t_min 231.285 GB/s
+RESULT write_bw_10t_max 256.518 GB/s
+RESULT write_bw_10t_cv 2.35 percent
+RESULT write_bw_10t_other 199.383 GB/s
+RESULT write_bw_10t_kept before measurement
+ridge point 10 threads: 5.00 flop/B against the read roof, 5.16 against the copy roof, 5.41 against the triad roof
+RESULT ridge_read_10t 4.998 flop/B
+RESULT ridge_copy_10t 5.163 flop/B
+RESULT ridge_triad_10t 5.410 flop/B
+RESULT fma_per_cycle_10t 3.43 fmla/cycle/core
+roofline saxpy 10 threads: intensity 0.167 flop/B, memory line 37.9 GFLOP/s from the triad roof, compute roof 1231.1 GFLOP/s, prediction 37.9 GFLOP/s (memory), measured 39.1 from DRAM and 368.3 from L1
+RESULT saxpy_10t_pred 37.927 GFLOP/s
+RESULT saxpy_10t_roof memory roof
+RESULT saxpy_10t_bwroof triad bandwidth
+roofline stencil 10 threads: intensity 1.625 flop/B, memory line 387.5 GFLOP/s from the copy roof, compute roof 1231.1 GFLOP/s, prediction 387.5 GFLOP/s (memory), measured 381.8 from DRAM and 762.5 from L1
+RESULT stencil_10t_pred 387.453 GFLOP/s
+RESULT stencil_10t_roof memory roof
+RESULT stencil_10t_bwroof copy bandwidth
+roofline fma_stream 10 threads: intensity 10.000 flop/B, memory line 2463.0 GFLOP/s from the read roof, compute roof 1231.1 GFLOP/s, prediction 1231.1 GFLOP/s (compute), measured 1134.5 from DRAM and 1210.6 from L1
+RESULT fma_stream_10t_pred 1231.087 GFLOP/s
+RESULT fma_stream_10t_roof compute roof
+RESULT fma_stream_10t_bwroof read bandwidth
+roofline poly 10 threads: intensity 16.000 flop/B, memory line 3940.8 GFLOP/s from the read roof, compute roof 1231.1 GFLOP/s, prediction 1231.1 GFLOP/s (compute), measured 918.5 from DRAM and 920.2 from L1
+RESULT poly_10t_pred 1231.087 GFLOP/s
+RESULT poly_10t_roof compute roof
+RESULT poly_10t_bwroof read bandwidth
+roofline poly_intrin 10 threads: intensity 16.000 flop/B, memory line 3940.8 GFLOP/s from the read roof, compute roof 1231.1 GFLOP/s, prediction 1231.1 GFLOP/s (compute), measured 700.7 from DRAM and 710.5 from L1
+RESULT poly_intrin_10t_pred 1231.087 GFLOP/s
+RESULT poly_intrin_10t_roof compute roof
+RESULT poly_intrin_10t_bwroof read bandwidth
+checksums: every kernel matched its reference

@@ -1,0 +1,150 @@
+date: 2026-09-15T09:39:21Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 11.47 8.53 8.14
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.50 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default CLOCK_GHZ=4.50
+---
+virtual clock; 20 s simulated per client per rep; service 100 us; stall 200 ms once per second from 500 ms, 20 stalls per run
+schedule for both clients: 5000 requests/s, one due every 200 us, 100000 requests per run; correction: expected interval 200 us
+closed form: 2000 open-loop requests delayed per stall, 999 samples added per stall by the correction, 119980 corrected samples per run, last completion at 19999900 us
+sample arrays: closed 800000 B, open 800000 B, corrected 1376128 B (capacity)
+reps 31 (plus 1 warmup, discarded); percentiles by HdrHistogram's rank convention; latencies in simulated us; per-rep line: n p50 p90 p99 p99.9 max slow(>1 ms)
+
+PARAM sim_seconds 20
+PARAM service_us 100
+PARAM stall_ms 200
+PARAM rate_per_s 5000
+PARAM interval_us 200
+PARAM slow_ms 1
+PARAM reps 31
+
+warmup 0: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 2.8 + 2.9 ns/req
+rep 1: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.7 + 1.7 ns/req
+rep 2: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.7 + 1.7 ns/req
+rep 3: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.5 + 1.5 ns/req
+rep 4: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.3 + 1.3 ns/req
+rep 5: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.3 + 1.3 ns/req
+rep 6: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.2 + 1.2 ns/req
+rep 7: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.2 + 1.2 ns/req
+rep 8: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.2 + 1.2 ns/req
+rep 9: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.1 + 1.1 ns/req
+rep 10: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.1 + 1.1 ns/req
+rep 11: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.0 + 1.0 ns/req
+rep 12: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.0 + 1.0 ns/req
+rep 13: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.0 + 1.0 ns/req
+rep 14: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 1.0 + 1.0 ns/req
+rep 15: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.9 + 0.9 ns/req
+rep 16: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.9 + 0.9 ns/req
+rep 17: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.9 + 0.9 ns/req
+rep 18: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.9 + 0.9 ns/req
+rep 19: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.9 + 0.9 ns/req
+rep 20: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 21: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 22: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 23: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 24: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 25: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 26: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 27: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 28: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 29: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 30: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+rep 31: closed n 100000 100.0 100.0 100.0 100.0 200100.0 slow 0.0200% | open n 100000 100.0 150100.0 195100.0 199600.0 200100.0 slow 39.8200% | corrected n 119980 100.0 80300.0 188100.0 198900.0 200100.0 slow 16.6028% | sim 0.8 + 0.8 ns/req
+
+closed loop, from actual send p50        min      100.000  median      100.000  max      100.000  cv   0.0%  n 31  us
+RESULT closed_p50_min 100.0 us
+RESULT closed_p50_median 100.0 us
+RESULT closed_p50_cv 0.00 percent
+closed loop, from actual send p90        min      100.000  median      100.000  max      100.000  cv   0.0%  n 31  us
+RESULT closed_p90_min 100.0 us
+RESULT closed_p90_median 100.0 us
+RESULT closed_p90_cv 0.00 percent
+closed loop, from actual send p99        min      100.000  median      100.000  max      100.000  cv   0.0%  n 31  us
+RESULT closed_p99_min 100.0 us
+RESULT closed_p99_median 100.0 us
+RESULT closed_p99_cv 0.00 percent
+closed loop, from actual send p99.9      min      100.000  median      100.000  max      100.000  cv   0.0%  n 31  us
+RESULT closed_p999_min 100.0 us
+RESULT closed_p999_median 100.0 us
+RESULT closed_p999_cv 0.00 percent
+closed loop, from actual send max        min   200100.000  median   200100.000  max   200100.000  cv   0.0%  n 31  us
+RESULT closed_max_min 200100.0 us
+RESULT closed_max_median 200100.0 us
+RESULT closed_max_cv 0.00 percent
+RESULT closed_count_median 100000 samples
+RESULT closed_count_cv 0.00 percent
+RESULT closed_slow_median 0.0200 percent
+RESULT closed_slow_cv 0.00 percent
+open loop, from intended send p50        min      100.000  median      100.000  max      100.000  cv   0.0%  n 31  us
+RESULT open_p50_min 100.0 us
+RESULT open_p50_median 100.0 us
+RESULT open_p50_cv 0.00 percent
+open loop, from intended send p90        min   150100.000  median   150100.000  max   150100.000  cv   0.0%  n 31  us
+RESULT open_p90_min 150100.0 us
+RESULT open_p90_median 150100.0 us
+RESULT open_p90_cv 0.00 percent
+open loop, from intended send p99        min   195100.000  median   195100.000  max   195100.000  cv   0.0%  n 31  us
+RESULT open_p99_min 195100.0 us
+RESULT open_p99_median 195100.0 us
+RESULT open_p99_cv 0.00 percent
+open loop, from intended send p99.9      min   199600.000  median   199600.000  max   199600.000  cv   0.0%  n 31  us
+RESULT open_p999_min 199600.0 us
+RESULT open_p999_median 199600.0 us
+RESULT open_p999_cv 0.00 percent
+open loop, from intended send max        min   200100.000  median   200100.000  max   200100.000  cv   0.0%  n 31  us
+RESULT open_max_min 200100.0 us
+RESULT open_max_median 200100.0 us
+RESULT open_max_cv 0.00 percent
+RESULT open_count_median 100000 samples
+RESULT open_count_cv 0.00 percent
+RESULT open_slow_median 39.8200 percent
+RESULT open_slow_cv 0.00 percent
+closed loop, corrected p50               min      100.000  median      100.000  max      100.000  cv   0.0%  n 31  us
+RESULT corrected_p50_min 100.0 us
+RESULT corrected_p50_median 100.0 us
+RESULT corrected_p50_cv 0.00 percent
+closed loop, corrected p90               min    80300.000  median    80300.000  max    80300.000  cv   0.0%  n 31  us
+RESULT corrected_p90_min 80300.0 us
+RESULT corrected_p90_median 80300.0 us
+RESULT corrected_p90_cv 0.00 percent
+closed loop, corrected p99               min   188100.000  median   188100.000  max   188100.000  cv   0.0%  n 31  us
+RESULT corrected_p99_min 188100.0 us
+RESULT corrected_p99_median 188100.0 us
+RESULT corrected_p99_cv 0.00 percent
+closed loop, corrected p99.9             min   198900.000  median   198900.000  max   198900.000  cv   0.0%  n 31  us
+RESULT corrected_p999_min 198900.0 us
+RESULT corrected_p999_median 198900.0 us
+RESULT corrected_p999_cv 0.00 percent
+closed loop, corrected max               min   200100.000  median   200100.000  max   200100.000  cv   0.0%  n 31  us
+RESULT corrected_max_min 200100.0 us
+RESULT corrected_max_median 200100.0 us
+RESULT corrected_max_cv 0.00 percent
+RESULT corrected_count_median 119980 samples
+RESULT corrected_count_cv 0.00 percent
+RESULT corrected_slow_median 16.6028 percent
+RESULT corrected_slow_cv 0.00 percent
+closed loop simulation cost              min        0.756  median        0.926  max        1.698  cv  25.1%  n 31  ns/request
+RESULT closed_sim_min 0.76 ns/request
+RESULT closed_sim_median 0.93 ns/request
+RESULT closed_sim_cv 25.11 percent
+open loop simulation cost                min        0.758  median        0.927  max        1.702  cv  25.2%  n 31  ns/request
+RESULT open_sim_min 0.76 ns/request
+RESULT open_sim_median 0.93 ns/request
+RESULT open_sim_cv 25.17 percent
+RESULT stalls_per_run 20 stalls
+RESULT open_delayed_per_stall 2000 requests
+RESULT corrected_added_per_stall 999 samples
+RESULT checks_passed 832 checks
+RESULT latency_sum_total 187239938000000 simulated_ns
+checksums: 832 closed-form checks passed over 32 runs (stall counts, last completions, corrected sample counts, latency sums, slow counts, every percentile); 187239938000000 simulated ns of recorded latency over the 31 timed reps

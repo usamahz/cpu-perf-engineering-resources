@@ -1,0 +1,13 @@
+# compiled benchmarks
+misc/benchmarks/*/bench
+misc/benchmarks/*/bench_*
+misc/benchmarks/common/clock_estimate
+*.o
+*.dSYM/
+.DS_Store
+# link-check output
+link-report.md
+links.json
+misc/benchmarks/*/results/quick-*
+misc/benchmarks/*/*.s
+__pycache__/

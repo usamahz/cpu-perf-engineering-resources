@@ -1,0 +1,102 @@
+date: 2026-09-15T09:39:23Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 11.47 8.53 8.14
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.50 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default DOT_REPS=default CLOCK_GHZ=4.50
+--- VECLIB_MAXIMUM_THREADS=1: every variant, one thread
+sgemm: M = N = K = 1024 float32, 4194304 bytes per matrix, 2147483648 flops per call, reps 11 (plus 1 warmup, discarded)
+blas: Accelerate cblas_sgemm, VECLIB_MAXIMUM_THREADS=1
+RESULT sgemm_dim 1024 n
+RESULT sgemm_matrix_bytes 4194304 bytes
+RESULT sgemm_flops 2147483648 flops
+RESULT sgemm_reps 11 reps
+reference: naive C, checksum (sum of all entries) -8579.542461
+RESULT sgemm_checksum -8579.542461 sum
+naive_ijk                                min        2.534  median        2.545  max        2.559  cv   0.3%  n 11  GFLOP/s
+RESULT naive_ijk_gflops 2.545 GFLOP/s
+RESULT naive_ijk_gflops_max 2.559 GFLOP/s
+RESULT naive_ijk_ms 843.696 ms
+RESULT naive_ijk_cv 0.29 percent
+RESULT naive_ijk_maxerr 0.000e+00 abs
+ikj_autovec                              min       32.648  median       32.935  max       33.184  cv   0.4%  n 11  GFLOP/s
+RESULT ikj_autovec_gflops 32.935 GFLOP/s
+RESULT ikj_autovec_gflops_max 33.184 GFLOP/s
+RESULT ikj_autovec_ms 65.203 ms
+RESULT ikj_autovec_cv 0.45 percent
+RESULT ikj_autovec_maxerr 0.000e+00 abs
+blocked_neon_8x8                         min      110.570  median      111.766  max      112.600  cv   0.4%  n 11  GFLOP/s
+RESULT blocked_neon_8x8_gflops 111.766 GFLOP/s
+RESULT blocked_neon_8x8_gflops_max 112.600 GFLOP/s
+RESULT blocked_neon_8x8_ms 19.214 ms
+RESULT blocked_neon_8x8_cv 0.45 percent
+RESULT blocked_neon_8x8_maxerr 0.000e+00 abs
+blas_threads_1                           min     1518.551  median     1588.130  max     1605.196  cv   1.4%  n 11  GFLOP/s
+RESULT blas_threads_1_gflops 1588.130 GFLOP/s
+RESULT blas_threads_1_gflops_max 1605.196 GFLOP/s
+RESULT blas_threads_1_ms 1.352 ms
+RESULT blas_threads_1_cv 1.42 percent
+RESULT blas_threads_1_maxerr 0.000e+00 abs
+RESULT blas_threads_1_cpu_over_wall 1.00 ratio
+fmadd_latency                            min        0.690  median        0.692  max        0.697  cv   0.4%  n 11  ns
+RESULT fmadd_latency_ns 0.6897 ns
+RESULT fmadd_latency_cv 0.36 percent
+neon_fma_peak                            min      126.794  median      129.118  max      132.818  cv   1.3%  n 11  GFLOP/s
+RESULT neon_fma_peak_gflops 129.118 GFLOP/s
+RESULT neon_fma_peak_cv 1.31 percent
+neon_fma_peak checksum 6.442451e+09
+sgemm: every variant matched the naive result to within 1e-2
+dot: 16777216 elements streaming (33554432 bytes int8 pair, 134217728 bytes float32 pair); 8192 elements L1-resident (16384 and 65536 bytes) times 2048 passes; reps 31 (plus 1 warmup)
+dot references: int8 stream 4265427, int8 l1 -1948, f32 stream -1484.916734, f32 l1 13.870292
+RESULT dot_int8_checksum 4265427 sum
+RESULT dot_f32_checksum -1484.916734 sum
+RESULT dot_stream_elements 16777216 elements
+RESULT dot_stream_bytes_int8 33554432 bytes
+RESULT dot_stream_bytes_f32 134217728 bytes
+RESULT dot_l1_elements 8192 elements
+RESULT dot_l1_bytes_int8 16384 bytes
+RESULT dot_l1_bytes_f32 65536 bytes
+RESULT dot_l1_passes 2048 passes
+RESULT dot_reps 31 reps
+dot_int8_sdot_stream                     min      116.189  median      118.602  max      124.989  cv   1.6%  n 31  ops/ns
+RESULT dot_int8_sdot_stream_opsns 118.602 ops/ns
+RESULT dot_int8_sdot_stream_cv 1.64 percent
+dot_f32_fmla_stream                      min       29.190  median       29.879  max       30.648  cv   1.0%  n 31  ops/ns
+RESULT dot_f32_fmla_stream_opsns 29.879 ops/ns
+RESULT dot_f32_fmla_stream_cv 0.99 percent
+RESULT dot_f32_fmla_stream_err_over_tol 0.001 fraction
+dot_int8_sdot_l1                         min      185.043  median      191.012  max      204.238  cv   2.6%  n 31  ops/ns
+RESULT dot_int8_sdot_l1_opsns 191.012 ops/ns
+RESULT dot_int8_sdot_l1_cv 2.61 percent
+dot_f32_fmla_l1                          min       46.722  median       47.513  max       49.008  cv   1.0%  n 31  ops/ns
+RESULT dot_f32_fmla_l1_opsns 47.513 ops/ns
+RESULT dot_f32_fmla_l1_cv 0.99 percent
+RESULT dot_f32_fmla_l1_err_over_tol 0.000 fraction
+dot: every result matched its reference
+--- MODE=blas, VECLIB_MAXIMUM_THREADS unset: the vendor BLAS at its default thread count
+sgemm: M = N = K = 1024 float32, 4194304 bytes per matrix, 2147483648 flops per call, reps 11 (plus 1 warmup, discarded)
+blas: Accelerate cblas_sgemm, VECLIB_MAXIMUM_THREADS=(unset)
+RESULT sgemm_dim 1024 n
+RESULT sgemm_matrix_bytes 4194304 bytes
+RESULT sgemm_flops 2147483648 flops
+RESULT sgemm_reps 11 reps
+reference: naive C, checksum (sum of all entries) -8579.542461
+RESULT sgemm_checksum -8579.542461 sum
+blas_threads_default                     min     3152.658  median     3180.082  max     3228.085  cv   0.7%  n 11  GFLOP/s
+RESULT blas_threads_default_gflops 3180.082 GFLOP/s
+RESULT blas_threads_default_gflops_max 3228.085 GFLOP/s
+RESULT blas_threads_default_ms 0.675 ms
+RESULT blas_threads_default_cv 0.74 percent
+RESULT blas_threads_default_maxerr 0.000e+00 abs
+RESULT blas_threads_default_cpu_over_wall 1.97 ratio
+sgemm: every variant matched the naive result to within 1e-2

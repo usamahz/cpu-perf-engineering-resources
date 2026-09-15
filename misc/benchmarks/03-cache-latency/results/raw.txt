@@ -1,0 +1,307 @@
+date: 2026-09-15T09:36:37Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 8.01 7.60 7.85
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+
+04-cache-latency: dependent-load pointer chase, one thread, default QoS
+node 128 B, page 16384 B, 6710886 loads per run, 10 runs plus 1 discarded warmup, min reported
+clock 4.49 GHz (CLOCK_GHZ from the environment), in-process add chain 4.46 GHz
+RESULT steps_per_run 6710886 loads
+RESULT runs 10 runs
+RESULT pagesize 16384 B
+RESULT clock 4.49 GHz
+
+line mode: nodes 128 B apart
+line 4 KiB (32 lines, 1 pages)           min        0.665  median        0.667  max        0.673  cv   0.4%  n 10  ns/load
+    cycles/load min 3.0  median 3.0  end node 23
+RESULT line_4096_ns 0.665 ns/load
+RESULT line_4096_median 0.667 ns/load
+RESULT line_4096_cyc 3.0 cycles/load
+RESULT line_4096_cv 0.4 %
+RESULT line_4096_lines 32 lines
+RESULT line_4096_pages 1 pages
+RESULT line_4096_end 23 node
+line 8 KiB (64 lines, 1 pages)           min        0.665  median        0.665  max        0.673  cv   0.3%  n 10  ns/load
+    cycles/load min 3.0  median 3.0  end node 45
+RESULT line_8192_ns 0.665 ns/load
+RESULT line_8192_median 0.665 ns/load
+RESULT line_8192_cyc 3.0 cycles/load
+RESULT line_8192_cv 0.3 %
+RESULT line_8192_lines 64 lines
+RESULT line_8192_pages 1 pages
+RESULT line_8192_end 45 node
+line 16 KiB (128 lines, 1 pages)         min        0.665  median        0.665  max        0.684  cv   0.8%  n 10  ns/load
+    cycles/load min 3.0  median 3.0  end node 29
+RESULT line_16384_ns 0.665 ns/load
+RESULT line_16384_median 0.665 ns/load
+RESULT line_16384_cyc 3.0 cycles/load
+RESULT line_16384_cv 0.8 %
+RESULT line_16384_lines 128 lines
+RESULT line_16384_pages 1 pages
+RESULT line_16384_end 29 node
+line 32 KiB (256 lines, 2 pages)         min        0.665  median        0.666  max        0.683  cv   0.8%  n 10  ns/load
+    cycles/load min 3.0  median 3.0  end node 69
+RESULT line_32768_ns 0.665 ns/load
+RESULT line_32768_median 0.666 ns/load
+RESULT line_32768_cyc 3.0 cycles/load
+RESULT line_32768_cv 0.8 %
+RESULT line_32768_lines 256 lines
+RESULT line_32768_pages 2 pages
+RESULT line_32768_end 69 node
+line 64 KiB (512 lines, 4 pages)         min        0.665  median        0.667  max        0.699  cv   1.5%  n 10  ns/load
+    cycles/load min 3.0  median 3.0  end node 35
+RESULT line_65536_ns 0.665 ns/load
+RESULT line_65536_median 0.667 ns/load
+RESULT line_65536_cyc 3.0 cycles/load
+RESULT line_65536_cv 1.5 %
+RESULT line_65536_lines 512 lines
+RESULT line_65536_pages 4 pages
+RESULT line_65536_end 35 node
+line 128 KiB (1024 lines, 8 pages)       min        0.666  median        0.686  max        0.728  cv   2.4%  n 10  ns/load
+    cycles/load min 3.0  median 3.1  end node 961
+RESULT line_131072_ns 0.666 ns/load
+RESULT line_131072_median 0.686 ns/load
+RESULT line_131072_cyc 3.0 cycles/load
+RESULT line_131072_cv 2.4 %
+RESULT line_131072_lines 1024 lines
+RESULT line_131072_pages 8 pages
+RESULT line_131072_end 961 node
+line 256 KiB (2048 lines, 16 pages)      min        6.167  median        6.288  max        6.825  cv   3.8%  n 10  ns/load
+    cycles/load min 27.7  median 28.2  end node 1261
+RESULT line_262144_ns 6.167 ns/load
+RESULT line_262144_median 6.288 ns/load
+RESULT line_262144_cyc 27.7 cycles/load
+RESULT line_262144_cv 3.8 %
+RESULT line_262144_lines 2048 lines
+RESULT line_262144_pages 16 pages
+RESULT line_262144_end 1261 node
+line 512 KiB (4096 lines, 32 pages)      min        5.927  median        6.049  max        6.141  cv   1.1%  n 10  ns/load
+    cycles/load min 26.6  median 27.2  end node 1905
+RESULT line_524288_ns 5.927 ns/load
+RESULT line_524288_median 6.049 ns/load
+RESULT line_524288_cyc 26.6 cycles/load
+RESULT line_524288_cv 1.1 %
+RESULT line_524288_lines 4096 lines
+RESULT line_524288_pages 32 pages
+RESULT line_524288_end 1905 node
+line 1 MiB (8192 lines, 64 pages)        min        5.947  median        6.069  max        6.143  cv   0.8%  n 10  ns/load
+    cycles/load min 26.7  median 27.2  end node 7642
+RESULT line_1048576_ns 5.947 ns/load
+RESULT line_1048576_median 6.069 ns/load
+RESULT line_1048576_cyc 26.7 cycles/load
+RESULT line_1048576_cv 0.8 %
+RESULT line_1048576_lines 8192 lines
+RESULT line_1048576_pages 64 pages
+RESULT line_1048576_end 7642 node
+line 2 MiB (16384 lines, 128 pages)      min        6.048  median        6.060  max        6.099  cv   0.3%  n 10  ns/load
+    cycles/load min 27.2  median 27.2  end node 10405
+RESULT line_2097152_ns 6.048 ns/load
+RESULT line_2097152_median 6.060 ns/load
+RESULT line_2097152_cyc 27.2 cycles/load
+RESULT line_2097152_cv 0.3 %
+RESULT line_2097152_lines 16384 lines
+RESULT line_2097152_pages 128 pages
+RESULT line_2097152_end 10405 node
+line 4 MiB (32768 lines, 256 pages)      min        7.224  median        7.263  max        7.429  cv   0.9%  n 10  ns/load
+    cycles/load min 32.4  median 32.6  end node 28819
+RESULT line_4194304_ns 7.224 ns/load
+RESULT line_4194304_median 7.263 ns/load
+RESULT line_4194304_cyc 32.4 cycles/load
+RESULT line_4194304_cv 0.9 %
+RESULT line_4194304_lines 32768 lines
+RESULT line_4194304_pages 256 pages
+RESULT line_4194304_end 28819 node
+line 8 MiB (65536 lines, 512 pages)      min        7.974  median        8.126  max        8.338  cv   1.4%  n 10  ns/load
+    cycles/load min 35.8  median 36.5  end node 12213
+RESULT line_8388608_ns 7.974 ns/load
+RESULT line_8388608_median 8.126 ns/load
+RESULT line_8388608_cyc 35.8 cycles/load
+RESULT line_8388608_cv 1.4 %
+RESULT line_8388608_lines 65536 lines
+RESULT line_8388608_pages 512 pages
+RESULT line_8388608_end 12213 node
+line 16 MiB (131072 lines, 1024 pages)   min       16.984  median       18.381  max       20.471  cv   6.9%  n 10  ns/load
+    cycles/load min 76.3  median 82.5  end node 62220
+RESULT line_16777216_ns 16.984 ns/load
+RESULT line_16777216_median 18.381 ns/load
+RESULT line_16777216_cyc 76.3 cycles/load
+RESULT line_16777216_cv 6.9 %
+RESULT line_16777216_lines 131072 lines
+RESULT line_16777216_pages 1024 pages
+RESULT line_16777216_end 62220 node
+line 32 MiB (262144 lines, 2048 pages)   min       60.041  median       64.005  max       67.561  cv   4.0%  n 10  ns/load
+    cycles/load min 269.6  median 287.4  end node 54273
+RESULT line_33554432_ns 60.041 ns/load
+RESULT line_33554432_median 64.005 ns/load
+RESULT line_33554432_cyc 269.6 cycles/load
+RESULT line_33554432_cv 4.0 %
+RESULT line_33554432_lines 262144 lines
+RESULT line_33554432_pages 2048 pages
+RESULT line_33554432_end 54273 node
+line 64 MiB (524288 lines, 4096 pages)   min      112.160  median      113.241  max      113.524  cv   0.4%  n 10  ns/load
+    cycles/load min 503.6  median 508.5  end node 56692
+RESULT line_67108864_ns 112.160 ns/load
+RESULT line_67108864_median 113.241 ns/load
+RESULT line_67108864_cyc 503.6 cycles/load
+RESULT line_67108864_cv 0.4 %
+RESULT line_67108864_lines 524288 lines
+RESULT line_67108864_pages 4096 pages
+RESULT line_67108864_end 56692 node
+line 128 MiB (1048576 lines, 8192 pages) min      117.349  median      117.665  max      117.789  cv   0.1%  n 10  ns/load
+    cycles/load min 526.9  median 528.3  end node 76195
+RESULT line_134217728_ns 117.349 ns/load
+RESULT line_134217728_median 117.665 ns/load
+RESULT line_134217728_cyc 526.9 cycles/load
+RESULT line_134217728_cv 0.1 %
+RESULT line_134217728_lines 1048576 lines
+RESULT line_134217728_pages 8192 pages
+RESULT line_134217728_end 76195 node
+line 256 MiB (2097152 lines, 16384 pages) min      120.041  median      120.294  max      120.460  cv   0.1%  n 10  ns/load
+    cycles/load min 539.0  median 540.1  end node 391132
+RESULT line_268435456_ns 120.041 ns/load
+RESULT line_268435456_median 120.294 ns/load
+RESULT line_268435456_cyc 539.0 cycles/load
+RESULT line_268435456_cv 0.1 %
+RESULT line_268435456_lines 2097152 lines
+RESULT line_268435456_pages 16384 pages
+RESULT line_268435456_end 391132 node
+line 512 MiB (4194304 lines, 32768 pages) min      121.492  median      122.559  max      123.046  cv   0.4%  n 10  ns/load
+    cycles/load min 545.5  median 550.3  end node 1674318
+RESULT line_536870912_ns 121.492 ns/load
+RESULT line_536870912_median 122.559 ns/load
+RESULT line_536870912_cyc 545.5 cycles/load
+RESULT line_536870912_cv 0.4 %
+RESULT line_536870912_lines 4194304 lines
+RESULT line_536870912_pages 32768 pages
+RESULT line_536870912_end 1674318 node
+line 1 GiB (8388608 lines, 65536 pages)  min      123.707  median      124.198  max      124.913  cv   0.3%  n 10  ns/load
+    cycles/load min 555.4  median 557.6  end node 2335962
+RESULT line_1073741824_ns 123.707 ns/load
+RESULT line_1073741824_median 124.198 ns/load
+RESULT line_1073741824_cyc 555.4 cycles/load
+RESULT line_1073741824_cv 0.3 %
+RESULT line_1073741824_lines 8388608 lines
+RESULT line_1073741824_pages 65536 pages
+RESULT line_1073741824_end 2335962 node
+
+page mode: one node per 16384 B page, line offsets shuffled and balanced over the 128 slots of a page
+page 512 KiB (32 lines, 32 pages)        min        0.665  median        0.671  max        0.688  cv   1.1%  n 10  ns/load
+    cycles/load min 3.0  median 3.0  end node 30
+RESULT page_524288_ns 0.665 ns/load
+RESULT page_524288_median 0.671 ns/load
+RESULT page_524288_cyc 3.0 cycles/load
+RESULT page_524288_cv 1.1 %
+RESULT page_524288_lines 32 lines
+RESULT page_524288_pages 32 pages
+RESULT page_524288_end 30 node
+page 1 MiB (64 lines, 64 pages)          min        0.665  median        0.667  max        0.673  cv   0.4%  n 10  ns/load
+    cycles/load min 3.0  median 3.0  end node 2
+RESULT page_1048576_ns 0.665 ns/load
+RESULT page_1048576_median 0.667 ns/load
+RESULT page_1048576_cyc 3.0 cycles/load
+RESULT page_1048576_cv 0.4 %
+RESULT page_1048576_lines 64 lines
+RESULT page_1048576_pages 64 pages
+RESULT page_1048576_end 2 node
+page 2 MiB (128 lines, 128 pages)        min        0.665  median        0.669  max        0.672  cv   0.3%  n 10  ns/load
+    cycles/load min 3.0  median 3.0  end node 15
+RESULT page_2097152_ns 0.665 ns/load
+RESULT page_2097152_median 0.669 ns/load
+RESULT page_2097152_cyc 3.0 cycles/load
+RESULT page_2097152_cv 0.3 %
+RESULT page_2097152_lines 128 lines
+RESULT page_2097152_pages 128 pages
+RESULT page_2097152_end 15 node
+page 4 MiB (256 lines, 256 pages)        min        2.010  median        2.015  max        2.064  cv   0.8%  n 10  ns/load
+    cycles/load min 9.0  median 9.0  end node 157
+RESULT page_4194304_ns 2.010 ns/load
+RESULT page_4194304_median 2.015 ns/load
+RESULT page_4194304_cyc 9.0 cycles/load
+RESULT page_4194304_cv 0.8 %
+RESULT page_4194304_lines 256 lines
+RESULT page_4194304_pages 256 pages
+RESULT page_4194304_end 157 node
+page 8 MiB (512 lines, 512 pages)        min        2.019  median        2.025  max        2.080  cv   1.0%  n 10  ns/load
+    cycles/load min 9.1  median 9.1  end node 255
+RESULT page_8388608_ns 2.019 ns/load
+RESULT page_8388608_median 2.025 ns/load
+RESULT page_8388608_cyc 9.1 cycles/load
+RESULT page_8388608_cv 1.0 %
+RESULT page_8388608_lines 512 lines
+RESULT page_8388608_pages 512 pages
+RESULT page_8388608_end 255 node
+page 16 MiB (1024 lines, 1024 pages)     min        2.105  median        2.108  max        2.157  cv   0.7%  n 10  ns/load
+    cycles/load min 9.5  median 9.5  end node 992
+RESULT page_16777216_ns 2.105 ns/load
+RESULT page_16777216_median 2.108 ns/load
+RESULT page_16777216_cyc 9.5 cycles/load
+RESULT page_16777216_cv 0.7 %
+RESULT page_16777216_lines 1024 lines
+RESULT page_16777216_pages 1024 pages
+RESULT page_16777216_end 992 node
+page 32 MiB (2048 lines, 2048 pages)     min        6.115  median        6.170  max        6.243  cv   0.8%  n 10  ns/load
+    cycles/load min 27.5  median 27.7  end node 1864
+RESULT page_33554432_ns 6.115 ns/load
+RESULT page_33554432_median 6.170 ns/load
+RESULT page_33554432_cyc 27.5 cycles/load
+RESULT page_33554432_cv 0.8 %
+RESULT page_33554432_lines 2048 lines
+RESULT page_33554432_pages 2048 pages
+RESULT page_33554432_end 1864 node
+page 64 MiB (4096 lines, 4096 pages)     min       14.029  median       14.312  max       14.811  cv   1.3%  n 10  ns/load
+    cycles/load min 63.0  median 64.3  end node 1740
+RESULT page_67108864_ns 14.029 ns/load
+RESULT page_67108864_median 14.312 ns/load
+RESULT page_67108864_cyc 63.0 cycles/load
+RESULT page_67108864_cv 1.3 %
+RESULT page_67108864_lines 4096 lines
+RESULT page_67108864_pages 4096 pages
+RESULT page_67108864_end 1740 node
+page 128 MiB (8192 lines, 8192 pages)    min       14.740  median       14.862  max       15.072  cv   0.7%  n 10  ns/load
+    cycles/load min 66.2  median 66.7  end node 4287
+RESULT page_134217728_ns 14.740 ns/load
+RESULT page_134217728_median 14.862 ns/load
+RESULT page_134217728_cyc 66.2 cycles/load
+RESULT page_134217728_cv 0.7 %
+RESULT page_134217728_lines 8192 lines
+RESULT page_134217728_pages 8192 pages
+RESULT page_134217728_end 4287 node
+page 256 MiB (16384 lines, 16384 pages)  min       15.031  median       15.149  max       15.532  cv   1.1%  n 10  ns/load
+    cycles/load min 67.5  median 68.0  end node 915
+RESULT page_268435456_ns 15.031 ns/load
+RESULT page_268435456_median 15.149 ns/load
+RESULT page_268435456_cyc 67.5 cycles/load
+RESULT page_268435456_cv 1.1 %
+RESULT page_268435456_lines 16384 lines
+RESULT page_268435456_pages 16384 pages
+RESULT page_268435456_end 915 node
+page 512 MiB (32768 lines, 32768 pages)  min       15.050  median       15.272  max       15.415  cv   0.7%  n 10  ns/load
+    cycles/load min 67.6  median 68.6  end node 8486
+RESULT page_536870912_ns 15.050 ns/load
+RESULT page_536870912_median 15.272 ns/load
+RESULT page_536870912_cyc 67.6 cycles/load
+RESULT page_536870912_cv 0.7 %
+RESULT page_536870912_lines 32768 lines
+RESULT page_536870912_pages 32768 pages
+RESULT page_536870912_end 8486 node
+page 1 GiB (65536 lines, 65536 pages)    min       15.760  median       16.164  max       16.692  cv   2.0%  n 10  ns/load
+    cycles/load min 70.8  median 72.6  end node 13333
+RESULT page_1073741824_ns 15.760 ns/load
+RESULT page_1073741824_median 16.164 ns/load
+RESULT page_1073741824_cyc 70.8 cycles/load
+RESULT page_1073741824_cv 2.0 %
+RESULT page_1073741824_lines 65536 lines
+RESULT page_1073741824_pages 65536 pages
+RESULT page_1073741824_end 13333 node
+DONE

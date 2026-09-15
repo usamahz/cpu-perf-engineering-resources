@@ -1,0 +1,2 @@
+# QUICK=1 ./run.sh smoke-test output; only raw.txt and summary.md are committed
+quick-*

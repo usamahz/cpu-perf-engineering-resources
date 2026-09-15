@@ -1,0 +1,189 @@
+date: 2026-09-15T09:39:47Z
+os: Darwin 25.2.0 arm64
+macos: 26.2 (25C56)
+cpu: Apple M4 Pro
+logical cpus: 14
+performance cores: 10  efficiency cores: 4  smt: none
+P-core L1d: 131072 B  L2 (shared per cluster of 5): 16777216 B
+E-core L1d: 65536 B  L2 (shared per cluster of 4): 4194304 B
+cache line: 128 B  page: 16384 B  memory: 24 GiB
+isa features: CRC32 FlagM FlagM2 FHM DotProd SHA3 RDM LSE SHA256 SHA512 SHA1 AES PMULL SB FRINTTS PACIMP LRCPC LRCPC2 FCMA JSCVT PAuth PAuth2 FPAC FPACCOMBINE DPB DPB2 BF16 I8MM WFxT RPRES ECV AFP LSE2 CSV2 CSV3 DIT FP16 BTI SME SME2 SME_F64F64 SME_I16I64 
+power: 'AC Power'
+load average at start: 11.55 8.77 8.24
+frequency: not published by the vendor for this part; see estimated clock below
+compiler: Apple clang version 17.0.0 (clang-1700.4.4.1)
+load average: 11.55 8.77 8.24
+swap: total = 13312.00M  used = 12138.06M  free = 1173.94M  (encrypted)
+memory: free 446 MB  compressor 11642 MB
+estimated clock: 4.49 GHz (dependent 1-cycle add chain, 400000000 adds, min of 7 runs)
+bench: QUICK=0 REPS=default WARMUP_MS=default ARRAY_MIB=default VENDOR_GBS=default CLOCK_GHZ=4.49
+---
+arrays 3 x 536870912 bytes (512 MiB each, 67108864 float64)  cache case 3 x 1048576 bytes (1 MiB each) per thread, 512 passes per round  reps 21 timed rounds after at least 100 ms and 3 discarded warmup rounds  online cpus 14  scalar 3.0  vendor 273 GB/s  clock 4.49 GHz
+bytes counted per element: 24 (read b, read c, write a); GB/s is decimal, bytes per nanosecond
+RESULT array_bytes 536870912 bytes
+RESULT cache_array_bytes 1048576 bytes
+RESULT cache_passes 512 passes
+RESULT bytes_per_element 24 bytes
+RESULT reps 21 rounds
+RESULT warmup_ms 100 ms
+RESULT warmup_min_rounds 3 rounds
+RESULT late_percent 20 percent
+RESULT online_cpus 14 cpus
+RESULT vendor_bandwidth 273 GB/s
+RESULT clock 4.49 GHz
+triad 1 MiB/array/thread t1 (L2)         min      122.101  median      123.210  max      129.797  cv   1.3%  n 21  GB/s
+  fastest thread median 123.21 GB/s  slowest thread median 123.21 GB/s  warmup rounds discarded 6  rounds with a late thread 0
+RESULT triad_1MiB_t1_median 123.21 GB/s
+RESULT triad_1MiB_t1_best 129.80 GB/s
+RESULT triad_1MiB_t1_min 122.10 GB/s
+RESULT triad_1MiB_t1_cv 1.3 percent
+RESULT triad_1MiB_t1_fastest_thread 123.21 GB/s
+RESULT triad_1MiB_t1_slowest_thread 123.21 GB/s
+RESULT triad_1MiB_t1_fraction 0.451 of_vendor
+RESULT triad_1MiB_t1_scaling 1.00 x_one_thread
+RESULT triad_1MiB_t1_warmups 6 rounds
+RESULT triad_1MiB_t1_late_rounds 0 rounds
+RESULT triad_1MiB_t1_checksum 268173312 ok
+triad 1 MiB/array/thread t2 (L2)         min      234.669  median      238.097  max      247.143  cv   1.1%  n 21  GB/s
+  fastest thread median 119.08 GB/s  slowest thread median 119.05 GB/s  warmup rounds discarded 8  rounds with a late thread 0
+RESULT triad_1MiB_t2_median 238.10 GB/s
+RESULT triad_1MiB_t2_best 247.14 GB/s
+RESULT triad_1MiB_t2_min 234.67 GB/s
+RESULT triad_1MiB_t2_cv 1.1 percent
+RESULT triad_1MiB_t2_fastest_thread 119.08 GB/s
+RESULT triad_1MiB_t2_slowest_thread 119.05 GB/s
+RESULT triad_1MiB_t2_fraction 0.872 of_vendor
+RESULT triad_1MiB_t2_scaling 1.93 x_one_thread
+RESULT triad_1MiB_t2_warmups 8 rounds
+RESULT triad_1MiB_t2_late_rounds 0 rounds
+RESULT triad_1MiB_t2_checksum 536346624 ok
+triad 1 MiB/array/thread t4 (L2)         min      441.416  median      458.535  max      466.902  cv   1.1%  n 21  GB/s
+  fastest thread median 138.67 GB/s  slowest thread median 114.63 GB/s  warmup rounds discarded 8  rounds with a late thread 0
+RESULT triad_1MiB_t4_median 458.53 GB/s
+RESULT triad_1MiB_t4_best 466.90 GB/s
+RESULT triad_1MiB_t4_min 441.42 GB/s
+RESULT triad_1MiB_t4_cv 1.1 percent
+RESULT triad_1MiB_t4_fastest_thread 138.67 GB/s
+RESULT triad_1MiB_t4_slowest_thread 114.63 GB/s
+RESULT triad_1MiB_t4_fraction 1.680 of_vendor
+RESULT triad_1MiB_t4_scaling 3.72 x_one_thread
+RESULT triad_1MiB_t4_warmups 8 rounds
+RESULT triad_1MiB_t4_late_rounds 0 rounds
+RESULT triad_1MiB_t4_checksum 1072693248 ok
+triad 1 MiB/array/thread t8 (L2)         min      668.620  median      691.884  max      715.052  cv   1.7%  n 21  GB/s
+  fastest thread median 106.42 GB/s  slowest thread median 86.49 GB/s  warmup rounds discarded 6  rounds with a late thread 0
+RESULT triad_1MiB_t8_median 691.88 GB/s
+RESULT triad_1MiB_t8_best 715.05 GB/s
+RESULT triad_1MiB_t8_min 668.62 GB/s
+RESULT triad_1MiB_t8_cv 1.7 percent
+RESULT triad_1MiB_t8_fastest_thread 106.42 GB/s
+RESULT triad_1MiB_t8_slowest_thread 86.49 GB/s
+RESULT triad_1MiB_t8_fraction 2.534 of_vendor
+RESULT triad_1MiB_t8_scaling 5.62 x_one_thread
+RESULT triad_1MiB_t8_warmups 6 rounds
+RESULT triad_1MiB_t8_late_rounds 0 rounds
+RESULT triad_1MiB_t8_checksum 2145386496 ok
+triad 1 MiB/array/thread t10 (L2)        min      707.016  median      776.906  max      844.362  cv   5.0%  n 21  GB/s
+  fastest thread median 92.68 GB/s  slowest thread median 77.69 GB/s  warmup rounds discarded 5  rounds with a late thread 0
+RESULT triad_1MiB_t10_median 776.91 GB/s
+RESULT triad_1MiB_t10_best 844.36 GB/s
+RESULT triad_1MiB_t10_min 707.02 GB/s
+RESULT triad_1MiB_t10_cv 5.0 percent
+RESULT triad_1MiB_t10_fastest_thread 92.68 GB/s
+RESULT triad_1MiB_t10_slowest_thread 77.69 GB/s
+RESULT triad_1MiB_t10_fraction 2.846 of_vendor
+RESULT triad_1MiB_t10_scaling 6.31 x_one_thread
+RESULT triad_1MiB_t10_warmups 5 rounds
+RESULT triad_1MiB_t10_late_rounds 0 rounds
+RESULT triad_1MiB_t10_checksum 2681733120 ok
+triad 512 MiB/array t1                   min       80.480  median      119.229  max      124.080  cv   7.9%  n 21  GB/s
+  fastest thread median 119.23 GB/s  slowest thread median 119.23 GB/s  warmup rounds discarded 3  rounds with a late thread 0
+RESULT triad_512MiB_t1_median 119.23 GB/s
+RESULT triad_512MiB_t1_best 124.08 GB/s
+RESULT triad_512MiB_t1_min 80.48 GB/s
+RESULT triad_512MiB_t1_cv 7.9 percent
+RESULT triad_512MiB_t1_fastest_thread 119.23 GB/s
+RESULT triad_512MiB_t1_slowest_thread 119.23 GB/s
+RESULT triad_512MiB_t1_fraction 0.437 of_vendor
+RESULT triad_512MiB_t1_scaling 1.00 x_one_thread
+RESULT triad_512MiB_t1_warmups 3 rounds
+RESULT triad_512MiB_t1_late_rounds 0 rounds
+RESULT triad_512MiB_t1_checksum 137304735744 ok
+triad 512 MiB/array t2                   min      193.246  median      214.210  max      216.611  cv   2.2%  n 21  GB/s
+  fastest thread median 107.75 GB/s  slowest thread median 107.11 GB/s  warmup rounds discarded 12  rounds with a late thread 0
+RESULT triad_512MiB_t2_median 214.21 GB/s
+RESULT triad_512MiB_t2_best 216.61 GB/s
+RESULT triad_512MiB_t2_min 193.25 GB/s
+RESULT triad_512MiB_t2_cv 2.2 percent
+RESULT triad_512MiB_t2_fastest_thread 107.75 GB/s
+RESULT triad_512MiB_t2_slowest_thread 107.11 GB/s
+RESULT triad_512MiB_t2_fraction 0.785 of_vendor
+RESULT triad_512MiB_t2_scaling 1.80 x_one_thread
+RESULT triad_512MiB_t2_warmups 12 rounds
+RESULT triad_512MiB_t2_late_rounds 0 rounds
+RESULT triad_512MiB_t2_checksum 137304735744 ok
+triad 512 MiB/array t4                   min      205.671  median      223.664  max      227.799  cv   2.0%  n 21  GB/s
+  fastest thread median 56.55 GB/s  slowest thread median 55.92 GB/s  warmup rounds discarded 13  rounds with a late thread 0
+RESULT triad_512MiB_t4_median 223.66 GB/s
+RESULT triad_512MiB_t4_best 227.80 GB/s
+RESULT triad_512MiB_t4_min 205.67 GB/s
+RESULT triad_512MiB_t4_cv 2.0 percent
+RESULT triad_512MiB_t4_fastest_thread 56.55 GB/s
+RESULT triad_512MiB_t4_slowest_thread 55.92 GB/s
+RESULT triad_512MiB_t4_fraction 0.819 of_vendor
+RESULT triad_512MiB_t4_scaling 1.88 x_one_thread
+RESULT triad_512MiB_t4_warmups 13 rounds
+RESULT triad_512MiB_t4_late_rounds 0 rounds
+RESULT triad_512MiB_t4_checksum 137304735744 ok
+triad 512 MiB/array t8                   min      219.086  median      225.807  max      228.996  cv   1.2%  n 21  GB/s
+  fastest thread median 28.37 GB/s  slowest thread median 28.23 GB/s  warmup rounds discarded 14  rounds with a late thread 0
+RESULT triad_512MiB_t8_median 225.81 GB/s
+RESULT triad_512MiB_t8_best 229.00 GB/s
+RESULT triad_512MiB_t8_min 219.09 GB/s
+RESULT triad_512MiB_t8_cv 1.2 percent
+RESULT triad_512MiB_t8_fastest_thread 28.37 GB/s
+RESULT triad_512MiB_t8_slowest_thread 28.23 GB/s
+RESULT triad_512MiB_t8_fraction 0.827 of_vendor
+RESULT triad_512MiB_t8_scaling 1.89 x_one_thread
+RESULT triad_512MiB_t8_warmups 14 rounds
+RESULT triad_512MiB_t8_late_rounds 0 rounds
+RESULT triad_512MiB_t8_checksum 137304735744 ok
+triad 512 MiB/array t10                  min      221.923  median      225.540  max      229.286  cv   0.8%  n 21  GB/s
+  fastest thread median 22.65 GB/s  slowest thread median 22.55 GB/s  warmup rounds discarded 14  rounds with a late thread 0
+RESULT triad_512MiB_t10_median 225.54 GB/s
+RESULT triad_512MiB_t10_best 229.29 GB/s
+RESULT triad_512MiB_t10_min 221.92 GB/s
+RESULT triad_512MiB_t10_cv 0.8 percent
+RESULT triad_512MiB_t10_fastest_thread 22.65 GB/s
+RESULT triad_512MiB_t10_slowest_thread 22.55 GB/s
+RESULT triad_512MiB_t10_fraction 0.826 of_vendor
+RESULT triad_512MiB_t10_scaling 1.89 x_one_thread
+RESULT triad_512MiB_t10_warmups 14 rounds
+RESULT triad_512MiB_t10_late_rounds 0 rounds
+RESULT triad_512MiB_t10_checksum 137304735744 ok
+triad 512 MiB/array t14                  min      117.051  median      149.446  max      182.487  cv  10.5%  n 21  GB/s
+  fastest thread median 20.63 GB/s  slowest thread median 10.68 GB/s  warmup rounds discarded 7  rounds with a late thread 0
+RESULT triad_512MiB_t14_median 149.45 GB/s
+RESULT triad_512MiB_t14_best 182.49 GB/s
+RESULT triad_512MiB_t14_min 117.05 GB/s
+RESULT triad_512MiB_t14_cv 10.5 percent
+RESULT triad_512MiB_t14_fastest_thread 20.63 GB/s
+RESULT triad_512MiB_t14_slowest_thread 10.68 GB/s
+RESULT triad_512MiB_t14_fraction 0.547 of_vendor
+RESULT triad_512MiB_t14_scaling 1.25 x_one_thread
+RESULT triad_512MiB_t14_warmups 7 rounds
+RESULT triad_512MiB_t14_late_rounds 0 rounds
+RESULT triad_512MiB_t14_checksum 137304735744 ok
+triad 1 MiB/array/thread t1 (L2) again   min      119.686  median      120.377  max      124.262  cv   0.9%  n 21  GB/s
+  fastest thread median 120.38 GB/s  slowest thread median 120.38 GB/s  warmup rounds discarded 8  rounds with a late thread 0
+RESULT triad_1MiB_t1_again_median 120.38 GB/s
+RESULT triad_1MiB_t1_again_best 124.26 GB/s
+RESULT triad_1MiB_t1_again_min 119.69 GB/s
+RESULT triad_1MiB_t1_again_cv 0.9 percent
+RESULT triad_1MiB_t1_again_fastest_thread 120.38 GB/s
+RESULT triad_1MiB_t1_again_slowest_thread 120.38 GB/s
+RESULT triad_1MiB_t1_again_fraction 0.441 of_vendor
+RESULT triad_1MiB_t1_again_warmups 8 rounds
+RESULT triad_1MiB_t1_again_late_rounds 0 rounds
+RESULT triad_1MiB_t1_again_checksum 268173312 ok
+checksums: every configuration produced the reference sum of a
