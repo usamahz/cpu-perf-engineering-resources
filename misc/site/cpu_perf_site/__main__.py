@@ -3,12 +3,23 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
 from . import SITE_ROOT
 from .config import load_config
 from .data import load_site
+
+
+def built_base_url(out: Path) -> str | None:
+    """The base URL a site was built for, from its home page's canonical link,
+    so check compares against the URLs the build actually wrote."""
+    home = out / "index.html"
+    if not home.is_file():
+        return None
+    m = re.search(r'<link rel="canonical" href="([^"]+)"', home.read_text(encoding="utf-8"))
+    return m.group(1).rstrip("/") if m else None
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -23,8 +34,10 @@ def main(argv: list[str] | None = None) -> int:
     sub.choices["check"].add_argument("--strict", action="store_true", help="treat warnings as failures")
     args = ap.parse_args(argv)
 
-    config = load_config(args.base_url)
     data, out = Path(args.data), Path(args.out)
+    if args.cmd == "check" and args.base_url is None:
+        args.base_url = built_base_url(out)
+    config = load_config(args.base_url)
 
     if args.cmd in ("build", "serve"):
         from .pages import Builder

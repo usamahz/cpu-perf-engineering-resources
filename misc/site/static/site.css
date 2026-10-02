@@ -602,6 +602,7 @@ a.record-title:hover { color: var(--primary); }
 .mcp-status dl > div { background: var(--ink); padding: 0.875rem 1rem; }
 .mcp-status dt { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary-on-ink); }
 .mcp-status dd { margin-top: 0.25rem; font-family: var(--font-mono); font-size: 1.125rem; font-variant-numeric: tabular-nums; }
+@media (max-width: 479px) { .mcp-status dl { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .mcp-body { margin-top: 2.5rem; display: grid; gap: 4rem; }
 .mcp-body .knows { max-width: 48rem; margin-top: 0.75rem; }
 .flow-6 { margin-top: 1.5rem; }
