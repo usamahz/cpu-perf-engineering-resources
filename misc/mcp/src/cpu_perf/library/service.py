@@ -346,7 +346,10 @@ class LibraryService:
             with self._url_locks_guard:
                 job = self._inflight.get(base)
                 if job is None or job.done():
-                    job = self._pool.submit(self._fetch_now, base, entry_ids)
+                    try:
+                        job = self._pool.submit(self._fetch_now, base, entry_ids)
+                    except RuntimeError:  # the process is exiting and its pools are shut down
+                        return row
                     self._inflight[base] = job
             try:
                 job.result(timeout=self.live_wait)

@@ -34,17 +34,17 @@ def test_vectors_are_appended_and_reloaded_only_after_deletes(tmp_path, monkeypa
     add(store, "https://a.example/one", ["first passage", "second passage"], emb)
     ids, mat = store.vector_matrix()
     assert len(ids) == 2 and str(mat.dtype) == "int8"
-    loaded = store._vectors["loaded_at"]
+    assert store.vector_loads == 1
     add(store, "https://a.example/two", ["third passage"], emb)
     ids, _ = store.vector_matrix()
-    assert len(ids) == 3 and store._vectors["loaded_at"] == loaded  # appended, not reloaded
+    assert len(ids) == 3 and store.vector_loads == 1  # appended, not reloaded
     # a refresh deletes vectors: a full reload, but not sooner than the gap allows
     add(store, "https://a.example/one", ["first passage again"], emb)
     ids, _ = store.vector_matrix()
-    assert store._vectors["loaded_at"] == loaded and len(ids) == 4  # stale ids are harmless meanwhile
+    assert store.vector_loads == 1 and len(ids) == 4  # stale ids are harmless meanwhile
     monkeypatch.setattr(Store, "FULL_RELOAD_GAP", 0.0)
     ids, _ = store.vector_matrix()
-    assert store._vectors["loaded_at"] > loaded and len(ids) == 2
+    assert store.vector_loads == 2 and len(ids) == 2
     sims = Store.similarities(store.vector_matrix()[1], emb.encode(["third passage"])[0])
     assert sims.shape == (2,)
 
