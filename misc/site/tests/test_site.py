@@ -62,6 +62,19 @@ class Anchors(unittest.TestCase):
             self.assertEqual(slugify(h), check_format.github_anchor(h), h)
 
 
+class GitHubAnchors(unittest.TestCase):
+    def test_both_heading_formats(self):
+        script = load_module(SITE / "scripts" / "check_github_anchors.py", "check_github_anchors")
+        new = ('<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto">'
+               '4. Memory hierarchy</h2><a id="user-content-4-memory-hierarchy" class="anchor" '
+               'aria-label="Permalink: 4. Memory hierarchy" href="#4-memory-hierarchy"><span aria-hidden="true" '
+               'class="octicon octicon-link"></span></a></div>')
+        old = ('<h3><a id="user-content-tlbs-page-walks-and-prefetchers" class="anchor" aria-hidden="true" '
+               'href="#tlbs-page-walks-and-prefetchers"><svg></svg></a>TLBs, page walks and prefetchers</h3>')
+        self.assertEqual(script.anchors_in(new + old), {"4-memory-hierarchy", "tlbs-page-walks-and-prefetchers"})
+        self.assertEqual(script.anchors_in("<h2>Comment heading</h2>"), set())
+
+
 class Paths(unittest.TestCase):
     def setUp(self):
         self.links = Links("https://github.com/o/r", COMMIT, {"tlbs": "/learn/memory/#tlbs"}, {"connect-it": "/mcp/quickstart/"})
