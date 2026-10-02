@@ -5,7 +5,7 @@
   <div class="container-lab hero-grid">
     <div>
       {{ m.eyebrow(copy.home.eyebrow) }}
-      <h1 class="hero-title">{{ copy.home.heading }}</h1>
+      <h1 class="hero-title" id="{{ site.title_anchor }}">{{ copy.home.heading }}</h1>
       <p class="hero-lede">{{ site.intro.lede_html | safe }}</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="/mcp/quickstart/">{{ copy.home.cta_connect }}</a>

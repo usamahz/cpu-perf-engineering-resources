@@ -78,7 +78,7 @@
       {{ extras("reproduce") }}
       <details class="raw">
         <summary>{{ copy.benchmarks.machine_raw }}</summary>
-        <pre><code>{{ b.raw_header_text }}</code></pre>
+        <pre tabindex="0"><code>{{ b.raw_header_text }}</code></pre>
       </details>
       <ul class="file-links">
         {% for key, label in [("code", b.files.code.rsplit('/', 1)[-1]), ("build", "build.sh"), ("run", "run.sh"), ("raw", "results/raw.txt"), ("summary", "results/summary.md"), ("readme", "README.md")] if key in b.file_urls %}

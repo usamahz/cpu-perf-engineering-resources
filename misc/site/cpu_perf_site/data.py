@@ -332,6 +332,7 @@ class Site:
         self.corpus = corpus
         self.seven_fields = [f[:1].upper() + f[1:] for f in corpus["seven_fields"]]
 
+        self.title_anchor = next((h[3] for h in corpus["headings"] if h[1] == 1), "")
         anchors = self._readme_anchors(corpus)
         self.anchors = anchors
         from .mcp import ANCHOR_PAGES

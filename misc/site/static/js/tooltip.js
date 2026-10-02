@@ -29,4 +29,9 @@ for (const chart of document.querySelectorAll(".chart")) {
     });
   });
 }
-addEventListener("scroll", hide, { passive: true });
+// Focusing a mark scrolls it into view; keep its tooltip with it.
+addEventListener("scroll", () => {
+  const a = document.activeElement;
+  if (a && a.classList && a.classList.contains("mark")) show(a);
+  else hide();
+}, { passive: true });

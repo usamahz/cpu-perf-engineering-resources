@@ -20,3 +20,4 @@ misc/mcp/uv.lock
 misc/site/build/
 misc/site/dist/
 misc/site/test-results/
+misc/site/*.egg-info/

@@ -552,7 +552,7 @@ def render_table(chart: Chart) -> str:
         if has_range:
             cells += [num(p.low) if p.low is not None else "", num(p.high) if p.high is not None else ""]
         rows.append("<tr>" + "".join(f"<td>{esc(v)}</td>" for v in cells) + f"<td><code>{esc(p.key)}</code></td></tr>")
-    return ('<div class="table-wrap"><table class="data"><thead><tr>'
+    return ('<div class="table-wrap" tabindex="0"><table class="data"><thead><tr>'
             + "".join(f'<th scope="col">{esc(h)}</th>' for h in head)
             + "</tr></thead><tbody>" + "".join(rows) + "</tbody></table></div>")
 
@@ -568,7 +568,7 @@ def render_ref_table(chart: Chart) -> str:
             ref_label(chart, r).replace(ref_value(chart, r), "").strip(" ,:") or ref_label(chart, r),
             ref_value(chart, r), r.source]
         rows.append("<tr>" + "".join(f"<td>{esc(v)}</td>" for v in cells) + "</tr>")
-    return ('<div class="table-wrap"><table class="data refs"><thead><tr>'
+    return ('<div class="table-wrap" tabindex="0"><table class="data refs"><thead><tr>'
             + "".join(f'<th scope="col">{esc(h)}</th>' for h in head)
             + "</tr></thead><tbody>" + "".join(rows) + "</tbody></table></div>")
 

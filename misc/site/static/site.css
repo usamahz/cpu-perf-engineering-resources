@@ -31,6 +31,7 @@
   --grid: oklch(0.91 0.01 80);
   --ink: oklch(0.22 0.01 60);
   --ink-foreground: oklch(0.93 0.01 80);
+  --primary-on-ink: oklch(0.74 0.13 58);
   /* Chart series, in fixed order; validated for colour-vision deficiency
      and contrast against the card surface (scripts in the dataviz notes). */
   --viz-1: #006aa0;
@@ -222,12 +223,13 @@ table { border-collapse: collapse; }
 .num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
 .ink-band { margin-top: 5rem; border-block-width: 1px; background: var(--ink); color: var(--ink-foreground); }
 .ink-band .container-lab { display: grid; gap: 2.5rem; padding-block: 4rem; }
-.ink-band .label-mono { color: var(--primary); }
+.ink-band .label-mono, .ink-band .link-primary { color: var(--primary-on-ink); }
 .ink-band .lede { margin-top: 1rem; opacity: 0.8; }
 .ink-band .lede a { text-decoration: underline; }
 .ink-band .h2 q { quotes: "\201C" "\201D"; }
 @media (min-width: 1024px) { .ink-band .container-lab { grid-template-columns: 1fr 1.2fr; } }
 .two-col { display: grid; gap: 2.5rem; }
+.two-col > *, .lab-notes > *, .mcp-body > *, .ink-band .container-lab > *, .featured-grid > *, .mcp-hero .container-lab > * { min-width: 0; }
 @media (min-width: 1024px) { .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .rule-list { margin-top: 1.5rem; border-block-width: 1px; }
 .rule-list > li { display: flex; gap: 1rem; padding-block: 0.625rem; border-top-width: 1px; }
@@ -563,7 +565,7 @@ a.record-title:hover { color: var(--primary); }
 /* ---- MCP ----------------------------------------------------------------- */
 .mcp-hero { border-bottom-width: 1px; background: var(--ink); color: var(--ink-foreground); }
 .mcp-hero .container-lab { display: grid; gap: 2.5rem; padding-block: 3.5rem; }
-.mcp-hero .label-mono { color: var(--primary); }
+.mcp-hero .label-mono { color: var(--primary-on-ink); }
 .mcp-hero h1 { margin-top: 0.75rem; font-size: 2.25rem; line-height: 1.1; font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
 .mcp-hero .lede { margin-top: 1.25rem; max-width: 36rem; font-size: 1.125rem; line-height: 1.75rem; opacity: 0.8; }
 .mcp-hero .ctas { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
@@ -571,7 +573,7 @@ a.record-title:hover { color: var(--primary); }
 @media (min-width: 1024px) { .mcp-hero .container-lab { grid-template-columns: 1fr 1fr; align-items: center; } }
 .layers { display: grid; gap: 1px; overflow: hidden; border: 1px solid color-mix(in oklch, var(--ink-foreground) 15%, transparent); border-radius: var(--radius); background: color-mix(in oklch, var(--ink-foreground) 15%, transparent); }
 .layers > div { background: var(--ink); padding: 1.25rem; }
-.layers dt { font-family: var(--font-mono); font-size: 0.75rem; color: var(--primary); }
+.layers dt { font-family: var(--font-mono); font-size: 0.75rem; color: var(--primary-on-ink); }
 .layers dd { margin-top: 0.25rem; font-size: 0.875rem; line-height: 1.4; opacity: 0.8; }
 .layers dd.t { font-weight: 500; font-size: 1rem; opacity: 1; }
 .layers > div.on { box-shadow: inset 0 0 0 1px var(--primary); }
@@ -598,7 +600,7 @@ a.record-title:hover { color: var(--primary); }
 .mcp-status { display: grid; gap: 1rem; align-content: start; }
 .mcp-status dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; overflow: hidden; border: 1px solid color-mix(in oklch, var(--ink-foreground) 15%, transparent); border-radius: var(--radius); background: color-mix(in oklch, var(--ink-foreground) 15%, transparent); }
 .mcp-status dl > div { background: var(--ink); padding: 0.875rem 1rem; }
-.mcp-status dt { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
+.mcp-status dt { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary-on-ink); }
 .mcp-status dd { margin-top: 0.25rem; font-family: var(--font-mono); font-size: 1.125rem; font-variant-numeric: tabular-nums; }
 .mcp-body { margin-top: 2.5rem; display: grid; gap: 4rem; }
 .mcp-body .knows { max-width: 48rem; margin-top: 0.75rem; }
@@ -663,6 +665,10 @@ a.record-title:hover { color: var(--primary); }
 
 /* ---- search -------------------------------------------------------------- */
 .search-box { margin-top: 0.5rem; height: 2.75rem; width: 100%; border-width: 1px; border-radius: var(--r-sm); background: var(--card); padding: 0 0.75rem; font-family: var(--font-mono); font-size: 0.875rem; }
+.search-status { margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted-foreground); }
+.notice-inline { margin-top: 1rem; font-size: 0.875rem; color: var(--muted-foreground); }
+.results:empty { border-width: 0; }
+.results .entry-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
 .results { margin-top: 1rem; border-block-width: 1px; }
 .results > li { padding-block: 0.75rem; border-top-width: 1px; }
 .results > li:first-child { border-top-width: 0; }

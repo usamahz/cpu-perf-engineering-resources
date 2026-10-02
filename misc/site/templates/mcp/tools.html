@@ -23,7 +23,7 @@
         <p class="tool-desc">{{ t.get("description") | squash }}</p>
         {% set params = mv.params(t) %}
         {% if params %}
-        <div class="table-wrap"><table class="param-table">
+        <div class="table-wrap" tabindex="0"><table class="param-table">
           <thead><tr><th scope="col">{{ copy.mcp.param }}</th><th scope="col">{{ copy.mcp.type }}</th><th scope="col">{{ copy.mcp.get("description") }}</th></tr></thead>
           <tbody>
           {% for prm in params %}

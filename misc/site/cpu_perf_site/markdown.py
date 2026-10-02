@@ -22,7 +22,7 @@ class Markdown:
         self.links = links
         md = MarkdownIt("commonmark", {"html": False, "linkify": False, "typographer": False})
         md.enable("table")
-        md.add_render_rule("table_open", lambda *a, **k: '<div class="table-wrap"><table>\n')
+        md.add_render_rule("table_open", lambda *a, **k: '<div class="table-wrap" tabindex="0"><table>\n')
         md.add_render_rule("table_close", lambda *a, **k: "</table></div>\n")
         self.md = md
 
@@ -54,7 +54,8 @@ class Markdown:
                     tok.attrSet("id", id_prefix + (slug if n == 0 else f"{slug}-{n}"))
         self._links(tokens, source, external_new_tab)
         self._align(tokens)
-        return self.md.renderer.render(tokens, self.md.options, {})
+        # code and tables scroll sideways, so they take keyboard focus
+        return self.md.renderer.render(tokens, self.md.options, {}).replace("<pre>", '<pre tabindex="0">')
 
     @staticmethod
     def _align(tokens) -> None:

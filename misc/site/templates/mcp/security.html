@@ -17,7 +17,7 @@
     {% if mv.tools %}
     <section aria-labelledby="annotations">
       <h2 class="h2-section" id="annotations">{{ copy.mcp.annotations }}</h2>
-      <div class="table-wrap"><table class="param-table annotations">
+      <div class="table-wrap" tabindex="0"><table class="param-table annotations">
         <thead><tr><th scope="col">{{ copy.mcp.annotations_tool }}</th><th scope="col">{{ copy.mcp.read_only }}</th><th scope="col">{{ copy.mcp.open_world }}</th><th scope="col">{{ copy.mcp.idempotent }}</th><th scope="col">{{ copy.mcp.destructive }}</th></tr></thead>
         <tbody>
         {% for t in mv.tools %}{% set a = t.get("annotations") or {} %}

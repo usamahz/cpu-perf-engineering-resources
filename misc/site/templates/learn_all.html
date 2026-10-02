@@ -1,7 +1,7 @@
 {% extends "_base.html" %}
 {% import "_macros.html" as m with context %}
 {% block main %}
-{% call m.page_header(copy.all.eyebrow, copy.all.title, copy.all.lede) %}{% endcall %}
+{% call m.page_header(copy.all.eyebrow, copy.all.title, copy.all.lede, site.title_anchor) %}{% endcall %}
 <div class="container-lab" id="contents">
   {% for s in site.sections %}
   <section class="all-section">

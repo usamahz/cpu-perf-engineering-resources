@@ -47,7 +47,7 @@
 {% macro terminal(title, code, copy_text=None) %}
 <div class="terminal">
   <div class="terminal-bar"><span>{{ title }}</span><button type="button" class="copy-btn" data-copy="{{ copy_text if copy_text is not none else code }}" hidden>{{ copy.global.copy_label }}</button></div>
-  <pre><code>{{ code }}</code></pre>
+  <pre tabindex="0"><code>{{ code }}</code></pre>
 </div>
 {% endmacro %}
 

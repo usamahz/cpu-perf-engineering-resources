@@ -21,6 +21,8 @@ for (const wrap of document.querySelectorAll("[data-tabs]")) {
       if (d) { e.preventDefault(); select((i + d + tabs.length) % tabs.length, true); }
     });
   });
-  const fromHash = panels.findIndex((p) => `#${p.id}` === location.hash);
-  select(fromHash >= 0 ? fromHash : 0);
+  const fromHash = () => panels.findIndex((p) => `#${p.id}` === decodeURIComponent(location.hash));
+  select(Math.max(0, fromHash()));
+  // a link to a panel on the same page (the contents list) opens its tab
+  addEventListener("hashchange", () => { const i = fromHash(); if (i >= 0) select(i); });
 }
