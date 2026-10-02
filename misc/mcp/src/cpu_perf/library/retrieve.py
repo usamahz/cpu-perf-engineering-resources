@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 
 from .. import grammar as g
 from .. import text as tx
+from .extract import clean_text
 from .store import STEM_PREFIX, Store
 
 RRF_K = 60
@@ -43,7 +44,10 @@ class Passage:
     score: float
     entry_ids: list[str] = field(default_factory=list)
     sections: list[int] = field(default_factory=list)
-    signals: list[str] = field(default_factory=list)  # keyword, expansion, semantic, listed-for-topic, listed-first
+    signals: list[str] = field(default_factory=list)  # keyword, expansion, semantic, listed-for-topic, listed-first, abstract
+
+    def __post_init__(self) -> None:
+        self.text = clean_text(self.text)  # libraries built before pdf extraction 2 still hold U+FFFE
 
     @property
     def cite_url(self) -> str:
@@ -82,6 +86,11 @@ def _synonym_table() -> dict[tuple[str, ...], list[tuple[str, ...]]]:
 
 
 IDENT = re.compile(r"[a-z0-9]+(?:[._\-/][a-z0-9]+)+")
+ABSTRACT = re.compile(r"\b(ABSTRACT|Abstract)\b")
+ABSTRACT_END = re.compile(
+    r"\b(keywords|index terms|ccs concepts|categories and subject descriptors|(1|I)\.?\s+introduction)\b", re.I
+)
+ABSTRACT_CHARS = 1600
 
 
 def _is_table(row) -> bool:
@@ -116,6 +125,31 @@ def _passes(plan: "QueryPlan", norm_text: str) -> bool:
         return False
     floor = 1 if n <= 2 else 2
     return len(covered) >= floor
+
+
+def _passage(row, score: float, signals) -> Passage:
+    return Passage(
+        chunk_id=row["id"],
+        source_url=row["url"],
+        doc_url=row["doc_url"],
+        title=row["title"] or row["url"],
+        kind=row["kind"],
+        page=row["page"],
+        heading=row["heading"],
+        text=row["text"],
+        score=round(score * 1000, 3),
+        entry_ids=json.loads(row["entry_ids"] or "[]"),
+        sections=json.loads(row["sections"] or "[]"),
+        signals=sorted(signals),
+    )
+
+
+def _drop_overlap(prev: str, text: str) -> str:
+    """Neighbouring passages repeat up to the chunker's overlap; keep one copy."""
+    for k in range(min(300, len(text)), 20, -1):
+        if prev.endswith(text[:k]):
+            return text[k:].lstrip()
+    return text
 
 
 class Retriever:
@@ -200,6 +234,37 @@ class Retriever:
     def source_row(self, url: str):
         _, by_url = self._source_maps()
         return by_url.get(url.split("#", 1)[0])
+
+    def lead_passage(self, url: str) -> Passage | None:
+        """A paper's abstract, where it states what it shows: from the word Abstract on its first
+        pages to the keywords or the introduction, joined across passages when it runs over.
+        None for a PDF without one (a manual, a datasheet) and for anything that is not a PDF."""
+        row = self.source_row(url)
+        if row is None or row.kind != "pdf" or not row.chunks:
+            return None
+        first = [r for r in self.store.source_chunks(row.id, limit=4) if (r["page"] or 1) <= 2]
+        start = next((i for i, r in enumerate(first) if ABSTRACT.search(r["text"])), None)
+        if start is None:
+            return None
+        text = clean_text(first[start]["text"])
+        text = text[ABSTRACT.search(text).end() :].lstrip(" :.-—\n")
+        for r in first[start + 1 :]:
+            if ABSTRACT_END.search(text) or len(text) >= ABSTRACT_CHARS:
+                break
+            text = f"{text} {_drop_overlap(text, clean_text(r['text']))}"
+        end = ABSTRACT_END.search(text)
+        text = (text[: end.start()] if end else text).strip()
+        if len(text) > ABSTRACT_CHARS:
+            cut = text.rfind(". ", 0, ABSTRACT_CHARS)
+            text = text[: cut + 1] if cut > ABSTRACT_CHARS // 2 else text[:ABSTRACT_CHARS]
+        if len(text) < 200:
+            return None
+        full = self.store.chunk_rows([first[start]["id"]]).get(first[start]["id"])
+        if full is None:
+            return None
+        p = _passage(full, 0.0, {"abstract"})
+        p.text, p.heading = text, "Abstract"
+        return p
 
     # ----- search ----------------------------------------------------------------
 
@@ -328,22 +393,7 @@ class Retriever:
             sig = set(signals.get(cid, ()))
             if extra:
                 sig.add(extra)
-            out.append(
-                Passage(
-                    chunk_id=cid,
-                    source_url=row["url"],
-                    doc_url=row["doc_url"],
-                    title=row["title"] or row["url"],
-                    kind=row["kind"],
-                    page=row["page"],
-                    heading=row["heading"],
-                    text=row["text"],
-                    score=round(score * 1000, 3),
-                    entry_ids=json.loads(row["entry_ids"] or "[]"),
-                    sections=json.loads(row["sections"] or "[]"),
-                    signals=sorted(sig),
-                )
-            )
+            out.append(_passage(row, score, sig))
 
         for cid in preferred:
             if cid in rows and len(out) < limit:

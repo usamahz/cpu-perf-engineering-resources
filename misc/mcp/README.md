@@ -161,13 +161,30 @@ Then ask, for example:
   with what perf itself says to do, instead of being searched for word by
   word.
 - **gcc `-fopt-info` and clang `-Rpass` remarks:** why each loop was left
-  scalar, routed to the list's auto-vectorisation sources and benchmark.
-- **Assembly and code:** the instructions and identifiers that matter (gathers,
-  atomics, fences, intrinsics, `alignas`, `restrict`), routed to the matching
-  sections.
+  scalar, counted per loop, routed to the list's auto-vectorisation sources and
+  benchmark.
+- **Assembly and code:** `objdump -d` with or without the opcode bytes, gdb's
+  `disassemble`, `perf annotate`, and source code. The instructions and
+  identifiers that matter (gathers, atomics, fences, intrinsics, `alignas`,
+  `restrict`) are routed to the matching sections, and so is what a loop does:
+  a float sum carried across iterations, which stays one serial chain of adds
+  without `-fassociative-math` even when a remark says the loop was vectorised
+  (and packed multiplies feeding a run of scalar adds, its shape in assembly),
+  an early exit, or fields read from an array of structs.
 
 The event names, remarks and identifiers then steer the search, so the
 passages that come back are about the pasted output, not just the question.
+
+Every answer says which of the list's sources it carries text from and which
+it does not. Each entry is marked as quoted (with the passages and pages),
+in the library but without a matching passage (with the `read_source` call that
+looks inside), or not read on this machine (with the reason: blocked, refused
+by a proxy, not fetched yet, a talk with only its description). The model is
+told to attribute a claim to a source only through a passage it was given, and
+to offer an unread source as further reading, never as a citation. A listed
+paper the question is about comes with its abstract, and every passage carries
+the list's title for its source rather than the document's own, which is often
+a placeholder such as "Untitled Document".
 
 Answers are brief by default: passages are trimmed to the part that matches,
 the benchmark and the editorial record come only when they are relevant, and
@@ -201,8 +218,11 @@ share one library. Every few minutes one of them, whichever holds an
 operating-system lock on the data folder, does the upkeep: it fetches sources
 that are new, due for a refresh or due for a retry, embeds passages that have
 no vector, and brings a library built by an older release up to date in
-place, without fetching anything again. The lock is released by the system
-if that client exits or crashes, and the work pauses while requests arrive.
+place; a source is fetched again only when a release improves how its kind of
+document is read (this one rejoins words PDFs hyphenate across lines). A
+refresh that fails keeps the copy already in the library, unless the document
+is gone. The lock is released by the system if that client exits or crashes,
+and the work pauses while requests arrive.
 
 Some publishers (ACM, IEEE, parts of the Intel and Arm portals) refuse
 automated clients or render their documents only in a browser. Those sources

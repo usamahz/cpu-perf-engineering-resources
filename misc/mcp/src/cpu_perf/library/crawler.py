@@ -221,6 +221,8 @@ class Crawler:
             if refresh or row is None or row.status == "pending":
                 out.append(t)
             elif row.status in OK_STATUSES:
+                if row.next_try > now:
+                    continue  # its last refresh failed; the copy stays until the retry is due
                 if not row.fetched_at or now - row.fetched_at > self.refresh_days * DAY:
                     out.append(t)
                 elif extract_outdated(row.kind, row.extract_version):
@@ -261,10 +263,12 @@ class Crawler:
             log.exception("crawl failed for %s", target.url)
             status = "error"
             self.progress.last_error = f"{target.url}: {type(exc).__name__}: {exc}"
-            self.store.update_source(
-                target.url, status="unreachable", detail=f"{type(exc).__name__}: {exc}", checked_at=time.time(),
-                next_try=time.time() + 6 * 3600,
-            )
+            now, why = time.time(), f"{type(exc).__name__}: {exc}"
+            row = self.store.source(target.url)
+            if _has_copy(row):
+                self.store.update_source(target.url, detail=f"{_kept(row)}{why}", checked_at=now, next_try=now + 6 * 3600)
+            else:
+                self.store.update_source(target.url, status="unreachable", detail=why, checked_at=now, next_try=now + 6 * 3600)
         with self._lock:
             self.progress.done += 1
             self.progress.counts[status] = self.progress.counts.get(status, 0) + 1
@@ -394,6 +398,13 @@ class Crawler:
         detail = res.detail if res else "no response"
         if res and res.final_url and res.final_url != res.url:
             detail += f" (at {res.final_url})"
+        if _has_copy(row) and status != "dead":
+            # a refresh that failed (offline, a host that now refuses, a re-extraction): the copy
+            # already in the library stays readable, and the next try is scheduled as usual
+            self.store.update_source(
+                target.url, detail=f"{_kept(row)}{detail}", checked_at=now, attempts=attempts, next_try=now + delay,
+            )
+            return status
         self.store.update_source(
             target.url,
             status=status if status in ("blocked", "dead", "unreachable", "refused", "too_large") else "unreachable",
@@ -426,6 +437,16 @@ class Crawler:
             self.store.add_vectors([(cid, q[i].tobytes()) for i, (cid, _, _) in enumerate(rows)], self.embedder.name)
             done += len(rows)
         return done
+
+
+def _has_copy(row) -> bool:
+    """The library already holds readable text for this source."""
+    return row is not None and row.status in OK_STATUSES and bool(row.chunks)
+
+
+def _kept(row) -> str:
+    when = time.strftime("%Y-%m-%d", time.gmtime(row.fetched_at)) if row.fetched_at else "an earlier fetch"
+    return f"copy from {when} kept; the last refresh failed: "
 
 
 def _interleave_hosts(targets: list[CrawlTarget]) -> list[CrawlTarget]:
