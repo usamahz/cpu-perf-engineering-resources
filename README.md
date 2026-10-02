@@ -197,6 +197,15 @@ Where a design paper, the vendor manual and a measurement disagree about a core,
 
 Reproduce it: [misc/benchmarks/03-latency-vs-throughput](misc/benchmarks/03-latency-vs-throughput/README.md), one dependency chain against eight independent accumulators.
 
+### Engineering methodologies
+
+- [Performance Verification of the AmpereOne CPU Core](https://arxiv.org/abs/2608.19300) - Describes the modern tools, flows, and methodologies of verifying the performance of a modern CPU core.
+
+- [The gem5 Simulator](https://arxiv.org/abs/2007.03152) - Overview of the most widely used performance simulation framework.
+
+- [Catscan: Visualizing Pipelines of CPU Performance Simulation](https://arxiv.org/abs/2610.02121) - Modern tool for CPU pipeline visualization and debug.
+
+
 ## 4. Memory hierarchy
 
 Line size and page size are machine parameters, not constants, so every padding and alignment rule below is applied against the target's own values.
