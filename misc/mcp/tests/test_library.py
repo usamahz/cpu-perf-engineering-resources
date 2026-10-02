@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import socket
+import time
 from types import SimpleNamespace
 
 import pytest
@@ -226,6 +227,49 @@ def test_conditional_refresh(tmp_path, site):
     first = store.source(url)
     assert crawler.process(corpus.targets[0], force=False) == "not_modified"
     assert store.source(url).chunks == first.chunks
+
+
+def test_a_failed_refresh_keeps_the_copy(tmp_path, site, monkeypatch):
+    """Offline, or a host that now refuses: the text already read stays readable. A document that is
+    gone is gone."""
+    corpus, store, crawler = build(tmp_path, site, None)
+    url = site.url("/papers/false-sharing.pdf")
+    crawler.run(only=[url])
+    good = store.source(url)
+    routes = site.routes()
+
+    def serve(path_status):
+        monkeypatch.setattr(site, "routes", lambda: {**routes, "/papers/false-sharing.pdf": path_status})
+
+    serve((403, "text/html", b"no", {}))
+    assert crawler.process(corpus.targets[0], force=True) == "blocked"
+    kept = store.source(url)
+    assert kept.status == "indexed" and kept.chunks == good.chunks and kept.detail.startswith("copy from ")
+    assert "last refresh failed" in kept.detail and kept.next_try > time.time()
+    store.update_source(url, extract_version=1)  # outdated, but its retry is not due yet
+    assert url not in {t.url for t in crawler.select()}
+    store.update_source(url, next_try=0)
+    assert url in {t.url for t in crawler.select()}
+
+    serve((404, "text/html", b"gone", {}))
+    assert crawler.process(corpus.targets[0], force=True) == "dead"
+    assert store.source(url).status == "dead"
+
+
+def test_pdf_text_and_titles_come_out_clean():
+    from cpu_perf.library.extract import EXTRACT_VERSIONS, PLACEHOLDER_TITLE, clean_text
+    from cpu_perf.library.retrieve import Passage
+
+    # PDFium marks a hyphen that breaks a word at a line end as U+FFFE
+    assert clean_text("cache perfor￾mance of the orga￾\nnization") == "cache performance of the organization"
+    p = Passage(chunk_id=1, source_url="u", doc_url=None, title="t", kind="pdf", page=1, heading=None,
+                text="perfor￾mance", score=0.0)
+    assert p.text == "performance"  # libraries extracted before the fix read clean too
+    assert EXTRACT_VERSIONS["pdf"] >= 2  # and are extracted again by the next maintenance pass
+    for placeholder in ("Untitled Document", "untitled", "Microsoft Word - paper.doc", "main.tex", "Document1"):
+        assert PLACEHOLDER_TITLE.match(placeholder), placeholder
+    for real in ("Cache-Conscious Structure Definition", "Untitled Spaces in Cache Design", "Word Count on CPUs"):
+        assert not PLACEHOLDER_TITLE.match(real), real
 
 
 def test_embed_missing_backfills(tmp_path, site):

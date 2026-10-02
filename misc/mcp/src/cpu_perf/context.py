@@ -171,7 +171,9 @@ ROUTING = {
 # gcc and clang vectoriser reasons -> what to read about
 REMARK_REASONS: tuple[tuple[str, str], ...] = (
     (r"complicated access pattern|non-consecutive|strided|gather", "strided access gather data layout structure of arrays"),
-    (r"alias|unsafe dependent memory|cannot prove|runtime check|dependence|versioning", "aliasing restrict pointer"),
+    # clang's "cannot prove it is safe to reorder floating-point operations" is a reduction, not aliasing
+    (r"alias|unsafe dependent memory|cannot prove(?! it is safe to reorder floating)|runtime check|dependence|versioning",
+     "aliasing restrict pointer"),
     (r"control flow|switch|unsupported.*(if|branch)|cannot be if-converted", "control flow branches predication"),
     (r"number of iterations|trip count|loop bounds|array bounds|could not determine", "loop trip count bounds"),
     (r"call|clobbers memory|function", "function call inlining vector math"),
@@ -244,6 +246,7 @@ class Analysis:
     unparsed: list[str] = field(default_factory=list)
     elapsed: float | None = None
     topics: list[str] = field(default_factory=list)  # words of the list's subsection titles to read first
+    benchmarks: list[str] = field(default_factory=list)  # benchmark slugs that reproduce what the output shows
     flagged: list[tuple[float, str]] = field(default_factory=list)  # (how far over Intel's threshold, level 1 name)
     level2: dict[str, float] = field(default_factory=dict)  # Memory_Bound -> fraction of slots (P-cores)
     shares: list[tuple[str, float]] = field(default_factory=list)  # (metric group, running %) from metric lines
@@ -442,6 +445,10 @@ def parse_perf_plain(lines: list[str], a: Analysis) -> bool:
     return found
 
 
+CSV_EVENT = re.compile(r"[A-Za-z][\w.:/=,@+-]*")
+CSV_UNIT = re.compile(r"[\w%/.-]{0,16}")
+
+
 def parse_perf_csv(lines: list[str], a: Analysis) -> bool:
     sep = None
     for cand in (",", ";", "\t"):
@@ -459,9 +466,14 @@ def parse_perf_csv(lines: list[str], a: Analysis) -> bool:
         for i in range(len(fields) - 2):
             v = fields[i].strip()
             ev = fields[i + 2].strip()
-            if (re.fullmatch(r"[\d.]+", v) or v in ("<not counted>", "<not supported>")) and re.search(r"[A-Za-z]", ev):
+            unit = fields[i + 1].strip()
+            # an event name has no spaces and a unit is one short token: '2,000,000 orders (320 MB), ~26 ms'
+            # in a pasted note splits into a number, '000 orders (320 MB)' and '~26 ms', which are neither
+            if not (CSV_EVENT.fullmatch(ev) and CSV_UNIT.fullmatch(unit)):
+                continue
+            if re.fullmatch(r"[\d.]+", v) or v in ("<not counted>", "<not supported>"):
                 key, pmu, mods = split_event(ev)
-                c = Count(event=key, raw=ev, pmu=pmu, mods=mods, unit=fields[i + 1].strip())
+                c = Count(event=key, raw=ev, pmu=pmu, mods=mods, unit=unit)
                 if v.startswith("<"):
                     c.status = v.strip("<>")
                 else:
@@ -711,6 +723,10 @@ REMARK = re.compile(r"(?P<loc>[^\s:]+:\d+(?::\d+)?):\s*(?P<kind>missed|optimized
 def parse_remarks(lines: list[str], a: Analysis) -> bool:
     found = False
     reasons: list[str] = []
+    missed: list[str] = []
+    done: list[str] = []
+    clang_loops: set[str] = set()  # clang: one -Rpass-missed remark per loop, its reasons at other lines
+    gcc_loops: set[str] = set()  # gcc: a loop's "couldn't vectorize" and its reason share one location
     for line in lines:
         m = REMARK.search(line)
         if not m:
@@ -720,33 +736,77 @@ def parse_remarks(lines: list[str], a: Analysis) -> bool:
         if "vectoriz" not in low and "vectorise" not in low and "loop" not in low:
             continue
         found = True
+        if m.group("kind") == "note" and re.search(r"vectori[sz]ed \d+ loops? in function", low):
+            continue  # gcc's per-function tally repeats the remarks above it
         flag = re.search(r"\[-R(pass|pass-missed|pass-analysis)=([\w-]+)\]", msg)
         text = re.sub(r"\s*\[-R[\w-]+=[\w-]+\]", "", msg).strip().rstrip(".")
+        remark = f"{m.group('loc')}: {text}"
         success = m.group("kind") == "optimized" or "vectorized loop" in low or (flag and flag.group(1) == "pass")
         if success:
-            a.remarks.append(f"{m.group('loc')}: {text}")
+            if remark not in done:
+                done.append(remark)
             continue
-        a.remarks.append(f"{m.group('loc')}: {text}")
+        if remark not in missed:
+            missed.append(remark)
+        at_line = ":".join(m.group("loc").split(":")[:2])
+        if flag and flag.group(1) == "pass-missed":
+            clang_loops.add(at_line)
+        elif not flag and ("couldn't vectorize" in low or "not vectorized" in low):
+            gcc_loops.add(at_line)
         for pattern, words in REMARK_REASONS:
             if re.search(pattern, low) and words not in reasons:
                 reasons.append(words)
+        if re.search(r"reorder floating[- ]point|unsafe fp math|fp reduction", low):
+            a.benchmarks.append(REDUCTION_BENCHMARK)  # the vectoriser declined a float reduction
     if found:
         a.kinds.append("compiler remarks")
+        a.remarks = missed + done  # what failed first: a summary cut short keeps the reasons
         a.routing.append("auto-vectorization vectorizer remarks")
         a.routing.extend(reasons)
-        missed = sum(1 for r in a.remarks if "not vectorized" in r.lower())
-        if missed:
-            a.notes.append(f"{missed} loop(s) not vectorised; the reasons are in the remarks")
+        loops = len(clang_loops) or len(gcc_loops)
+        if loops:
+            a.notes.append(f"{loops} loop(s) not vectorised; the reasons are in the remarks")
     return found
 
 
 # ----- assembly and code -----------------------------------------------------------------
 
 ASM_LINE = re.compile(
-    r"^\s*(?:[0-9a-f]+:\s+(?:[0-9a-f]{2}\s)+\s*|\d+\.\d+\s*[│|:]\s*|[│|]\s*)?"
+    r"^\s*(?:[0-9a-f]+:\s+(?:[0-9a-f]{2}\s)+\s*"  # objdump -d: address and opcode bytes
+    r"|[0-9a-f]+:\s+"  # objdump --no-show-raw-insn, llvm-objdump: the address alone
+    r"|(?:=>\s*)?0x[0-9a-f]+(?:\s*<[^>]*>)?:\s+"  # gdb disassemble: 0x... <+4>:
+    r"|\d+\.\d+\s*[│|:]\s*|[│|]\s*)?"  # perf annotate
     r"(?P<mn>(?:lock\s+)?[a-z][a-z0-9]{1,15}(?:\.[a-z0-9]+)?)\s+(?P<ops>[%$\w\[\](){},.:+*#-][^;]*)$"
 )
 REGISTER = re.compile(r"%?\b([xyz]mm\d+|[re][a-ds][xi]|r\d+[dwb]?|[vqdsbh]\d+|[xw]\d+)\b")
+SCALAR_ADD = re.compile(r"v?adds[sd]")
+PACKED_MUL = re.compile(r"v?mulp[sd]|vfn?m(add|sub)\d*p[sd]")
+
+REDUCTION_WORDS = "floating point reduction reassociation dependency chain accumulators"
+REDUCTION_BENCHMARK = "03-latency-vs-throughput"  # one dependency chain against independent accumulators
+LAYOUT_BENCHMARK = "07-aos-vs-soa-simd"  # array of structs against structure of arrays
+LOOKS_LIKE_CODE = re.compile(
+    r"\b(for|while|if)\s*\(|\breturn\b[^;\n]*;|#\s*include\b"
+    r"|\b(void|int|float|double|char|struct|size_t|u?int\d+_t|auto|const)\b\s*\**\s*\w+\s*[(=;\[{]"
+)
+FLOAT_ACC = re.compile(r"\b(?:float|double)\s+(\w+)\s*=\s*[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?[fFlL]?\s*[;,]")
+LOOP = re.compile(r"\b(?:for|while)\s*\(")
+REORDER_ALLOWED = re.compile(r"-ffast-math|-fassociative-math|-Ofast\b|\breduction\s*\(\s*[+*]")
+EARLY_EXIT = re.compile(r"\b(?:for|while)\s*\([^)]*\)[^;]*?(?:\{[^{}]*?)?\b(?:return|break)\b", re.S)
+AOS_FIELD = re.compile(r"\b\w+\s*\[[^\]\n]+\]\s*\.\s*[A-Za-z_]\w*")
+
+
+def float_sums(text: str) -> list[str]:
+    """Float and double scalars that a loop adds into: `float s = 0; for (...) s += a[i] * b[i];`."""
+    names: list[str] = []
+    for m in FLOAT_ACC.finditer(text):
+        name, rest = m.group(1), text[m.end() :]
+        loop = LOOP.search(rest)
+        if loop and name not in names and re.search(
+            rf"\b{re.escape(name)}\s*[+-]=|\b{re.escape(name)}\s*=\s*{re.escape(name)}\s*[+-]", rest[loop.start() :]
+        ):
+            names.append(name)
+    return names
 
 
 def parse_asm(lines: list[str], a: Analysis) -> bool:
@@ -779,6 +839,18 @@ def parse_asm(lines: list[str], a: Analysis) -> bool:
         for pattern, words in ASM_FAMILIES:
             if re.search(pattern, mn) and words not in a.routing:
                 a.routing.append(words)
+    scalar_adds = {mn: n for mn, n in mnemonics.items() if SCALAR_ADD.fullmatch(mn)}
+    packed = {mn: n for mn, n in mnemonics.items() if PACKED_MUL.fullmatch(mn)}
+    if sum(scalar_adds.values()) >= 4 and packed:
+        adds = ", ".join(f"{mn} x{n}" for mn, n in scalar_adds.items())
+        muls = ", ".join(f"{mn} x{n}" for mn, n in packed.items())
+        a.notes.append(
+            f"Packed multiplies ({muls}) feed a run of scalar adds ({adds}): the shape of an in-order float "
+            "reduction, whose adds stay one serial dependency chain however wide the vectors are."
+        )
+        a.routing.append(REDUCTION_WORDS)
+        a.topics.append("auto-vectorisation")
+        a.benchmarks.append(REDUCTION_BENCHMARK)
     return True
 
 
@@ -795,9 +867,32 @@ def parse_code(text: str, a: Analysis) -> bool:
             for h in re.findall(r"\b_mm\d*_\w+", text)[:6] if "intrinsics" in words else []:
                 if h not in a.terms:
                     a.terms.append(h)
-    if found:
-        a.kinds.append("code")
-    return found
+    # what the loops do, beyond the APIs they call. A loop over an array of structs is about the bytes
+    # it moves before it is about its adds: its layout leads, and a float sum in it comes second.
+    if LOOP.search(text) and AOS_FIELD.search(text):
+        found = True
+        a.routing.append("struct layout hot cold field splitting structure of arrays cache line utilisation")
+        a.topics += ["struct layout", "data layout"]
+        a.benchmarks.append(LAYOUT_BENCHMARK)
+    sums = float_sums(text)
+    if sums and not REORDER_ALLOWED.search(text):
+        found = True
+        a.routing.append(REDUCTION_WORDS)
+        a.topics.append("auto-vectorisation")
+        a.benchmarks.append(REDUCTION_BENCHMARK)
+        names = ", ".join(f"`{n}`" for n in sums[:3])
+        a.notes.append(
+            f"{names}: a float sum carried across loop iterations. Without -ffast-math or -fassociative-math the "
+            "compiler keeps its adds in source order, one serial chain of add latencies, even where a remark says "
+            "the loop was vectorised."
+        )
+    if EARLY_EXIT.search(text):
+        found = True
+        a.routing.append("control flow branches predication early exit")
+    if found or LOOKS_LIKE_CODE.search(text):
+        a.kinds.append("code")  # code with nothing to route on still is code, not search words
+        return True
+    return False
 
 
 # ----- metrics ---------------------------------------------------------------------------
@@ -1013,6 +1108,7 @@ def analyse(text: str) -> Analysis:
         a.topics.append("locks, contention")
     a.routing = list(dict.fromkeys(a.routing))
     a.topics = list(dict.fromkeys(a.topics))
+    a.benchmarks = list(dict.fromkeys(a.benchmarks))
     if not a.kinds:
         a.notes.append("No tool output was recognised; the text was used as extra search words.")
         a.terms = [w for w in re.findall(r"[A-Za-z_][\w.]{3,}", text)[:12]]

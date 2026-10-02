@@ -14,6 +14,10 @@ class EntryRef(BaseModel):
     anchor_url: str
     kind: str = "entry"
     condition: str | None = None
+    # ask only: whether this answer carries the source's own text. quoted (passages above), in_library
+    # (indexed, nothing matched), not_read (no text on this machine), and why, in `source_note`
+    source_text: str | None = None
+    source_note: str | None = None
 
 
 class RecordItem(BaseModel):
@@ -105,6 +109,7 @@ class AskOut(BaseModel):
     question: str
     detail: str = "brief"
     library: str
+    coverage: str = ""  # which of the sources this answer rests on were read, and which were not
     context: ContextOut | None = None
     passages: list[PassageOut] = Field(default_factory=list)
     entries: list[EntryRef] = Field(default_factory=list)

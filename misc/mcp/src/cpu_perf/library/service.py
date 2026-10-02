@@ -17,6 +17,7 @@ from ..corpus import Corpus, CrawlTarget
 from ..net import Fetcher
 from .crawler import OK_STATUSES, CrawlLock, Crawler
 from .embed import get_embedder
+from .extract import clean_text
 from .retrieve import Retriever
 from .store import Store, default_data_dir
 
@@ -46,7 +47,7 @@ def _join_chunks(rows) -> str:
     prev = ""
     last_page = None
     for r in rows:
-        text = r["text"]
+        text = clean_text(r["text"])
         if prev:
             for k in range(min(300, len(text)), 20, -1):
                 if prev.endswith(text[:k]):
