@@ -26,7 +26,16 @@ machine, the raw numbers and the analysis, all committed. Run them yourself.
 client this list in reading order, the rejected candidates with the rule
 each failed, every benchmark, and a searchable index of the linked sources
 themselves, built on the reader's own machine, so answers come from the
-sources and cite them.
+sources and cite them. With [uv](https://docs.astral.sh/uv/) installed, one
+command adds it to Claude Code or Codex:
+
+```sh
+claude mcp add --scope user cpu-perf -- uvx cpu-perf
+codex mcp add cpu-perf -- uvx cpu-perf
+```
+
+Claude Desktop, Cursor and VS Code take a few lines of config, given in
+[Connect it](misc/mcp/README.md#connect-it).
 
 Section 1 is a path through the rest; read it top to bottom before using the
 numbered sections as a reference.
