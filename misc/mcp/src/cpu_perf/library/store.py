@@ -135,6 +135,7 @@ class Store:
                         except sqlite3.OperationalError:
                             pass  # another process added it first
         self._vectors = None  # {"ids", "mat", "epoch", "loaded_at", "checked"}
+        self.vector_loads = 0  # full reloads of the matrix (a counter, not a clock: Windows ticks coarsely)
         self._vec_lock = threading.Lock()
 
     # ----- connections --------------------------------------------------------
@@ -522,6 +523,7 @@ class Store:
                 ids = np.fromiter((r["chunk_id"] for r in rows), dtype=np.int64, count=len(rows))
                 mat = np.frombuffer(b"".join(r["vec"] for r in rows), dtype=np.int8).reshape(len(rows), -1)
                 self._vectors = cur = {"ids": ids, "mat": mat, "epoch": epoch, "loaded_at": now, "checked": now}
+                self.vector_loads += 1
             elif now - cur["checked"] >= self.APPEND_CHECK:
                 cur["checked"] = now
                 top = int(cur["ids"][-1])
