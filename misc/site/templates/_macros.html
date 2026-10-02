@@ -70,12 +70,20 @@
 
 {# A prompt of the MCP server as Claude Code invokes it, with what the
    server's own prompts/list says about it when the surface dump is present. #}
-{% macro prompt_cmd(name, args="") %}
+{% macro prompt_cmd(name, args="", describe=True) %}
 {% set p = site.mcp.prompt(name) %}
 <div class="prompt-cmd">
   <div class="prompt-copy"><code>/mcp__cpu-perf__{{ name }}{% if args %} {{ args }}{% endif %}</code>{{ copy_button("/mcp__cpu-perf__" ~ name ~ " " ~ args, copy.global.copy_prompt) }}</div>
-  {% if p %}<p class="prompt-desc">{{ p.description }}{% if p.arguments %} <span class="args">{% for a in p.arguments %}<code>{{ a.name }}</code>{% if not loop.last %} {% endif %}{% endfor %}</span>{% endif %}</p>{% endif %}
+  {% if p and describe %}<p class="prompt-desc">{{ p.get("description") | squash }}{% if p.get("arguments") %} <span class="args">{% for a in p.arguments %}<code>{{ a.name }}</code>{% if not loop.last %} {% endif %}{% endfor %}</span>{% endif %}</p>{% endif %}
 </div>
+{% endmacro %}
+
+{% macro mcp_header(active_label, title, lede) %}
+{% call page_header('<a href="/mcp/">' ~ copy.mcp.title ~ '</a> / ' ~ active_label, title, lede) %}{% endcall %}
+{% endmacro %}
+
+{% macro surface_missing() %}
+{% if not site.mcp.surface %}<aside class="notice"><p class="t">{{ copy.mcp.surface_missing }}</p></aside>{% endif %}
 {% endmacro %}
 
 {% macro resource(uri) %}<div class="resource"><code>{{ uri }}</code>{{ copy_button(uri) }}</div>{% endmacro %}

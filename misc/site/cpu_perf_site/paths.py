@@ -35,10 +35,12 @@ class Links:
     now carries them; known documents map to their pages; everything else
     goes to GitHub at the exact commit the site was built from."""
 
-    def __init__(self, repo_url: str, commit: str, readme_anchors: dict[str, str] | None = None):
+    def __init__(self, repo_url: str, commit: str, readme_anchors: dict[str, str] | None = None,
+                 mcp_anchors: dict[str, str] | None = None):
         self.repo_url = repo_url.rstrip("/")
         self.commit = commit
         self.readme_anchors = readme_anchors or {}
+        self.mcp_anchors = mcp_anchors or {}
 
     def blob(self, path: str, line: int | None = None) -> str:
         suffix = f"#L{line}" if line else ""
@@ -63,8 +65,12 @@ class Links:
         if m:
             return f"/benchmarks/{m.group(1)}/" + frag
         if path in ("misc/mcp/README.md", "misc/mcp", "misc/mcp/"):
-            return "/mcp/" + frag
+            return self.mcp_anchor(fragment) if fragment else "/mcp/"
         return None
+
+    def mcp_anchor(self, fragment: str) -> str:
+        page = self.mcp_anchors.get(fragment)
+        return f"{page}#{fragment}" if page else self.blob("misc/mcp/README.md") + f"#{fragment}"
 
     def rewrite(self, href: str, source: str) -> str:
         """`href` as written in the repository file `source`."""
@@ -73,7 +79,11 @@ class Links:
         if href.startswith("#"):
             # README fragments move to the page that carries the heading; any
             # other document is rendered whole, so its own fragments stay put.
-            return self.readme_anchor(href[1:]) if source == "README.md" else href
+            if source == "README.md":
+                return self.readme_anchor(href[1:])
+            if source == "misc/mcp/README.md":
+                return self.mcp_anchor(href[1:])
+            return href
         path, _, fragment = href.partition("#")
         resolved = posixpath.normpath(posixpath.join(posixpath.dirname(source), path))
         if resolved.startswith("../"):

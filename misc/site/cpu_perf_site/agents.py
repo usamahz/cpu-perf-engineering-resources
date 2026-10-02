@@ -183,6 +183,59 @@ def search_index(site) -> list[dict]:
     return rows
 
 
+def _mcp_sections(site, anchors: list[str], level: int = 2) -> str:
+    """Sections of the server's README, by anchor, with their H3 children."""
+    mv, out = site.mcp, []
+    for anchor in anchors:
+        s = mv.find(anchor)
+        if s is None:
+            continue
+        out.append(f"{'#' * level} {s.title}\n\n{s.body}")
+        for c in s.children if s.level == 2 and anchor != "the-first-run-building-the-library" else []:
+            out.append(f"{'#' * (level + 1)} {c.title}\n\n{c.body}")
+    return site.md.absolutise("\n\n".join(out), "misc/mcp/README.md", site.base_url)
+
+
+def mcp_twins(site) -> dict[str, str]:
+    """The MCP pages as Markdown: README sections where a page quotes the
+    README, and the server's own tool, resource and prompt lists where a page
+    lists them."""
+    mv, c = site.mcp, site.copy.mcp
+    src = site.links.blob("misc/mcp/README.md")
+    twins = {}
+    twins["/mcp/quickstart.md"] = (front_matter(site, c.quickstart_heading, "/mcp/quickstart/", src) + f"# {c.quickstart_heading}\n\n"
+                                   + _mcp_sections(site, ["connect-it", "the-first-run-building-the-library", "configuration"]))
+    tools = [front_matter(site, c.tools_heading, "/mcp/tools/", src), f"# {c.tools_heading}", "", c.tools_lede, ""]
+    for t in mv.tools:
+        tools.append(f"## {t['name']}")
+        tools.append("")
+        tools.append(f"{t.get('title', '')}. {c.access}: {c.access_network if mv.tool_access(t) == 'network' else c.access_read}.")
+        tools.append("")
+        tools.append(" ".join(str(t.get("description", "")).split()))
+        tools.append("")
+        for prm in mv.params(t):
+            req = f" ({c.required})" if prm["required"] else ""
+            tools.append(f"- `{prm['name']}`{req}, {prm['type']}: {' '.join(prm['description'].split())}")
+        tools.append("")
+    twins["/mcp/tools.md"] = "\n".join(tools) + "\n"
+    res = [front_matter(site, c.resources_heading, "/mcp/resources/", src), f"# {c.resources_heading}", "", c.resources_lede, "",
+           f"## {c.fixed}", ""]
+    res += [f"- `{r['uri']}`: {r.get('title') or r.get('name', '')}" for r in mv.resources]
+    res += ["", f"## {c.templates}", ""]
+    res += [f"- `{t['uriTemplate']}`: {t.get('title') or t.get('name', '')}" for t in mv.templates]
+    twins["/mcp/resources.md"] = "\n".join(res) + "\n"
+    wf = [front_matter(site, c.workflows_heading, "/mcp/workflows/", src), f"# {c.workflows_heading}", "", c.workflows_lede, ""]
+    for p in mv.prompts:
+        wf += [f"## {p['name']}", "", f"{p.get('title', '')}: {' '.join(str(p.get('description', '')).split())}", ""]
+        wf += [f"- `{a['name']}`" + (f" ({c.required})" if a.get("required") else "") for a in p.get("arguments", [])]
+        wf.append("")
+    twins["/mcp/workflows.md"] = "\n".join(wf) + "\n" + _mcp_sections(site, ["use-it-for-your-own-work"]) + "\n"
+    twins["/mcp/security.md"] = (front_matter(site, c.security_heading, "/mcp/security/", src) + f"# {c.security_heading}\n\n"
+                                 + _mcp_sections(site, ["how-it-stays-honest", "safety-of-fetching", "copyright-and-politeness",
+                                                        "keeping-the-list-current", "serving-over-http"]) + "\n")
+    return twins
+
+
 def write_all(site, dist: Path, pages) -> None:
     write(dist, "/index.md", home_twin(site))
     write(dist, "/learn.md", learn_twin(site))
@@ -216,9 +269,8 @@ def write_all(site, dist: Path, pages) -> None:
         site.files.get("misc/mcp/README.md", ""), "misc/mcp/README.md", site.base_url)
     write(dist, "/mcp.md", mcp_md)
     full.append(mcp_md)
-    for p in pages:
-        if p.twin and p.twin.startswith("/mcp/") and not (dist / p.twin.lstrip("/")).exists():
-            write(dist, p.twin, mcp_md)
+    for path, text in mcp_twins(site).items():
+        write(dist, path, text)
     if any(p.path == "/benchmarks/" for p in pages):
         bench_index = site.md.absolutise(site.files.get("misc/benchmarks/README.md", ""), "misc/benchmarks/README.md", site.base_url)
         write(dist, "/benchmarks.md", front_matter(site, site.copy.benchmarks.title, "/benchmarks/",

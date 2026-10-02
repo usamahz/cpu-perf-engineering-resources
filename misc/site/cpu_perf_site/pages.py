@@ -71,6 +71,7 @@ class Builder:
             keep_trailing_newline=True,
         )
         self.env.filters["host"] = lambda url: urlsplit(url).netloc.removeprefix("www.")
+        self.env.filters["squash"] = lambda text: " ".join(str(text or "").split())
         self.env.filters["json_ld"] = lambda obj: Markup(
             json.dumps(obj, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/"))
         self.env.globals.update(site=site, copy=site.copy, config=site.config, kinds=KINDS, assets=self.assets)

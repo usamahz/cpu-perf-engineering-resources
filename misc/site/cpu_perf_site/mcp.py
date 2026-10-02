@@ -14,6 +14,31 @@ from .paths import slugify
 SOURCE = "misc/mcp/README.md"
 HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 EXAMPLES_INTRO = re.compile(r"ask, for example", re.I)
+TOOL_ROW = re.compile(r"^\|\s*((?:`[a-z_]+`(?:,\s*)?)+)\s*\|\s*(.+?)\s*\|\s*$")
+
+# Which MCP page carries each heading of the server's README. A heading not
+# listed (development, releasing) stays on GitHub; check.py fails the build
+# if the README gains a heading no page or link accounts for.
+ANCHOR_PAGES = {
+    "connect-it": "/mcp/quickstart/",
+    "claude": "/mcp/quickstart/",
+    "chatgpt": "/mcp/quickstart/",
+    "codex": "/mcp/quickstart/",
+    "cursor-and-vs-code": "/mcp/quickstart/",
+    "what-every-client-sees": "/mcp/quickstart/",
+    "the-first-run-building-the-library": "/mcp/quickstart/",
+    "configuration": "/mcp/quickstart/",
+    "tools": "/mcp/tools/",
+    "speed": "/mcp/tools/",
+    "use-it-for-your-own-work": "/mcp/workflows/",
+    "how-it-stays-honest": "/mcp/security/",
+    "keeping-the-list-current": "/mcp/security/",
+    "safety-of-fetching": "/mcp/security/",
+    "copyright-and-politeness": "/mcp/security/",
+    "serving-over-http": "/mcp/security/",
+}
+GITHUB_ONLY = {"development", "releasing", "licence"}
+CLIENT_TABS = ("claude", "chatgpt", "codex", "cursor-and-vs-code")
 
 
 @dataclass
@@ -111,6 +136,60 @@ class McpView:
     def example_html(self, text: str) -> str:
         return self.md.inline(text, SOURCE)
 
+    def body_html(self, anchor: str, demote: int = 1) -> str:
+        """One section's own text, without its heading or its H3 children."""
+        s = self.find(anchor)
+        return self.render(s.body, demote=demote) if s else ""
+
+    def child(self, parent: str, anchor: str) -> DocSection | None:
+        s = self.find(parent)
+        return next((c for c in s.children if c.anchor == anchor), None) if s else None
+
+    def children(self, parent: str, exclude: tuple = ()) -> list[DocSection]:
+        s = self.find(parent)
+        return [c for c in s.children if c.anchor not in exclude] if s else []
+
+    @property
+    def intro_blocks(self) -> list[str]:
+        from .data import split_blocks
+
+        return split_blocks(self.intro_md)
+
+    @property
+    def lede_html(self) -> str:
+        blocks = self.intro_blocks
+        return self.md.inline(" ".join(blocks[0].split()), SOURCE) if blocks else ""
+
+    @property
+    def knows_html(self) -> str:
+        """The intro after its first paragraph: what the server knows."""
+        return self.render("\n\n".join(self.intro_blocks[1:]))
+
+    def tools_section(self) -> dict:
+        """The README's Tools section: its table as {tool: html}, and the
+        paragraphs after it sorted by the page that shows them."""
+        from .data import split_blocks
+
+        s = self.find("tools")
+        out = {"summary": {}, "resources_html": "", "prompts_html": "", "notes_html": []}
+        if s is None:
+            return out
+        for block in split_blocks(s.body):
+            if block.lstrip().startswith("|"):
+                for line in block.splitlines():
+                    m = TOOL_ROW.match(line.strip())
+                    if m:
+                        html = self.md.inline(m.group(2), SOURCE)
+                        for name in re.findall(r"`([a-z_]+)`", m.group(1)):
+                            out["summary"][name] = html
+            elif block.startswith("**Resources:**"):
+                out["resources_html"] = self.render(block)
+            elif block.startswith("**Prompts:**"):
+                out["prompts_html"] = self.render(block)
+            else:
+                out["notes_html"].append(self.render(block))
+        return out
+
     # ---- surface ------------------------------------------------------------
 
     @property
@@ -138,3 +217,49 @@ class McpView:
 
     def template(self, prefix: str) -> dict | None:
         return next((t for t in self.templates if t.get("uriTemplate", "").startswith(prefix)), None)
+
+    @property
+    def client_tabs(self) -> tuple:
+        return CLIENT_TABS
+
+    @property
+    def instructions(self) -> str:
+        return (self.surface or {}).get("instructions", "")
+
+    @property
+    def protocol(self) -> str:
+        return (self.surface or {}).get("protocol_version", "")
+
+    @property
+    def named_resources(self) -> list[dict]:
+        return [r for r in self.resources if not r.get("uri", "").startswith("cpuperf://file/")]
+
+    @property
+    def file_resources(self) -> list[dict]:
+        return [r for r in self.resources if r.get("uri", "").startswith("cpuperf://file/")]
+
+    @property
+    def routed_examples(self) -> list[dict]:
+        """The README's example questions with what the server's search tool
+        returned for each at build time, keyed by question text."""
+        return list((self.surface or {}).get("examples", []))
+
+    def tool_access(self, tool: dict) -> str:
+        a = tool.get("annotations") or {}
+        return "network" if a.get("openWorldHint") else "read"
+
+    def params(self, tool: dict) -> list[dict]:
+        schema = tool.get("inputSchema") or {}
+        required = set(schema.get("required", []))
+        out = []
+        for name, prop in (schema.get("properties") or {}).items():
+            types = [prop.get("type")] if prop.get("type") else [x.get("type") for x in prop.get("anyOf", []) if x.get("type") != "null"]
+            out.append({
+                "name": name,
+                "type": " | ".join(t for t in types if t) + (" (" + ", ".join(map(str, prop["enum"])) + ")" if prop.get("enum") else ""),
+                "required": name in required,
+                "default": prop.get("default"),
+                "description": prop.get("description", ""),
+            })
+        out.sort(key=lambda x: (not x["required"], x["name"]))
+        return out

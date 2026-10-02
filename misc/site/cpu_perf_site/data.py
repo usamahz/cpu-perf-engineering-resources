@@ -334,7 +334,9 @@ class Site:
 
         anchors = self._readme_anchors(corpus)
         self.anchors = anchors
-        self.links = Links(self.repo_url, self.commit, anchors)
+        from .mcp import ANCHOR_PAGES
+
+        self.links = Links(self.repo_url, self.commit, anchors, ANCHOR_PAGES)
         self.md = Markdown(self.links)
         readme_lines = self.files.get("README.md", "").splitlines()
 
@@ -629,6 +631,33 @@ class Site:
         if r.get("left_to") in self.section_by_number:
             item.left_to = self.section_by_number[r["left_to"]]
         return item
+
+    def resolve_ref(self, ref: str) -> dict | None:
+        """A document id from the server's search tool (benchmark:09-false-sharing,
+        section:9.4, entry:9.4.1, record:r9.14) as a page on this site."""
+        kind, _, key = ref.partition(":")
+        if kind == "benchmark" and key in self.bench_by_slug:
+            b = self.bench_by_slug[key]
+            return {"kind": "benchmark", "label": b.title, "url": b.url, "tag": b.slug}
+        if kind == "entry" and key in self.entries:
+            e = self.entries[key]
+            return {"kind": "source", "label": e.title, "url": e.page, "tag": f"§{e.section}"}
+        if kind == "section":
+            num, _, _ = key.partition(".")
+            sec = self.section_by_number.get(int(num)) if num.isdigit() else None
+            if sec is None:
+                return None
+            sub = next((x for x in sec.subsections if x.id == key), None)
+            if sub:
+                return {"kind": "part", "label": sub.title, "url": f"{sec.url}#{sub.anchor}", "tag": f"§{sec.number}"}
+            return {"kind": "section", "label": sec.title, "url": sec.url, "tag": f"§{sec.number}"}
+        if kind == "record":
+            for items, page in ((self.rejected, "/evidence/record/"), (self.claims, "/evidence/record/"),
+                                (self.link_notes, "/evidence/record/link-notes/")):
+                item = next((r for r in items if r.id == key), None)
+                if item:
+                    return {"kind": "record", "label": item.title or item.id, "url": f"{page}#{item.id}", "tag": item.id}
+        return None
 
     # ----------------------------------------------------------------------
 

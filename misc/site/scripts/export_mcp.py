@@ -6,9 +6,12 @@ temporary data directory, no background indexing, no update check and no
 embedding model, so listing it reads nothing from the network. It writes
 what a client sees on connecting: the server's name, version and instructions,
 the protocol version, and the tools, prompts, resources and resource
-templates as the server itself lists them. The MCP pages render from this
-file and misc/mcp/README.md only, so they cannot describe a tool, prompt or
-template the server does not have.
+templates as the server itself lists them. It also puts each example
+question in the server's README through the server's own `search` tool, so
+the site can file each one under the section and benchmark the server
+finds for it. The MCP pages render from this file and misc/mcp/README.md
+only, so they cannot describe a tool, prompt or template the server does
+not have.
 
 Needs the server installed (pip install ./misc/mcp); uses the same
 mcp.Client API as .github/workflows/mcp.yml.
@@ -21,6 +24,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -30,6 +34,21 @@ from mcp import Client, StdioServerParameters
 
 ROOT = Path(__file__).resolve().parents[3]
 TIMEOUT = 60
+EXAMPLES_INTRO = re.compile(r"ask, for example", re.I)
+
+
+def examples(readme: str) -> list[str]:
+    """The bulleted questions after "ask, for example" in the server's README
+    (cpu_perf_site.mcp reads the same list for the page)."""
+    out, on = [], False
+    for line in readme.splitlines():
+        if EXAMPLES_INTRO.search(line):
+            on = True
+        elif on and line.startswith("- "):
+            out.append(line[2:].strip())
+        elif on and out and not line.strip():
+            break
+    return out
 
 
 def dump(model) -> dict:
@@ -44,6 +63,15 @@ async def listing(method, key: str) -> list[dict]:
         cursor = getattr(result, "next_cursor", None) or getattr(result, "nextCursor", None)
         if not cursor:
             return items
+
+
+async def route(client, question: str) -> list[dict]:
+    """What the server's search tool returns for one example question."""
+    query = question.replace("`", "")
+    result = await client.call_tool("search", {"query": query})
+    if result.is_error or not result.structured_content:
+        raise SystemExit(f"search failed for {query!r}: {result.content}")
+    return [{"id": r["id"], "title": r["title"]} for r in result.structured_content.get("results", [])[:5]]
 
 
 async def surface(repo: Path, data_dir: str) -> dict:
@@ -67,6 +95,8 @@ async def surface(repo: Path, data_dir: str) -> dict:
                 "prompts": await listing(client.list_prompts, "prompts"),
                 "resources": await listing(client.list_resources, "resources"),
                 "resource_templates": await listing(client.list_resource_templates, "resource_templates"),
+                "examples": [{"question": q, "results": await route(client, q)}
+                             for q in examples((repo / "misc" / "mcp" / "README.md").read_text(encoding="utf-8"))],
             }
 
 
@@ -85,7 +115,7 @@ def main(argv: list[str] | None = None) -> int:
     server = data["server"]
     print(f"{server.get('name', '?')} {server.get('version', '?')}, protocol {data['protocol_version']}: "
           f"{len(data['tools'])} tools, {len(data['prompts'])} prompts, {len(data['resources'])} resources, "
-          f"{len(data['resource_templates'])} templates -> {path}")
+          f"{len(data['resource_templates'])} templates, {len(data['examples'])} example questions routed -> {path}")
     return 0
 
 
