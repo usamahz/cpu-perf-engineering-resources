@@ -108,3 +108,9 @@ here rather than in the core even when the mechanism itself is real.
 - Issue templates for adding an entry, a dead or moved link, and an
   evidence concern. The pull request template asks the four admission
   questions and the seven fields.
+- `misc/mcp/` is a read-only MCP server. It parses the README with the same
+  grammar as `check_format.py`, plus the drafts, the notes and the benchmarks,
+  when it starts, and its tests fail when the two drift apart. Its index
+  lives in memory and in a library each user builds from the linked URLs on
+  their own machine; nothing generated is committed, and the README stays the
+  whole product.

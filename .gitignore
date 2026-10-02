@@ -11,3 +11,8 @@ links.json
 misc/benchmarks/*/results/quick-*
 misc/benchmarks/*/*.s
 __pycache__/
+# MCP server environments and builds
+misc/mcp/.venv/
+misc/mcp/dist/
+misc/mcp/uv.lock
+.pytest_cache/
