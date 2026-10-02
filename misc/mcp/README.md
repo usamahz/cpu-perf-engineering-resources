@@ -359,15 +359,19 @@ stand-in for GitHub. With `CPU_PERF_EVAL_DB` pointing at a crawled
 
 ## Releasing
 
-Tag a version that matches `pyproject.toml`:
+Tag a version that matches `pyproject.toml`, a release candidate first:
 
-    git tag mcp-v0.1.0 && git push origin mcp-v0.1.0
+    git tag mcp-v0.1.0rc1 && git push origin mcp-v0.1.0rc1
 
 `.github/workflows/mcp-release.yml` builds, tests and publishes to PyPI with
 trusted publishing. Once, before the first release: on PyPI add a pending
 publisher for project `cpu-perf`, owner `usamahz`, repository
 `cpu-performance-engineering`, workflow `mcp-release.yml`, environment
-`pypi`; and create the `pypi` environment in the repository settings.
+`pypi`. GitHub creates the `pypi` environment on the first run.
+
+A release candidate installs with `uvx cpu-perf@0.1.0rc1` (or
+`pip install cpu-perf==0.1.0rc1`); while it is the only version on PyPI,
+plain `uvx cpu-perf` picks it too.
 
 ## Licence
 
