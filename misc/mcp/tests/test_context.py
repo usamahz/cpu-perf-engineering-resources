@@ -127,6 +127,53 @@ def test_assembly_and_code():
     assert "_mm256_fmadd_ps" in a.terms
 
 
+def test_disassembly_without_opcode_bytes_is_still_assembly():
+    a = analyse(F.OBJDUMP_NO_BYTES)  # objdump --no-show-raw-insn
+    assert a.kinds == ["assembly"] and "vaddss" in a.terms and "avx2" in a.routing
+    a = analyse(F.GDB_DISASSEMBLE)
+    assert a.kinds == ["assembly"] and "vaddps" in a.terms
+
+
+def test_an_in_order_float_reduction_is_named_in_assembly_code_and_remarks():
+    """gcc reports the dot product vectorised; its adds still run one at a time, in order."""
+    a = analyse(F.OBJDUMP_NO_BYTES)
+    assert any("in-order float reduction" in n and "vaddss x8" in n for n in a.notes)
+    assert a.benchmarks == ["03-latency-vs-throughput"] and "auto-vectorisation" in a.topics
+
+    a = analyse(F.DSP_CODE)
+    assert a.kinds == ["code"]  # plain C with no API to route on is code, not search words
+    assert any(n.startswith("`s`: a float sum") for n in a.notes)
+    assert a.benchmarks == ["03-latency-vs-throughput"]
+    assert "control flow branches predication early exit" in a.routing  # first_clip returns from inside its loop
+    assert not analyse(F.DSP_CODE + "\n// built with -O3 -ffast-math\n").benchmarks  # reassociation allowed
+
+    a = analyse(F.GCC_DSP_REMARKS + F.DSP_CODE)
+    assert a.kinds == ["compiler remarks", "code"] and a.benchmarks == ["03-latency-vs-throughput"]
+
+    a = analyse(F.CLANG_DSP_REMARKS)
+    assert "floating point reduction reassociation fast-math" in a.routing
+    assert "aliasing restrict pointer" not in a.routing  # "cannot prove it is safe to reorder floating-point"
+    assert a.benchmarks == ["03-latency-vs-throughput"]
+
+
+def test_remarks_count_loops_and_lead_with_what_failed():
+    a = analyse(F.GCC_DSP_REMARKS)
+    assert "1 loop(s) not vectorised; the reasons are in the remarks" in a.notes
+    assert a.remarks[:2] == ["dsp.c:24:14: couldn't vectorize loop", "dsp.c:24:14: not vectorized: control flow in loop"]
+    assert not any("loops in function" in r for r in a.remarks)
+    assert len([r for r in a.remarks if "16 byte vectors" in r]) == 2  # one per loop, not repeated
+    a = analyse(F.CLANG_DSP_REMARKS)  # one -Rpass-missed per loop; the reasons sit at other lines
+    assert "2 loop(s) not vectorised; the reasons are in the remarks" in a.notes
+
+
+def test_a_loop_over_an_array_of_structs_leads_with_its_layout():
+    a = analyse(F.ORDER_BOOK)
+    assert "perf stat -x" not in a.kinds and not a.counts  # '2,000,000 orders (320 MB), ~26 ms' is a note
+    assert a.kinds == ["code"]
+    assert a.topics[:2] == ["struct layout", "data layout"]
+    assert a.benchmarks == ["07-aos-vs-soa-simd", "03-latency-vs-throughput"]  # the bytes first, then the adds
+
+
 def test_unknown_text_is_only_search_words():
     a = analyse("my program feels slow on the new box")
     assert not a.kinds and not a.metrics and a.notes

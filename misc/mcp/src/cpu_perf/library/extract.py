@@ -58,6 +58,8 @@ def _extract_pdf(data: bytes, max_pages: int, start_page: int, end_page: int | N
             title = (meta.get("Title") or "").strip() or None
         except Exception:
             title = None
+        if title and PLACEHOLDER_TITLE.match(title):
+            title = None
         first = max(1, start_page)
         last = min(total, end_page or total, first + max_pages - 1)
         segments: list[Segment] = []
@@ -71,7 +73,7 @@ def _extract_pdf(data: bytes, max_pages: int, start_page: int, end_page: int | N
                     textpage.close()
             finally:
                 page.close()
-            text = text.replace("\r\n", "\n").replace("\r", "\n").replace("\x00", "")
+            text = clean_text(text).replace("\r\n", "\n").replace("\r", "\n").replace("\x00", "")
             if text.strip():
                 segments.append(Segment(text=text, page=number))
         partial = last < total
@@ -316,10 +318,22 @@ def extract_text(text: str, title: str | None = None) -> Extracted:
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 REL_NS = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id"
 
+# PDFium returns U+FFFE for a hyphen that breaks a word at a line end: "perfor￾mance".
+# Left in, every quote carries it and the full-text index holds "perfor" and "mance".
+LINE_END_HYPHEN = re.compile("￾(?:\r?\n)?")
+# What a PDF's Title field holds when nobody set it; the list's own title is used instead.
+PLACEHOLDER_TITLE = re.compile(
+    r"^(untitled(\s+document)?|document\d*|microsoft (word|powerpoint) - .*|slide \d+|\S+\.(docx?|pptx?|tex|dvi|pdf))$", re.I
+)
+
+
+def clean_text(text: str) -> str:
+    return LINE_END_HYPHEN.sub("", text)
+
 
 # Bumped per kind when extraction improves; sources extracted by an older
 # version are fetched again (unconditionally) by the next maintenance pass.
-EXTRACT_VERSIONS = {"xlsx": 2}
+EXTRACT_VERSIONS = {"xlsx": 2, "pdf": 2}  # pdf 2: line-end hyphens joined, placeholder titles dropped
 
 
 def extract_outdated(kind: str | None, version: int | None) -> bool:

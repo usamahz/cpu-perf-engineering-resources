@@ -322,3 +322,86 @@ AMD_EVENTS = """
 
        2.000000000 seconds time elapsed
 """
+
+# gcc 13.3 -O3 -march=native on Emerald Rapids, objdump -d --no-show-raw-insn: the vector loop of a
+# float dot product compiled without -ffast-math (vmulps, then the eight lanes added in order)
+OBJDUMP_NO_BYTES = """0000000000000000 <dot>:
+   0:	endbr64
+  26:	vxorps %xmm0,%xmm0,%xmm0
+  38:	vmovups (%rax,%rsi,1),%ymm4
+  3d:	vmulps (%rcx,%rsi,1),%ymm4,%ymm1
+  42:	add    $0x20,%rsi
+  46:	vaddss %xmm1,%xmm0,%xmm0
+  4a:	vshufps $0x55,%xmm1,%xmm1,%xmm3
+  54:	vaddss %xmm3,%xmm0,%xmm0
+  58:	vunpckhps %xmm1,%xmm1,%xmm3
+  5c:	vaddss %xmm3,%xmm0,%xmm0
+  60:	vaddss %xmm2,%xmm0,%xmm0
+  6b:	vaddss %xmm2,%xmm0,%xmm0
+  76:	vaddss %xmm2,%xmm0,%xmm0
+  88:	vaddss %xmm2,%xmm0,%xmm0
+  8c:	vaddss %xmm1,%xmm0,%xmm0
+  90:	cmp    %rsi,%rdi
+  93:	jne    38 <dot+0x38>
+"""
+
+GDB_DISASSEMBLE = """Dump of assembler code for function sum:
+   0x0000000000001139 <+0>:	endbr64
+   0x000000000000113d <+4>:	vxorps %xmm0,%xmm0,%xmm0
+=> 0x0000000000001141 <+8>:	vaddps (%rdi,%rax,4),%ymm0,%ymm0
+   0x0000000000001146 <+13>:	add    $0x8,%rax
+   0x000000000000114a <+17>:	cmp    %rax,%rsi
+End of assembler dump.
+"""
+
+DSP_CODE = """/* dsp.c: inner loops of a small audio mixer. */
+#include <stddef.h>
+
+float dot(const float *a, const float *b, size_t n)
+{
+    float s = 0.0f;
+    for (size_t i = 0; i < n; i++)
+        s += a[i] * b[i];
+    return s;
+}
+
+size_t first_clip(const float *x, size_t n, float limit)
+{
+    for (size_t i = 0; i < n; i++)
+        if (x[i] > limit || x[i] < -limit)
+            return i;
+    return n;
+}
+"""
+
+# gcc 13.3 -O3 -march=native -fopt-info-vec-all on DSP_CODE plus a mix() loop, as printed
+GCC_DSP_REMARKS = """dsp.c:7:26: optimized: loop vectorized using 32 byte vectors
+dsp.c:7:26: optimized: loop vectorized using 16 byte vectors
+dsp.c:4:7: note: vectorized 1 loops in function.
+dsp.c:4:7: note: ***** Analysis failed with vector mode V8SF
+dsp.c:16:26: optimized: loop vectorized using 32 byte vectors
+dsp.c:16:26: optimized:  loop versioned for vectorization because of possible aliasing
+dsp.c:16:26: optimized: loop vectorized using 16 byte vectors
+dsp.c:14:6: note: vectorized 1 loops in function.
+dsp.c:24:14: missed: couldn't vectorize loop
+dsp.c:24:14: missed: not vectorized: control flow in loop.
+dsp.c:21:8: note: vectorized 0 loops in function.
+"""
+
+# clang -O3 -march=native -Rpass=loop-vectorize -Rpass-missed=loop-vectorize -Rpass-analysis=loop-vectorize
+CLANG_DSP_REMARKS = """dsp.c:8:11: remark: loop not vectorized: cannot prove it is safe to reorder floating-point operations; allow reordering by specifying '#pragma clang loop vectorize(enable)' before the loop or by providing the compiler option '-ffast-math'. [-Rpass-analysis=loop-vectorize]
+    8 |         s += a[i] * b[i];
+      |           ^
+dsp.c:7:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+    7 |     for (size_t i = 0; i < n; i++)
+      |     ^
+dsp.c:16:5: remark: vectorized loop (vectorization width: 8, interleaved count: 4) [-Rpass=loop-vectorize]
+dsp.c:23:5: remark: loop not vectorized: could not determine number of loop iterations [-Rpass-analysis=loop-vectorize]
+dsp.c:23:5: remark: loop not vectorized [-Rpass-missed=loop-vectorize]
+"""
+
+# a struct and its hot loop, pasted with a note whose commas once read as perf stat -x
+ORDER_BOOK = """struct order { uint64_t id; char symbol[16]; char client[48]; double price; uint64_t ts_created; uint64_t ts_updated; char notes[56]; uint32_t qty; uint32_t flags; }; // sizeof 160, price at offset 72, qty at offset 152
+double notional(const struct order *o, size_t n){ double s=0; for(size_t i=0;i<n;i++) s+=o[i].price*o[i].qty; return s; }
+N=2,000,000 orders (320 MB), ~26 ms, ~13 ns per order, best of 20
+"""

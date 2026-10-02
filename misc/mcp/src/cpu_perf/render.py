@@ -51,6 +51,8 @@ def record_line(x: RecordItem) -> str:
 
 def passage_block(p: PassageOut) -> str:
     where = f", page {p.page}" if p.page else (f", {p.heading}" if p.heading else "")
+    if "abstract" in p.signals:
+        where = ", abstract" + (f", page {p.page}" if p.page else "")
     ident = f" (passage {p.id}{', trimmed' if p.trimmed else ''})" if p.id is not None else ""
     lines = [f"**[{p.n}] {p.title}**{where}: <{p.cite_url}>{ident}"]
     if p.why_listed:
@@ -87,6 +89,8 @@ def context_block(c) -> list[str]:
 
 def ask(o: AskOut) -> str:
     out = [f"# Evidence for: {o.question}", f"Library: {o.library}"]
+    if o.coverage:
+        out.append(f"**Sources:** {o.coverage}")
     if o.topics:
         out.append("Matching parts of the list: " + "; ".join(o.topics))
     if o.context is not None:
@@ -96,7 +100,7 @@ def ask(o: AskOut) -> str:
         out += [passage_block(p) for p in o.passages]
     if o.entries:
         out.append("\n## The list's entries on this")
-        out += [entry_line(e) for e in o.entries]
+        out += [entry_line(e) + (f"\n  Source text: {e.source_note}." if e.source_note else "") for e in o.entries]
     if o.benchmark:
         b = o.benchmark
         out.append(f"\n## Benchmark to reproduce\n**{b.slug}: {b.title}** (machine: {b.machine_cpu}) <{b.url}>\n{b.claim}")

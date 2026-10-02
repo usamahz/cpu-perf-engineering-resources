@@ -9,6 +9,7 @@ import anyio
 import pytest
 from mcp import Client
 
+from cpu_perf import render
 from cpu_perf.brain import Brain
 from cpu_perf.corpus import CrawlTarget
 from cpu_perf.library.service import LibraryService
@@ -208,6 +209,103 @@ def test_brief_answers_add_the_record_and_benchmark_only_when_relevant(server):
     assert measuring["benchmark"]["slug"] == "09-false-sharing"
     assert any("Apple M4 Pro" in g for g in measuring["guidance"])
     assert not any("Apple M4 Pro" in g for g in plain["guidance"]) or plain["benchmark"]
+
+
+def quoted_numbers(note: str) -> list[int]:
+    import re
+
+    return [int(n) for n in re.findall(r"\[(\d+)\]", note)]
+
+
+@pytest.fixture()
+def grounded(corpus, index, tmp_path):
+    """A library holding text under the entries' own URLs, as a real crawl stores it."""
+    from cpu_perf.library.chunk import Chunk
+
+    lib = LibraryService(corpus, index.expand, data_dir=tmp_path, embed_model="none", auto_index=False, live_fetch=False)
+    lib.store.replace_chunks(
+        corpus.entries["4.3.5"].url,
+        [Chunk(i, None, None, f"False sharing: two cores write one cache line and the line moves between them. Part {i}.")
+         for i in range(3)],
+        status="indexed", title="Joe Mario's blog", kind="html",
+    )
+    return Brain(corpus, index, lib)
+
+
+def test_ask_says_which_sources_it_read(grounded, corpus):
+    """Each entry says whether the answer carries its text: a model cannot tell a quoted source from a
+    link it was never given unless the answer says so."""
+    out = grounded.ask("false sharing between cores on one cache line")
+    c2c = next(e for e in out.entries if e.id == "4.3.5")
+    assert c2c.source_text == "quoted" and c2c.source_note.startswith("quoted in passages [")
+    assert all(1 <= n <= len(out.passages) for n in quoted_numbers(c2c.source_note))
+    others = [e for e in out.entries if e.id != "4.3.5"]
+    assert others and all(e.source_text == "not_read" and e.source_note.startswith("not read") for e in others)
+    assert "4.3.5" in out.coverage and "Not read on this machine" in out.coverage
+    # the list's title, not the document's own
+    assert {p.title for p in out.passages if p.source_url == c2c.url} == {corpus.entries["4.3.5"].title}
+    assert any("only through a passage above" in g for g in out.guidance)
+    assert any("marked not read" in g for g in out.guidance)
+    text = render.ask(out)
+    assert "**Sources:** Quoted below" in text and "Source text: quoted in passages [" in text
+    assert "Source text: not read" in text
+
+
+def test_a_cut_passage_is_never_named_by_an_entry(grounded):
+    """The budget drops passages from the end; the entries are marked again after each drop."""
+    from cpu_perf.brain import fit_budget
+
+    out = grounded.ask("false sharing between cores on one cache line", detail="full")
+    out.passages = [p.model_copy(update={"n": k, "text": p.text * 40}) for k, p in enumerate(out.passages * 3, 1)]
+    grounded.mark_sources(out)
+    assert max(quoted_numbers(next(e for e in out.entries if e.id == "4.3.5").source_note)) > 3
+    fit_budget(out, 3000, grounded.mark_sources)
+    assert len(out.passages) == 2
+    for e in out.entries:
+        if e.source_text == "quoted":
+            assert all(1 <= n <= len(out.passages) for n in quoted_numbers(e.source_note))
+
+
+def test_ask_leads_a_listed_paper_with_its_abstract_and_marks_what_did_not_match(corpus, index, tmp_path):
+    from cpu_perf.library.chunk import Chunk
+
+    lib = LibraryService(corpus, index.expand, data_dir=tmp_path, embed_model="none", auto_index=False, live_fetch=False)
+    paper = corpus.entries["4.4.1"].url  # Cache-Conscious Structure Definition
+    abstract = (
+        "Appears in Proceedings of PLDI 1999. ABSTRACT A program’s cache perfor￾mance can be improved by "
+        "changing the organization and layout of its data. This paper describes two techniques, structure splitting "
+        "and field reordering, that improve the cache behavior of structures larger than a cache block. In five "
+        "programs, structure splitting reduced cache miss rates and improved performance beyond earlier layout "
+        "techniques. Keywords cache-conscious definition, structure splitting 1. INTRODUCTION An effective way"
+    )
+    lib.store.replace_chunks(
+        paper,
+        [Chunk(0, 1, None, abstract), Chunk(1, 9, None, "Hot fields and cold fields: splitting a class by field access counts.")],
+        status="indexed", title="Untitled Document", kind="pdf", pages=12,
+    )
+    sf = corpus.entries["2.4.2"].url  # in the library, but about something else entirely
+    lib.store.replace_chunks(sf, [Chunk(0, None, None, "Release notes for a gardening app.")], status="indexed", title="SF")
+    brain = Brain(corpus, index, lib)
+
+    out = brain.ask("hot and cold fields of a large struct: structure splitting")
+    lead = next(p for p in out.passages if "abstract" in p.signals)
+    assert lead.page == 1 and not lead.trimmed  # the whole abstract, not a keyword window of it
+    assert lead.text.startswith("A program’s cache performance can be improved")  # U+FFFE joined
+    assert "INTRODUCTION" not in lead.text and "Keywords" not in lead.text
+    assert {p.title for p in out.passages if p.source_url == paper} == {corpus.entries["4.4.1"].title}  # not "Untitled Document"
+    e = next(e for e in out.entries if e.id == "4.4.1")
+    assert e.source_text == "quoted" and ("page 1" in e.source_note or "pages 1," in e.source_note)
+    assert "abstract, page 1" in render.ask(out)
+
+    # nothing matched but the abstract: it is added, ahead of the other sources' passages
+    out = brain.ask("cache-conscious structure definition: which layout techniques does it propose?")
+    assert out.passages and "abstract" in out.passages[0].signals
+
+    out = brain.ask("store forwarding size mismatch")
+    e = next(e for e in out.entries if e.id == "2.4.2")
+    assert e.source_text == "in_library" and 'read_source("2.4.2", query=...)' in e.source_note
+    assert any("marked in the library" in g for g in out.guidance)
+    assert brain.lib.retriever.lead_passage(sf) is None  # not a PDF: no abstract to lead with
 
 
 def test_a_passage_id_reads_back_in_full(corpus, index, tmp_path):
