@@ -27,10 +27,17 @@ client this list in reading order, the rejected candidates with the rule
 each failed, every benchmark, and a searchable index of the linked sources
 themselves, built on the reader's own machine, so answers come from the
 sources and cite them. With [uv](https://docs.astral.sh/uv/) installed, one
-command adds it to Claude Code or Codex:
+command adds it.
+
+**Claude Code**
 
 ```sh
 claude mcp add --scope user cpu-perf -- uvx cpu-perf
+```
+
+**Codex**
+
+```sh
 codex mcp add cpu-perf -- uvx cpu-perf
 ```
 
