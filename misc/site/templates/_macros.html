@@ -68,6 +68,16 @@
 
 {% macro copy_button(text, label=None) %}<button type="button" class="copy-btn" data-copy="{{ text }}" hidden>{{ label or copy.global.copy_label }}</button>{% endmacro %}
 
+{# A prompt of the MCP server as Claude Code invokes it, with what the
+   server's own prompts/list says about it when the surface dump is present. #}
+{% macro prompt_cmd(name, args="") %}
+{% set p = site.mcp.prompt(name) %}
+<div class="prompt-cmd">
+  <div class="prompt-copy"><code>/mcp__cpu-perf__{{ name }}{% if args %} {{ args }}{% endif %}</code>{{ copy_button("/mcp__cpu-perf__" ~ name ~ " " ~ args, copy.global.copy_prompt) }}</div>
+  {% if p %}<p class="prompt-desc">{{ p.description }}{% if p.arguments %} <span class="args">{% for a in p.arguments %}<code>{{ a.name }}</code>{% if not loop.last %} {% endif %}{% endfor %}</span>{% endif %}</p>{% endif %}
+</div>
+{% endmacro %}
+
 {% macro resource(uri) %}<div class="resource"><code>{{ uri }}</code>{{ copy_button(uri) }}</div>{% endmacro %}
 
 {% macro chart_figure(chart) %}

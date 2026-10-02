@@ -208,6 +208,8 @@ checked_text = "check_links.py and check_format.py run on every push and again w
 concern = "Raise an evidence concern ↗"
 record_link = "What was left out, and why →"
 prompts = "Check a claim with the server"
+prompts_text = "Two of the server's prompts apply these rules: audit_claim to a number, review_candidate to a proposed source."
+record_counts = "In the editorial record"
 
 [record]
 title = "Editorial record"
@@ -231,6 +233,13 @@ left_to = "Left to"
 rejected_mark = "rejected"
 all_notes = "All link notes →"
 back = "← Editorial record"
+section = "Section"
+rule = "Rule"
+source = "Draft, line"
+missing_any = "Any field"
+missing_none = "None"
+verdict_label = "Verdict"
+fields_present = "Fields"
 
 [record.categories]
 rule = "Failed a list rule"

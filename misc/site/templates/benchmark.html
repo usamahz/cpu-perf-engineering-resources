@@ -92,10 +92,7 @@
     {% call block("08", copy.benchmarks.block_server, "ask-the-server") %}
       <p class="muted">{{ copy.benchmarks.server_text }}</p>
       {{ m.resource(b.mcp_resource) }}
-      <div class="prompt-copy">
-        <code>/mcp__cpu-perf__reproduce_benchmark {{ b.slug }}</code>
-        {{ m.copy_button("/mcp__cpu-perf__reproduce_benchmark " ~ b.slug, copy.global.copy_prompt) }}
-      </div>
+      {{ m.prompt_cmd("reproduce_benchmark", b.slug) }}
       <p class="small"><a class="link-primary" href="/mcp/workflows/#reproduce_benchmark">{{ copy.benchmarks.server_link }}</a></p>
     {% endcall %}
 

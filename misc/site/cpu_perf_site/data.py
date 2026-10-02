@@ -438,6 +438,7 @@ class Site:
         # ---- the README's own framing
         self.intro = self._intro(readme_lines, corpus)
         self.admission_html = self.md.render(corpus["admission"], "README.md", demote=1)
+        self.evidence = self._evidence(corpus)
         self.license_text = self._license(readme_lines, corpus)
 
         # ---- editorial record
@@ -504,6 +505,22 @@ class Site:
             "commands": commands,
             "after_commands": after,
             "closing_html": self.md.inline(" ".join(closing.split()), "README.md"),
+        }
+
+    def _evidence(self, corpus: dict) -> dict:
+        """The README's "What earns a place" in the order /evidence/ shows it:
+        its opening line, the paragraph after the seven fields, the rest; and
+        CONTRIBUTING.md without its title, under the page's own heading."""
+        blocks = split_blocks(corpus["admission"])
+        lead, after, rest = (blocks + ["", ""])[0], (blocks + ["", ""])[1], blocks[2:]
+        contributing = self.files.get("CONTRIBUTING.md", "").splitlines()
+        if contributing and contributing[0].startswith("# "):
+            contributing = contributing[1:]
+        return {
+            "lead": " ".join(lead.split()),
+            "after_html": self.md.render(after, "README.md"),
+            "rest_html": [self.md.render(b, "README.md") for b in rest],
+            "contributing_html": self.md.render("\n".join(contributing).strip(), "CONTRIBUTING.md", demote=1),
         }
 
     def _license(self, readme_lines: list[str], corpus: dict) -> str:
@@ -605,7 +622,8 @@ class Site:
             verdict_text=r.get("verdict_text") or "",
             missing_fields=list(r.get("missing_fields") or []),
             quote=r.get("quote") or "",
-            source_url=self.links.blob(src, r["line"]),
+            # 12 hex digits of the commit: unambiguous, and 700 rows shorter.
+            source_url=self.links.blob(src, r["line"]).replace(self.commit, self.commit[:12]),
         )
         item.listed_in = [self.section_by_number[n] for n in (r.get("listed_in") or []) if n in self.section_by_number]
         if r.get("left_to") in self.section_by_number:

@@ -8,6 +8,7 @@ import re
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoescape
 from markupsafe import Markup
@@ -69,6 +70,7 @@ class Builder:
             lstrip_blocks=True,
             keep_trailing_newline=True,
         )
+        self.env.filters["host"] = lambda url: urlsplit(url).netloc.removeprefix("www.")
         self.env.filters["json_ld"] = lambda obj: Markup(
             json.dumps(obj, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/"))
         self.env.globals.update(site=site, copy=site.copy, config=site.config, kinds=KINDS, assets=self.assets)
