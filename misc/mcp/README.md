@@ -137,17 +137,29 @@ Then ask, for example:
 
 - **`perf stat`** in its plain, `-x` and `-j` forms, per-CPU and interval
   output included: the counters as read, and the ratios computed from them
-  (instructions per cycle, branch and cache miss rates, misses per thousand
-  instructions, stalled-cycle shares), each with its formula. P-core and
-  E-core counts on hybrid parts are never divided by each other.
-- **Top-down level 1** from `perf stat --topdown`, `-M TopdownL1`, the AMD
-  `PipelineL1` group, or toplev. A level is flagged only against a threshold
-  a listed source states: Intel's own values from its TMA metrics sheet,
-  applied only to Intel P-cores and cited with every flag. Everything else is
-  reported as measured, without a verdict.
-- **How far to trust it:** multiplexed counters (and their running share),
-  events that were not counted or not supported, and lines the parser could
+  (instructions per cycle, frequency, branch, cache and TLB miss rates,
+  misses per thousand instructions, stalled-cycle shares, faults and context
+  switches per second), each with its formula, computed as perf computes its
+  own columns. P-core and E-core counts on hybrid parts are never divided by
+  each other.
+- **Top-down** level 1 from `perf stat --topdown`, `-M TopdownL1`, the AMD
+  `PipelineL1` group, or toplev, and level 2 from `-M TopdownL2`. A level is
+  flagged only against a threshold a listed source states: Intel's own values
+  from its TMA metrics sheet, applied only to Intel P-cores and cited with
+  every flag. Everything else is reported as measured, without a verdict. A
+  flagged level sends the answer to the part of the list about it: a
+  memory-bound run to the memory hierarchy, a front-end-bound one to fetch
+  and decode.
+- **The machine:** when the PMUs and event names show Intel, AMD or Arm,
+  sources about the other vendors' hardware and tools are left out.
+- **How far to trust it:** multiplexed counters (and the lowest running
+  share, metric groups included), events that were not counted or not
+  supported, how many `-I` intervals were summed, and lines the parser could
   not read, which are listed rather than guessed.
+- **perf's own errors:** a missing metric group, `perf_event_paranoid`
+  refusals, unknown or unsupported events, the NMI watchdog: each restated
+  with what perf itself says to do, instead of being searched for word by
+  word.
 - **gcc `-fopt-info` and clang `-Rpass` remarks:** why each loop was left
   scalar, routed to the list's auto-vectorisation sources and benchmark.
 - **Assembly and code:** the instructions and identifiers that matter (gathers,

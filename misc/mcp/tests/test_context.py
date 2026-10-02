@@ -55,7 +55,7 @@ def test_hybrid_cores_are_kept_apart_and_thresholds_cited():
     assert fe.flag == "above Intel's threshold > 0.15"
     atom = [m for m in a.metrics if "[cpu_atom]" in m.name]
     assert atom and all(m.flag is None and m.source is None for m in atom)  # E-cores: values only
-    assert any("multiplexed (lowest running share 83.3%)" in n for n in a.notes)
+    assert any("multiplexed (lowest running share 83.3%" in n for n in a.notes)
     assert any("cpu_atom/cycles/u" in n and "not counted" in n for n in a.notes)
     assert any(n.startswith("Hybrid CPU") for n in a.notes)
     assert a.routing[0] == "top-down" and "backend bound memory bound core bound" in a.routing
@@ -152,3 +152,83 @@ def test_thresholds_match_the_sheet_when_it_is_indexed():
                 found = m.group(1).strip()
                 break
         assert found == threshold, (name, found)
+
+
+def test_perf5_frequency_and_rates_match_perf():
+    a = analyse(F.PERF5)
+    ghz = metric(a, "frequency")
+    assert ghz.value == pytest.approx(3.124, abs=1e-3) and ghz.unit == "GHz"  # perf printed 3.124 GHz
+    faults = metric(a, "page faults per second")
+    assert faults.value == pytest.approx(128.0, abs=0.1)  # perf printed 0.128 K/sec, per task-clock second
+    assert metric(a, "context switches per second").value == pytest.approx(3.7, abs=0.1)
+    assert a.vendor is None  # generic events name no vendor
+
+
+def test_hybrid_has_no_frequency_and_names_the_lowest_share():
+    a = analyse(F.RPL_HYBRID_MUX)
+    assert a.vendor == "intel"
+    assert not any(m.name.startswith("frequency") for m in a.metrics)
+    assert any(n.startswith("No frequency is given") for n in a.notes)
+    # the 11.64% on a TopdownL1 line is lower than any count's share
+    assert any("lowest running share 11.6%, TopdownL1 [cpu_atom]" in n for n in a.notes)
+    assert metric(a, "context switches per second").value == pytest.approx(24.0, abs=0.05)  # perf: 24.003 /sec
+    assert a.topics[:2] == ["top-down analysis", "fetch and decode"]  # Frontend_Bound is furthest over
+
+
+def test_memory_bound_routes_to_the_memory_hierarchy():
+    a = analyse(F.SPR_MEMORY)
+    assert a.vendor == "intel"
+    assert metric(a, "Backend_Bound (level 1)").flag
+    assert a.topics[:2] == ["top-down analysis", "cache geometry"]
+    assert "tlbs, page walks" in a.topics
+    assert a.routing[:2] == ["top-down", "intel tma metrics"] and "cache miss memory latency prefetch" in a.routing
+
+
+def test_level2_orders_the_reading_without_flags():
+    a = analyse(F.PERF_TOPDOWN_L2)
+    core = metric(a, "Core_Bound (level 2)")
+    assert core.value == pytest.approx(0.35) and core.flag is None and core.source is None
+    assert a.topics[:2] == ["top-down analysis", "execute"]  # Core_Bound over Memory_Bound
+    assert "cache geometry" not in a.topics
+
+
+def test_intervals_are_counted_and_give_the_elapsed_time():
+    a = analyse(F.VM_CSV_INTERVALS)
+    assert any(n.startswith("3 intervals over 3.003 s") for n in a.notes)
+    assert a.elapsed == pytest.approx(3.003012875)
+    assert metric(a, "dTLB MPKI").value == pytest.approx(1000 * (9873214 + 10412776 + 9541087) / (6874120338 + 6712345120 + 6903318841), abs=1e-3)
+    assert metric(a, "cache MPKI").unit == "per 1k instructions"
+    assert any("lowest running share 57.6%" in n for n in a.notes)
+
+
+def test_vendor_from_events_and_pmus():
+    assert analyse(F.ARM_NEOVERSE).vendor == "arm"
+    arm = analyse(F.ARM_NEOVERSE)
+    assert metric(arm, "IPC").value == pytest.approx(1.5)  # Arm's architected names count as cycles and instructions
+    assert all(m.flag is None and m.source is None for m in arm.metrics)  # Intel's thresholds stay Intel's
+    assert analyse(F.AMD_EVENTS).vendor == "amd"
+    assert analyse(F.PERF_AMD_PIPELINE).vendor == "amd"
+    assert analyse(F.TOPLEV).vendor == "intel"
+    assert analyse(F.PERF6_HYBRID).vendor == "intel"
+
+
+def test_perf_errors_are_explained_not_searched_for():
+    a = analyse(F.PERF_ERR_METRICGROUP)
+    assert a.kinds == ["perf error"]
+    assert any("no metric group PipelineL1" in n and "perf list metricgroups" in n for n in a.notes)
+    assert a.vendor is None and a.vendor_hint == "amd"
+    assert a.topics == ["top-down analysis"] and "amd zen pipeline" in a.routing
+    assert not any("No tool output was recognised" in n for n in a.notes)
+    assert "Cannot" not in a.search_terms and "Usage" not in a.search_terms
+
+    a = analyse(F.PERF_ERR_PARANOID)
+    assert a.kinds == ["perf error"]
+    assert any("perf_event_paranoid" in n and "CAP_PERFMON" in n for n in a.notes)
+    assert "counters, events" in a.topics
+
+    a = analyse(F.PERF_ERR_EVENTS)
+    assert a.kinds[0] == "perf error" and "perf stat" in a.kinds
+    assert any("did not recognise the event cycle_activty.stalls_l3_miss" in n for n in a.notes)
+    assert any("would not open branch-misses (error 95" in n for n in a.notes)
+    assert any("NMI watchdog" in n for n in a.notes)
+    assert not a.unparsed  # the watchdog lines are explained, not left over

@@ -1,10 +1,11 @@
 """Understand pasted tool output, deterministically.
 
 perf stat (plain, -x CSV, -j JSON, per-CPU and interval forms), its top-down
-output (old --topdown tables and perf 6 TopdownL1 / tma_* lines), toplev,
-gcc and clang vectoriser remarks, assembly and source code. The result is
-the counters as read, metrics computed from them with their formulas, notes
-on how far to trust them, and the terms that steer the search.
+output (old --topdown tables and perf 6 TopdownL1 / TopdownL2 / tma_* lines),
+perf's own error messages, toplev, gcc and clang vectoriser remarks, assembly
+and source code. The result is the counters as read, metrics computed from
+them with their formulas, notes on how far to trust them, the CPU vendor when
+the events name it, and the terms that steer the search.
 
 Nothing here judges a number unless a source the list links states the
 threshold; the only such thresholds are Intel's own top-down level 1 values,
@@ -49,6 +50,53 @@ TMA_NAMES = {
     "backend_bound": "Backend_Bound",
     "be bound": "Backend_Bound",
 }
+# level 2 is read and shown, never flagged: it only orders what to read
+TMA_LEVEL2 = {
+    "memory bound": "Memory_Bound",
+    "core bound": "Core_Bound",
+    "fetch latency": "Fetch_Latency",
+    "fetch bandwidth": "Fetch_Bandwidth",
+    "branch mispredicts": "Branch_Mispredicts",
+    "machine clears": "Machine_Clears",
+    "light operations": "Light_Operations",
+    "heavy operations": "Heavy_Operations",
+}
+# the list's subsections to read for a level over Intel's threshold, by title
+FLAG_TOPICS = {
+    "Frontend_Bound": ["fetch and decode"],
+    "Bad_Speculation": ["branch prediction and speculation"],
+}
+MEMORY_TOPICS = ["cache geometry", "tlbs, page walks", "struct layout"]
+CORE_TOPICS = ["execute"]
+# counters that show the memory side was measured
+MEMORY_EVENTS = re.compile(
+    r"^(l1-dcache-load-misses|llc-load-misses|cache-misses|dtlb-load-misses|"
+    r"cycle_activity\.stalls_l[123]_miss|mem_load_retired\.\w+|mem_load_l3_miss_retired\.\w+|longest_lat_cache\.miss|"
+    r"ls_any_fills_from_sys\.\w+|l2_cache_req_stat\.\w+|ll_cache_miss_rd|l1d_cache_refill|l2d_cache_refill)$",
+    re.I,
+)
+
+# which vendor's PMU printed the output; a mix of signals means unknown
+INTEL_PREFIXES = (
+    "cpu_clk_unhalted.", "inst_retired.", "mem_load_retired.", "mem_inst_retired.", "mem_load_l3_miss_retired.",
+    "cycle_activity.", "int_misc.", "topdown.", "uops_issued.", "uops_retired.", "uops_executed.", "uops_dispatched.",
+    "br_misp_retired.", "br_inst_retired.", "l2_rqsts.", "offcore_requests.", "idq.", "idq_uops_not_delivered.",
+    "idq_bubbles.", "resource_stalls.", "machine_clears.", "exe_activity.", "dtlb_load_misses.", "dtlb_store_misses.",
+    "itlb_misses.", "fp_arith_inst_retired.", "frontend_retired.", "longest_lat_cache.", "l1d_pend_miss.", "ocr.",
+    "memory_activity.",
+)
+INTEL_EVENTS = {"slots", "topdown-retiring", "topdown-bad-spec", "topdown-fe-bound", "topdown-be-bound"}
+AMD_EVENT = re.compile(r"^(ls|de|ex|ic|bp|df)_\w|^l2_(request|cache|pf)\w*|^l3_\w|^fp_(ret|ops|disp)\w*|^ibs_", re.I)
+ARM_EVENT = re.compile(
+    r"^(stall_frontend|stall_backend|stall_slot\w*|op_spec|op_retired|inst_spec|l1d_cache_refill|l2d_cache_refill|"
+    r"ll_cache_miss_rd|br_mis_pred(_retired)?|cpu_cycles)$",
+    re.I,
+)
+VENDOR_PMU = (
+    (re.compile(r"^cpu_(core|atom)$"), "intel"),
+    (re.compile(r"^amd_|^ibs_"), "amd"),
+    (re.compile(r"^armv\d_pmuv\d|^arm_|^apple_\w+_pmu|^hisi_"), "arm"),
+)
 
 # perf's generic names and the common raw names, folded to one key each
 ALIASES = {
@@ -92,6 +140,13 @@ ALIASES = {
     "topdown-bad-spec": "topdown-bad-spec",
     "topdown-fe-bound": "topdown-fe-bound",
     "topdown-be-bound": "topdown-be-bound",
+    # Arm's architected events, the ones perf's generic names map to on arm64
+    "cpu_cycles": "cycles",
+    "inst_retired": "instructions",
+    "br_retired": "branches",
+    "br_mis_pred_retired": "branch-misses",
+    "stall_frontend": "stalled-cycles-frontend",
+    "stall_backend": "stalled-cycles-backend",
 }
 
 ROUTING = {
@@ -103,8 +158,11 @@ ROUTING = {
     "LLC miss rate": "last level cache miss memory latency",
     "LLC MPKI": "last level cache miss memory latency",
     "cache miss rate": "cache miss",
+    "cache MPKI": "cache miss",
     "dTLB miss rate": "tlb huge pages",
+    "dTLB MPKI": "tlb huge pages",
     "iTLB miss rate": "tlb instruction footprint",
+    "iTLB MPKI": "tlb instruction footprint",
     "frontend stall share": "frontend stalls",
     "backend stall share": "backend stalls memory",
     "context switches per second": "context switches scheduler",
@@ -160,6 +218,7 @@ class Count:
     unit: str = ""
     running: float | None = None  # percentage of the time the counter was on
     status: str = "ok"  # ok | not counted | not supported
+    ts: float | None = None  # the interval's time stamp (perf stat -I)
 
 
 @dataclass
@@ -185,7 +244,13 @@ class Analysis:
     unparsed: list[str] = field(default_factory=list)
     elapsed: float | None = None
     topics: list[str] = field(default_factory=list)  # words of the list's subsection titles to read first
-    flagged: list[tuple[float, str]] = field(default_factory=list)  # (how far over Intel's threshold, topic)
+    flagged: list[tuple[float, str]] = field(default_factory=list)  # (how far over Intel's threshold, level 1 name)
+    level2: dict[str, float] = field(default_factory=dict)  # Memory_Bound -> fraction of slots (P-cores)
+    shares: list[tuple[str, float]] = field(default_factory=list)  # (metric group, running %) from metric lines
+    vendor: str | None = None  # intel | amd | arm, from the events and PMUs printed
+    vendor_hint: str | None = None  # weaker: the vendor of a metric group a failed command asked for
+    consumed: set[str] = field(default_factory=set)  # lines an earlier parser explained
+    signals: set[str] = field(default_factory=set)  # vendors the metric lines point to
 
     @property
     def search_terms(self) -> list[str]:
@@ -206,6 +271,7 @@ class Analysis:
                 counters[key] = counters.get(key, 0.0) + c.value
         return ContextOut(
             kinds=self.kinds,
+            vendor=self.vendor,
             metrics=[MetricOut(**m.__dict__) for m in self.metrics],
             counters=dict(list(counters.items())[:40]),
             notes=self.notes,
@@ -266,10 +332,19 @@ HEADER = re.compile(r"Performance counter stats for\s+(.+?):?\s*$")
 
 
 def _record_tma(a: Analysis, name: str, pct: float, origin: str, intel_pcore: bool, pmu: str = "") -> None:
-    canon = TMA_NAMES.get(name.lower().replace("tma_", "").replace("_", " "), None) or TMA_NAMES.get(name.lower())
+    key = name.lower().replace("tma_", "").replace("_", " ")
+    frac = pct / 100.0
+    if key in TMA_LEVEL2:
+        canon = TMA_LEVEL2[key]
+        label = f"{canon} (level 2)" + (f" [{pmu}]" if pmu else "")
+        if pmu != "cpu_atom":
+            a.level2.setdefault(canon, frac)
+        if all(x.name != label for x in a.metrics):
+            a.metrics.append(Metric(name=label, value=round(frac, 4), unit="of slots", formula=origin, inputs=[origin]))
+        return
+    canon = TMA_NAMES.get(key, None) or TMA_NAMES.get(name.lower())
     if canon is None:
         return
-    frac = pct / 100.0
     label = f"{canon} (level 1)" + (f" [{pmu}]" if pmu else "")
     m = Metric(name=label, value=round(frac, 4), unit="of slots", formula=origin, inputs=[origin])
     if intel_pcore and canon in TMA_THRESHOLDS:
@@ -277,7 +352,8 @@ def _record_tma(a: Analysis, name: str, pct: float, origin: str, intel_pcore: bo
         m.source = TMA_SOURCE
         if frac > limit:
             m.flag = f"above Intel's threshold {text}"
-            a.flagged.append((frac / limit, TMA_ROUTING[canon]))
+            if all(n != canon for _, n in a.flagged):
+                a.flagged.append((frac / limit, canon))
     if all(x.name != label for x in a.metrics):
         a.metrics.append(m)
 
@@ -290,7 +366,7 @@ def parse_perf_plain(lines: list[str], a: Analysis) -> bool:
     group_kind = ""
     in_block = False
     for line in lines:
-        if not line.strip():
+        if not line.strip() or line.strip() in a.consumed:
             continue
         h = HEADER.search(line)
         if h:
@@ -324,7 +400,16 @@ def parse_perf_plain(lines: list[str], a: Analysis) -> bool:
             intel = bool(tma.group(2)) and group_pmu != "cpu_atom" and not group_kind.lower().startswith("pipeline")
             _record_tma(a, tma.group(3), float(tma.group(1)), f"perf {group_kind or 'tma'}", intel, group_pmu)
             found = True
+            if tma.group(2):
+                a.signals.add("intel")
+            elif group_kind.lower().startswith("pipeline"):
+                a.signals.add("amd")
+            elif group_kind.lower().startswith("topdown") and tma.group(3).islower():
+                a.signals.add("arm")  # perf's Arm metrics: TopdownL1 with plain lower-case names
             if not PLAIN.match(line):
+                r = RUNNING.search(line)
+                if r:  # the share of the events behind this metric group
+                    a.shares.append((group_kind + (f" [{group_pmu}]" if group_pmu else ""), float(r.group(1))))
                 continue
         if line.lstrip().startswith("#"):
             continue
@@ -344,6 +429,8 @@ def parse_perf_plain(lines: list[str], a: Analysis) -> bool:
         r = RUNNING.search(pm.group("rest"))
         if r:
             c.running = float(r.group(1))
+        if pm.group("ts"):
+            c.ts = float(pm.group("ts"))
         a.counts.append(c)
         found = True
     if td_header and td_rows:
@@ -381,6 +468,8 @@ def parse_perf_csv(lines: list[str], a: Analysis) -> bool:
                     c.value = float(v)
                 if len(fields) > i + 4 and re.fullmatch(r"[\d.]+", fields[i + 4].strip()):
                     c.running = float(fields[i + 4])
+                if i >= 1 and re.fullmatch(r"\d+\.\d+", fields[0].strip()):
+                    c.ts = float(fields[0])  # -I: the time stamp leads the line
                 a.counts.append(c)
                 found = True
                 break
@@ -433,11 +522,147 @@ def parse_perf_json(lines: list[str], a: Analysis) -> bool:
                 continue
         if obj.get("pcnt-running") is not None:
             c.running = float(obj["pcnt-running"])
+        if obj.get("interval") is not None:
+            c.ts = float(obj["interval"])
         a.counts.append(c)
         found = True
     if found:
         a.kinds.append("perf stat -j")
     return found
+
+
+# ----- perf's own errors ----------------------------------------------------------------
+
+METRIC_GROUP_MISSING = re.compile(r"Cannot find metric or group [`'\"]?([\w.-]+?)['`\"]?\s*$")
+NO_ACCESS = re.compile(
+    r"perf_event_paranoid|Access to performance monitoring and observability operations is limited|"
+    r"No permission to enable|may not have permission to collect",
+    re.I,
+)
+SYSCALL = re.compile(r"sys_perf_event_open\(\) syscall returned with (\d+) \(([^)]*)\) for event \(([^)]*)\)")
+EVENT_SYNTAX = re.compile(r"event syntax error: '([^']*)'")
+UNKNOWN_TERM = re.compile(r"unknown (?:term|event) '([^']*)'", re.I)
+EVENT_UNSUPPORTED = re.compile(r"The ([\w:./=,-]+) event is not supported")
+NMI = re.compile(r"Some events weren't counted|nmi_watchdog", re.I)
+WORKLOAD = re.compile(r"Workload failed: (.+?)\s*$")
+USAGE = re.compile(r"^\s*(Usage: perf|or: perf|-\w, --[\w-]+|--[\w-]+(\s|=|$)|Run 'perf list'|\\_{3}|perf stat \.\.\.\s*$)")
+ERRNO_NOTE = {
+    "2": "the event does not exist on this CPU or kernel; virtual machines without a virtual PMU expose few or no hardware events",
+    "95": "the event does not exist on this CPU or kernel; virtual machines without a virtual PMU expose few or no hardware events",
+    "13": "permission was refused; /proc/sys/kernel/perf_event_paranoid and CAP_PERFMON decide who may count",
+    "1": "permission was refused; /proc/sys/kernel/perf_event_paranoid and CAP_PERFMON decide who may count",
+    "22": "the kernel rejected its settings, a modifier or field this PMU does not accept",
+    "16": "another user holds the counter, such as the NMI watchdog or another profiler",
+    "24": "too many files are open: events times CPUs exceeded the open-file limit (ulimit -n)",
+}
+
+
+def parse_perf_errors(lines: list[str], a: Analysis) -> bool:
+    """perf's messages when a command fails, restated with what perf itself says to do."""
+    notes: list[str] = []
+    topics: list[str] = []
+    routing: list[str] = []
+    usage = False
+
+    def add(note: str, topic: str | None = None, words: str | None = None) -> None:
+        if note not in notes:
+            notes.append(note)
+        if topic and topic not in topics:
+            topics.append(topic)
+        if words and words not in routing:
+            routing.append(words)
+
+    for line in lines:
+        s = line.strip()
+        if not s:
+            continue
+        hit = True
+        m = METRIC_GROUP_MISSING.search(s)
+        if m:
+            group = m.group(1)
+            note = (
+                f"This perf has no metric group {group}. perf's metric groups come from per-CPU event tables built "
+                "into perf, so an older perf, or a CPU model its tables do not list, lacks them; `perf list "
+                "metricgroups` shows the groups this perf has."
+            )
+            if group.lower().startswith("pipelinel"):
+                note += (
+                    " AMD's level 1 split needs Zen 4 or later; perf's amdzen4 pipeline.json gives its formulas "
+                    "in raw events, which can be counted directly."
+                )
+                a.vendor_hint = "amd"
+                add(note, "top-down analysis", "amd zen pipeline")
+            elif group.lower().startswith("topdownl"):
+                note += " On Intel, `perf stat --topdown` or toplev give level 1 from older perf versions too."
+                add(note, "top-down analysis", "top-down")
+            else:
+                add(note, "counters, events", "perf metric groups")
+        elif NO_ACCESS.search(s):
+            add(
+                "perf was refused access to the counters. Its own message names the fix: lower "
+                "/proc/sys/kernel/perf_event_paranoid, or run with CAP_PERFMON (or CAP_SYS_ADMIN); "
+                "perf_event_open(2) defines each setting.",
+                "counters, events", "perf_event_paranoid",
+            )
+        elif SYSCALL.search(s):
+            m = SYSCALL.search(s)
+            why = ERRNO_NOTE.get(m.group(1), "perf's message above gives the reason")
+            add(f"The kernel would not open {m.group(3)} (error {m.group(1)}, {m.group(2)}): {why}.", "counters, events", "perf_event_open")
+        elif EVENT_SYNTAX.search(s) or UNKNOWN_TERM.search(s):
+            m = EVENT_SYNTAX.search(s) or UNKNOWN_TERM.search(s)
+            add(f"perf did not recognise the event {m.group(1)}; `perf list` shows the names this perf knows for this CPU.", "counters, events")
+        elif EVENT_UNSUPPORTED.search(s):
+            ev = EVENT_UNSUPPORTED.search(s).group(1)
+            add(
+                f"{ev} is not supported here: not available on this CPU or kernel (common on virtual machines and macOS).",
+                "counters, events",
+            )
+        elif NMI.search(s):
+            add(
+                "perf reports that some events were not counted and suggests turning off the NMI watchdog, which "
+                "keeps one counter for itself (echo 0 > /proc/sys/kernel/nmi_watchdog as root, restored afterwards).",
+                "counters, events", "multiplexing counters",
+            )
+        elif WORKLOAD.search(s):
+            add(f"perf could not start the measured command ({WORKLOAD.search(s).group(1)}); nothing was measured.")
+        elif USAGE.search(line) or s in ("Error:", "Error"):
+            usage = usage or s.startswith(("Usage:", "-", "--"))
+        else:
+            hit = False
+        if hit:
+            a.consumed.add(s)
+    if not notes:
+        return False
+    a.kinds.append("perf error")
+    a.notes.extend(notes)
+    a.topics.extend(t for t in topics if t not in a.topics)
+    a.routing.extend(r for r in routing if r not in a.routing)
+    if usage:
+        a.notes.append("perf printed its usage text after the error; the options it lists are its own help, not results.")
+    return True
+
+
+# ----- the vendor ----------------------------------------------------------------------
+
+
+def detect_vendor(a: Analysis) -> None:
+    """Only the PMUs and events decide; one vendor or none."""
+    found = set(a.signals)
+    for c in a.counts:
+        for pattern, vendor in VENDOR_PMU:
+            if c.pmu and pattern.search(c.pmu):
+                found.add(vendor)
+        ev = c.event.lower()
+        raw = (c.raw.split("/")[1] if c.raw.count("/") >= 2 else c.raw.split(":")[0]).lower()
+        if ARM_EVENT.match(raw):
+            found.add("arm")
+        elif ev in INTEL_EVENTS or ev.startswith(INTEL_PREFIXES):
+            found.add("intel")
+        elif AMD_EVENT.match(ev):
+            found.add("amd")
+        elif ARM_EVENT.match(ev):
+            found.add("arm")
+    a.vendor = found.pop() if len(found) == 1 else None
 
 
 # ----- toplev --------------------------------------------------------------------------
@@ -462,6 +687,8 @@ def parse_toplev(lines: list[str], a: Analysis) -> bool:
             level1.setdefault(node, []).append(value)
         elif "%" in unit:
             a.metrics.append(Metric(name=node, value=round(value / 100.0, 4), unit="of slots", formula="toplev", inputs=["toplev"]))
+            if node.count(".") == 1 and node.split(".")[1] in TMA_LEVEL2.values():
+                a.level2.setdefault(node.split(".")[1], value / 100.0)
         if "<==" in rest:
             a.notes.append(f"toplev marks {node} as the bottleneck")
             a.routing.append(node.replace("_", " ").replace(".", " ").lower())
@@ -472,6 +699,7 @@ def parse_toplev(lines: list[str], a: Analysis) -> bool:
         _record_tma(a, node, sum(vals) / len(vals), "toplev" + (f", mean of {len(vals)} rows" if len(vals) > 1 else ""), True)
     if found:
         a.kinds.append("toplev")
+        a.signals.add("intel")  # toplev runs Intel's TMA tree only
     return found
 
 
@@ -589,6 +817,15 @@ def compute_metrics(a: Analysis) -> None:
     totals = _totals(a)
     groups = {(p, m) for (p, _, m) in totals}
     generic: list[str] = []  # topics of the plain ratios; used only without top-down data
+    stamps = sorted({c.ts for c in a.counts if c.ts is not None})
+    if len(stamps) >= 2:
+        if a.elapsed is None:
+            a.elapsed = stamps[-1]
+        a.notes.append(
+            f"{len(stamps)} intervals over {stamps[-1]:.4g} s (perf stat -I): the counts are summed across them, so "
+            "the metrics describe the whole run, not any one interval."
+        )
+    hybrid = {"cpu_core", "cpu_atom"} <= {p for (p, _, _) in totals}
 
     def get(pmu: str, mods: str, ev: str) -> float | None:
         return totals.get((pmu, ev, mods))
@@ -615,10 +852,21 @@ def compute_metrics(a: Analysis) -> None:
         ratio("LLC miss rate", "LLC-load-misses", "LLC-loads", 100, "%")
         ratio("LLC MPKI", "LLC-load-misses", "instructions", 1000, "per 1k instructions")
         ratio("cache miss rate", "cache-misses", "cache-references", 100, "%")
+        ratio("cache MPKI", "cache-misses", "instructions", 1000, "per 1k instructions")
         ratio("dTLB miss rate", "dTLB-load-misses", "dTLB-loads", 100, "%")
+        ratio("dTLB MPKI", "dTLB-load-misses", "instructions", 1000, "per 1k instructions")
         ratio("iTLB miss rate", "iTLB-load-misses", "iTLB-loads", 100, "%")
+        ratio("iTLB MPKI", "iTLB-load-misses", "instructions", 1000, "per 1k instructions")
         ratio("frontend stall share", "stalled-cycles-frontend", "cycles", 100, "% of cycles")
         ratio("backend stall share", "stalled-cycles-backend", "cycles", 100, "% of cycles")
+        # perf divides by task-clock for its GHz and /sec columns; so do these
+        task = totals.get(("", "task-clock", mods)) if not pmu or pmu == "cpu" else None
+        cycles = get(pmu, mods, "cycles")
+        if task and cycles and not hybrid:
+            a.metrics.append(
+                Metric(name="frequency" + sfx, value=round(cycles / (task * 1e6), 3), unit="GHz",
+                       formula="cycles / task-clock (ns)", inputs=["cycles", "task-clock"])
+            )
         slots = get(pmu, mods, "slots")
         if slots:
             for ev, name in (
@@ -632,23 +880,39 @@ def compute_metrics(a: Analysis) -> None:
                     _record_tma(a, name, 100.0 * v / slots, f"{ev} / slots", pmu != "cpu_atom", pmu)
     if not any("level 1" in m.name for m in a.metrics):
         a.routing.extend(g for g in generic[:3] if g not in a.routing)
-    if a.elapsed:
-        for (pmu, ev, mods), v in totals.items():
-            if ev == "task-clock":
+    if hybrid and any(ev == "cycles" for (_, ev, _) in totals):
+        a.notes.append(
+            "No frequency is given: task-clock covers P-cores and E-cores together, so dividing either core type's "
+            "cycles by it (as perf's GHz column does) is not that core type's clock."
+        )
+    task_ms = sum(v for (_, ev, _), v in totals.items() if ev == "task-clock")
+    for (pmu, ev, mods), v in totals.items():
+        if ev == "task-clock" and a.elapsed:
+            a.metrics.append(
+                Metric(name="CPUs utilised", value=round(v / 1000.0 / a.elapsed, 3), formula="task-clock (ms) / 1000 / elapsed (s)", inputs=["task-clock", "elapsed"])
+            )
+        for name, event in (("context switches", "context-switches"), ("page faults", "page-faults")):
+            if ev != event:
+                continue
+            if task_ms:
                 a.metrics.append(
-                    Metric(name="CPUs utilised", value=round(v / 1000.0 / a.elapsed, 3), formula="task-clock (ms) / 1000 / elapsed (s)", inputs=["task-clock", "elapsed"])
+                    Metric(name=f"{name} per second", value=round(v / (task_ms / 1000.0), 1), unit="/s of task-clock",
+                           formula=f"{event} / task-clock (s)", inputs=[event, "task-clock"])
                 )
-            if ev == "context-switches":
+            elif a.elapsed:
                 a.metrics.append(
-                    Metric(name="context switches per second", value=round(v / a.elapsed, 1), unit="/s", formula="context-switches / elapsed", inputs=["context-switches", "elapsed"])
+                    Metric(name=f"{name} per second", value=round(v / a.elapsed, 1), unit="/s",
+                           formula=f"{event} / elapsed", inputs=[event, "elapsed"])
                 )
 
 
 def trust_notes(a: Analysis) -> None:
-    running = [c.running for c in a.counts if c.running is not None and c.status == "ok"]
-    if running and min(running) < 99.99:
+    running = [(c.running, c.raw) for c in a.counts if c.running is not None and c.status == "ok"]
+    running += [(share, what) for what, share in a.shares]
+    if running and min(running)[0] < 99.99:
+        low, what = min(running)
         a.notes.append(
-            f"Counters were multiplexed (lowest running share {min(running):.1f}%): perf scaled them up, so ratios "
+            f"Counters were multiplexed (lowest running share {low:.1f}%, {what}): perf scaled them up, so ratios "
             "between events counted at different times carry error, worst on short or phase-changing runs."
         )
         a.routing.append("multiplexing counters")
@@ -672,12 +936,40 @@ def trust_notes(a: Analysis) -> None:
             a.terms.append(name)
 
 
+def _flag_topics(a: Analysis) -> tuple[list[str], list[str]]:
+    """The list's subsections and the search words for each level over Intel's
+    threshold, furthest over first. Backend_Bound splits by level 2 when it was
+    measured, else by whether the memory side was counted at all."""
+    topics: list[str] = []
+    words: list[str] = []
+    for _, canon in sorted(a.flagged, key=lambda x: -x[0]):
+        words.append(TMA_ROUTING[canon])
+        if canon != "Backend_Bound":
+            topics += FLAG_TOPICS.get(canon, [])
+            continue
+        mem, core = a.level2.get("Memory_Bound"), a.level2.get("Core_Bound")
+        if mem is not None or core is not None:
+            side = "memory" if (mem or 0.0) >= (core or 0.0) else "core"
+        elif any(MEMORY_EVENTS.match(c.event) for c in a.counts if c.status == "ok"):
+            side = "memory"
+        else:
+            side = None
+        if side == "memory":
+            topics += MEMORY_TOPICS
+            words.append("cache miss memory latency prefetch")
+        elif side == "core":
+            topics += CORE_TOPICS
+            words.append("execution ports latency throughput")
+    return topics, words
+
+
 def analyse(text: str) -> Analysis:
     a = Analysis()
     if len(text) > MAX_CHARS:
         a.notes.append(f"Only the first {MAX_CHARS} characters were read.")
         text = text[:MAX_CHARS]
     lines = text.replace("\r\n", "\n").split("\n")[:MAX_LINES]
+    parse_perf_errors(lines, a)
     if not parse_perf_json(lines, a):
         if not parse_perf_plain(lines, a):
             parse_perf_csv(lines, a)
@@ -685,21 +977,24 @@ def analyse(text: str) -> Analysis:
     parse_remarks(lines, a)
     if not parse_asm(lines, a):
         parse_code(text, a)
+    detect_vendor(a)
     compute_metrics(a)
     trust_notes(a)
-    if a.counts and "perf stat" in " ".join(a.kinds) and "top-down" not in a.routing and not any("level 1" in m.name for m in a.metrics):
+    level1 = any("level 1" in m.name for m in a.metrics)
+    if a.counts and "perf stat" in " ".join(a.kinds) and "top-down" not in a.routing and not level1:
         a.routing.append("perf stat counters")
-    # the level furthest over its threshold leads the search, whatever order perf printed them in
-    for _, topic in sorted(a.flagged, key=lambda x: -x[0]):
-        if topic not in a.routing:
-            a.routing.insert(len([r for r in a.routing if r in {t for _, t in a.flagged}]), topic)
-    if any("level 1" in m.name for m in a.metrics):
-        a.routing.insert(0, "top-down")
-        a.topics.append("top-down analysis")
+    if level1:
+        # top-down leads, then the levels over their thresholds, furthest first
+        lead = ["top-down"]
         if any(m.source for m in a.metrics):
-            a.routing.insert(1, "intel tma metrics")
+            lead.append("intel tma metrics")
         elif any("PipelineL" in m.formula for m in a.metrics):
-            a.routing.insert(1, "amd zen pipeline")
+            lead.append("amd zen pipeline")
+        flag_topics, flag_words = _flag_topics(a)
+        lead += flag_words
+        a.routing = lead + [r for r in a.routing if r not in lead]
+        a.topics.append("top-down analysis")
+        a.topics += flag_topics
     elif any(k.startswith("perf stat") for k in a.kinds) and a.counts:
         a.notes.append(
             "No top-down data in this output. The list's method classifies the bottleneck next: perf stat --topdown "
@@ -716,11 +1011,8 @@ def analyse(text: str) -> Analysis:
         a.topics.append("simd instruction sets")
     if "locks contention" in a.routing or "allocator malloc" in a.routing:
         a.topics.append("locks, contention")
-    seen: list[str] = []
-    for r in a.routing:
-        if r not in seen:
-            seen.append(r)
-    a.routing = seen
+    a.routing = list(dict.fromkeys(a.routing))
+    a.topics = list(dict.fromkeys(a.topics))
     if not a.kinds:
         a.notes.append("No tool output was recognised; the text was used as extra search words.")
         a.terms = [w for w in re.findall(r"[A-Za-z_][\w.]{3,}", text)[:12]]

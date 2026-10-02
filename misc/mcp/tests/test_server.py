@@ -240,7 +240,7 @@ def test_ask_reads_pasted_output(server):
     assert any(e["id"].startswith("6.2.") for e in sc["entries"])
     assert sc["topics"][0].startswith("6.2 ")
     text = r.content[0].text
-    assert "Your pasted output (perf stat)" in text and "| Metric | Value | From |" in text
+    assert "Your pasted output (perf stat, Intel)" in text and "| Metric | Value | From |" in text
 
     r = call(server, "ask", {"question": "why won't this loop vectorise?", "context": F.GCC_REMARKS})
     sc = r.structured_content
@@ -248,6 +248,42 @@ def test_ask_reads_pasted_output(server):
     assert any(e["id"].startswith("8.3.") for e in sc["entries"])
     assert sc["benchmark"] and sc["benchmark"]["slug"] in ("08-autovectorization-aliasing", "07-aos-vs-soa-simd")
 
+
+
+def test_ask_keeps_to_the_machine_the_output_came_from(server):
+    """Intel output gets no AMD or Arm sources, AMD output no Intel ones; a
+    memory-bound run is sent to the memory hierarchy."""
+    import context_fixtures as F
+
+    def ids(r):
+        return [e["id"] for e in r.structured_content["entries"]]
+
+    r = call(server, "ask", {"question": "Compiling this one big file takes forever. What does this perf stat say?",
+                             "context": F.RPL_HYBRID_MUX})
+    got = ids(r)
+    assert r.structured_content["context"]["vendor"] == "intel"
+    assert any(i.startswith("6.2.") for i in got)
+    assert not {"6.2.4", "6.2.5", "5.2.2", "5.2.4", "5.2.5", "5.3.3"} & set(got)
+    assert r.structured_content["topics"][1].startswith("2.1 ")  # Frontend_Bound: fetch and decode
+
+    r = call(server, "ask", {"question": "My bytecode interpreter runs slower than I expected on this EPYC. What is the bottleneck?",
+                             "context": F.PERF_ERR_METRICGROUP})
+    got = ids(r)
+    assert "6.2.4" in got[:2] and not {"6.2.2", "6.2.3"} & set(got)
+    assert "no metric group PipelineL1" in r.content[0].text
+
+    r = call(server, "ask", {"question": "My hash join got 3x slower once the table outgrew the L3. Where is the time going?",
+                             "context": F.SPR_MEMORY})
+    topics = r.structured_content["topics"]
+    assert topics[0].startswith("6.2 ") and topics[1].startswith("4.1 ")
+    got = ids(r)
+    assert any(i.startswith("4.1.") for i in got) and "6.2.4" not in got and "3.4.2" not in got
+
+    # no vendor in the output or the question: the vendor-neutral method leads
+    r = call(server, "ask", {"question": "Our service's p99 latency doubled on these VMs; does anything stand out?",
+                             "context": F.VM_CSV_INTERVALS})
+    assert r.structured_content["context"]["vendor"] is None
+    assert ids(r)[0] == "6.2.1"
 
 
 def test_default_results_are_markdown_for_every_client(brain):

@@ -59,6 +59,44 @@ ABOUT_THE_LIST = re.compile(
 BRIEF_BUDGET = 8_000  # characters of markdown the model reads for one brief ask
 FULL_BUDGET = 30_000
 
+# A source tied to one vendor's hardware or tools: by its title and address, or by
+# the vendor-only tools its reason names. With pasted output from one vendor's
+# PMU, the others' sources are left out of the answer.
+VENDOR_TITLE = {
+    "amd": re.compile(r"\bAMD\b|\bZen ?\d|\bEPYC\b|\bEpyc\b|uProf|amdzen|amd\.com"),
+    "intel": re.compile(r"\bIntel\b|\bXeon\b|TMA_Metrics|VTune|intel\.com|intel/perfmon|pmu-tools"),
+    "arm": re.compile(r"\bArm\b|\bARM\b|Neoverse|AArch64|Graviton|Apple|Firestorm|arm-spe|arm\.com|applecpu"),
+}
+VENDOR_TOOLS = {
+    "amd": re.compile(r"\bIBS\b|\buProf\b|\bZen\b"),
+    "intel": re.compile(r"\bTMA\b|\bPEBS\b|\btoplev\b|\bVTune\b"),
+    "arm": re.compile(r"\bSPE\b"),
+}
+X86 = re.compile(r"\bx86\b", re.I)
+# the machine a question names, when the pasted output does not say
+QUESTION_VENDOR = {
+    "amd": re.compile(r"\bAMD\b|\bEPYC\b|\bEpyc\b|\bRyzen\b|\bThreadripper\b|\bZen ?\d\b|\bGenoa\b|\bTurin\b|\bBergamo\b"),
+    "intel": re.compile(
+        r"\bIntel\b|\bXeon\b|\bCore i\d\b|\b(Sapphire|Emerald|Granite|Diamond) Rapids\b|\bIce Lake\b|\bSkylake\b|"
+        r"\b(Alder|Raptor|Meteor|Arrow|Lunar) Lake\b|\bSierra Forest\b"
+    ),
+    "arm": re.compile(r"\bArm\b|\bARM\b|\bAArch64\b|\bNeoverse\b|\bGraviton\d?\b|\bAmpere\b|\bAltra\b|\bApple M\d\b|\bCobalt\b|\bAxion\b"),
+}
+
+
+def entry_vendors(e: Entry) -> set[str]:
+    head = f"{e.title} {e.url or ''}"
+    found = {v for v, rx in VENDOR_TITLE.items() if rx.search(head)}
+    found |= {v for v, rx in VENDOR_TOOLS.items() if rx.search(e.reason)}
+    if X86.search(head):
+        found |= {"intel", "amd"}
+    return found
+
+
+def text_vendor(text: str) -> str | None:
+    found = {v for v, rx in QUESTION_VENDOR.items() if rx.search(text)}
+    return found.pop() if len(found) == 1 else None
+
 
 def payload_chars(out: AskOut) -> int:
     from . import render
@@ -611,6 +649,7 @@ class Brain:
                 subs.append(sid)
         subs = subs[:3]
         hinted: list[str] = []
+        vendor = None
         if ctx is not None:
             # what the pasted output is about, by the list's own subsection titles, most telling first
             for t in ctx.topics:
@@ -618,10 +657,21 @@ class Brain:
                     if t in sub.title.lower() and sid not in hinted:
                         hinted.append(sid)
             subs = (hinted + [s for s in subs if s not in hinted])[:4]
+            # the machine the output came from: its PMU first, then the question, then a failed command's group
+            vendor = ctx.vendor or text_vendor(question) or ctx.vendor_hint
+
+        def elsewhere(entry_id: str) -> bool:
+            """A source about another vendor's hardware than the one the output came from."""
+            if vendor is None:
+                return False
+            vs = entry_vendors(self.c.entries[entry_id])
+            return bool(vs) and vendor not in vs
+
+        entry_hits = [h for h in entry_hits if not elsewhere(h.ref)]
         boost: set[str] = set()
         for sid in subs:
             for i in self.c.subsections[sid].entry_ids:
-                if self.c.entries[i].url:
+                if self.c.entries[i].url and not elsewhere(i):
                     boost.add(self.c.entries[i].url.split("#", 1)[0])
         for h in entry_hits[:5]:
             if h.url:
@@ -634,11 +684,18 @@ class Brain:
                 top = entry_hits[0].score
                 prefer = [h.url for h in entry_hits[:3] if h.url and h.score >= 0.5 * top]
             found, meta = self.lib.retriever.search(
-                query, limit=max_passages, boost_urls=boost, sections={section} if section else None,
+                query, limit=max_passages + (4 if vendor else 0), boost_urls=boost, sections={section} if section else None,
                 prefer_urls=prefer, listed_only=True,
             )
             if meta.get("unfetched"):
                 self.lib.prefetch(meta["unfetched"])
+            if vendor:
+                def off_machine(p) -> bool:
+                    known = [i for i in p.entry_ids if i in self.c.entries]
+                    return bool(known) and all(elsewhere(i) for i in known)
+
+                found = [p for p in found if not off_machine(p)]
+            found = found[:max_passages]
             terms = snippets.query_terms(query)
             passages = [self.passage_out(i, p, terms=terms if brief else None) for i, p in enumerate(found, 1)]
         cited = {p.source_url for p in passages}
@@ -646,7 +703,10 @@ class Brain:
         ranked = entry_hits
         if ctx is not None and ctx.search_terms:
             # within the hinted subsections, the output's own terms decide (Intel's sheet for Intel output)
-            ranked = [h for h in self.ix.search(" ".join(ctx.search_terms), scope="list", limit=30)[0] if h.kind in ("entry", "watch")]
+            ranked = [
+                h for h in self.ix.search(" ".join(ctx.search_terms), scope="list", limit=30)[0]
+                if h.kind in ("entry", "watch") and not elsewhere(h.ref)
+            ]
         url_rank: dict[str, int] = {}
         for n, h in enumerate(ranked):  # by URL: an entry listed twice (1.8 and 6.2.1) is one source
             if h.url:
@@ -654,10 +714,13 @@ class Brain:
 
         def rank(i: str) -> int:
             u = self.c.entries[i].url
-            return url_rank.get(u.split("#", 1)[0], len(ranked) + 1) if u else len(ranked) + 1
+            n = url_rank.get(u.split("#", 1)[0], len(ranked) + 1) if u else len(ranked) + 1
+            if ctx is not None and vendor is None and entry_vendors(self.c.entries[i]):
+                n += len(ranked) + 2  # the machine is unknown: the vendor-neutral sources first
+            return n
 
         for k, sid in enumerate(hinted[:3]):
-            ids = sorted(self.c.subsections[sid].entry_ids, key=rank)
+            ids = sorted((i for i in self.c.subsections[sid].entry_ids if not elsewhere(i)), key=rank)
             for i in ids[: 2 if k == 0 else 1]:
                 entries.append(self.entry_ref(self.c.entries[i]))
         for h in entry_hits:

@@ -92,6 +92,7 @@ class MetricOut(BaseModel):
 
 class ContextOut(BaseModel):
     kinds: list[str] = Field(default_factory=list)
+    vendor: str | None = None  # intel | amd | arm, from the PMUs and events printed
     metrics: list[MetricOut] = Field(default_factory=list)
     counters: dict[str, float] = Field(default_factory=dict)
     notes: list[str] = Field(default_factory=list)

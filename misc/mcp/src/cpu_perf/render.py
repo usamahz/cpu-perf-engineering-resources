@@ -60,11 +60,14 @@ def passage_block(p: PassageOut) -> str:
 
 
 def context_block(c) -> list[str]:
-    out = [f"\n## Your pasted output ({', '.join(c.kinds) or 'unrecognised'})"]
+    vendor = {"intel": "Intel", "amd": "AMD", "arm": "Arm"}.get(c.vendor or "")
+    what = ", ".join(c.kinds) or "unrecognised"
+    out = [f"\n## Your pasted output ({what}{', ' + vendor if vendor else ''})"]
     if c.metrics:
         rows = ["| Metric | Value | From |", "|---|---|---|"]
         for m in c.metrics:
-            val = f"{m.value:.4g}{(' ' + m.unit) if m.unit else ''}"
+            num = f"{m.value:,.0f}" if abs(m.value) >= 10_000 else f"{m.value:.4g}"  # 22,672, not 2.267e+04
+            val = f"{num}{(' ' + m.unit) if m.unit else ''}"
             flag = f" **{m.flag}**" if m.flag else ""
             rows.append(f"| {m.name}{flag} | {val} | {m.formula or ', '.join(m.inputs)} |")
         out.append("\n".join(rows))
